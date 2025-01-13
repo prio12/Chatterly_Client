@@ -3,6 +3,7 @@ import SignUp from '../pages/authentications/SignUp';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import UserLayout from '../outlet/UserLayout';
+import SignIn from '../pages/authentications/SignIn';
 
 const AppRoutes = () => {
   return (
@@ -12,6 +13,7 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />}></Route>
       </Route>
       <Route path="/signUp" element={<SignUp />}></Route>
+      <Route path="/singIn" element={<SignIn />}></Route>
     </Routes>
   );
 };
