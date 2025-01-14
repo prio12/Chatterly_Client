@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   currentUser: null,
@@ -6,6 +6,14 @@ const initialState = {
   isError: false,
   error: '',
 };
+
+//create async thunk to create user with email pass
+export const createUserWithEmail = createAsyncThunk(
+  'createUser/withEmailPass'
+  //   async ({ fname, lname, email, password }) => {
+
+  //   }
+);
 
 export const userSlice = createSlice({
   name: 'loggedInUser',
