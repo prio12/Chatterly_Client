@@ -2,8 +2,13 @@ import { Link } from 'react-router';
 import Animation from '../../components/Animation';
 import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { createUserWithEmail } from '../../redux/features/loggedInUser/userSlice';
 
 const SignUp = () => {
+  //imports
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -11,7 +16,14 @@ const SignUp = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const userInfo = {
+      fname: data.fname,
+      lname: data.lname,
+      email: data.email,
+      password: data.password,
+    };
+
+    dispatch(createUserWithEmail(userInfo));
   };
 
   return (
