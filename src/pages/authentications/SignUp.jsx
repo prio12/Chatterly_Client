@@ -1,13 +1,16 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import Animation from '../../components/Animation';
 import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { createUserWithEmail } from '../../redux/features/loggedInUser/userSlice';
+import { useState } from 'react';
 
 const SignUp = () => {
-  //imports
+  //hooks
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
 
   const {
     register,
@@ -15,7 +18,7 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const userInfo = {
       fname: data.fname,
       lname: data.lname,
@@ -23,7 +26,15 @@ const SignUp = () => {
       password: data.password,
     };
 
-    dispatch(createUserWithEmail(userInfo));
+    try {
+      const payload = await dispatch(createUserWithEmail(userInfo)).unwrap();
+
+      if (payload.currentUser) {
+        navigate('/');
+      }
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -127,6 +138,7 @@ const SignUp = () => {
                 </p>
               )}
             </div>
+            {error && <p className="text-red-500 my-2 text-xs">{error}</p>}
             <input
               type="submit"
               className="btn w-full bg-slate-600 text-white hover:bg-slate-500 my-5"
