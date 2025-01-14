@@ -3,7 +3,10 @@ import Animation from '../../components/Animation';
 import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { createUserWithEmail } from '../../redux/features/loggedInUser/userSlice';
+import {
+  createUserWithEmail,
+  createUserWithGoogle,
+} from '../../redux/features/loggedInUser/userSlice';
 import { useState } from 'react';
 
 const SignUp = () => {
@@ -11,13 +14,13 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState('');
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  //with email pass sign up handler
   const onSubmit = async (data) => {
     const userInfo = {
       fname: data.fname,
@@ -37,6 +40,19 @@ const SignUp = () => {
     }
   };
 
+  //google provider signup handler
+  const googleSubmitHandler = async () => {
+    try {
+      const payload = await dispatch(createUserWithGoogle()).unwrap();
+      if (payload) {
+        console.log(payload);
+        navigate('/');
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left Div */}
@@ -44,7 +60,10 @@ const SignUp = () => {
         <h2 className="text-2xl font-semibold">Get Started Now</h2>
         <p>Join us today and start connecting!</p>
         <div className="my-5">
-          <button className="text-center flex items-center gap-2 p-3 shadow-md">
+          <button
+            onClick={googleSubmitHandler}
+            className="text-center flex items-center gap-2 p-3 shadow-md"
+          >
             <span>
               <FcGoogle />
             </span>{' '}

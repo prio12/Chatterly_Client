@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import auth from '../../../firebase/firebase.cofig';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const initialState = {
   currentUser: null,
@@ -9,7 +10,7 @@ const initialState = {
   error: '',
 };
 
-//create async thunk to create user with email pass
+// async thunk to create user with email pass
 export const createUserWithEmail = createAsyncThunk(
   'createUser/withEmailPass',
   async ({ email, password }) => {
@@ -21,6 +22,18 @@ export const createUserWithEmail = createAsyncThunk(
 
     return {
       currentUser: response.user.uid,
+    };
+  }
+);
+
+//async thunk to create user with google provider
+export const createUserWithGoogle = createAsyncThunk(
+  'createUser/withGoogle',
+  async () => {
+    const provider = new GoogleAuthProvider();
+    const response = await signInWithPopup(auth, provider);
+    return {
+      currentUser: response.user,
     };
   }
 );
@@ -54,6 +67,24 @@ export const userSlice = createSlice({
         (state.currentUser = null),
           (state.isLoading = false),
           (state.isError = true),
+          (state.error = action.error.message);
+      })
+      .addCase(createUserWithGoogle.pending, (state) => {
+        (state.currentUser = null),
+          (state.isLoading = true),
+          (state.isError = false),
+          (state.error = '');
+      })
+      .addCase(createUserWithGoogle.fulfilled, (state, { payload }) => {
+        (state.currentUser = payload.currentUser.uid),
+          (state.isLoading = true),
+          (state.isError = false),
+          (state.error = '');
+      })
+      .addCase(createUserWithGoogle.rejected, (state, action) => {
+        (state.currentUser = null),
+          (state.isLoading = true),
+          (state.isError = false),
           (state.error = action.error.message);
       });
   },
