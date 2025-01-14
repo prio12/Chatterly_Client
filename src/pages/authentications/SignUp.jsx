@@ -1,8 +1,19 @@
 import { Link } from 'react-router';
 import Animation from '../../components/Animation';
 import { FcGoogle } from 'react-icons/fc';
+import { useForm } from 'react-hook-form';
 
 const SignUp = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left Div */}
@@ -19,7 +30,7 @@ const SignUp = () => {
         </div>
         <div className="divider mx-5 text-xs">or</div>
         <div className="shadow-slate-600 p-5 shadow-sm">
-          <form action="">
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="fName" className="text-sm ">
                 First Name
@@ -27,9 +38,19 @@ const SignUp = () => {
               <input
                 type="text"
                 placeholder="Type here"
-                className="input input-bordered  w-full max-w-xs my-2"
-                required
+                className="input input-bordered w-full max-w-xs my-2"
+                {...register('fname', {
+                  required: 'First name is required', // Optionally add a custom error message
+                  setValueAs: (value) =>
+                    typeof value === 'string' ? value.trim() : '',
+                })}
               />
+
+              {errors.fname && (
+                <p className="text-red-500 my-2 text-xs">
+                  {errors.fname.message}
+                </p>
+              )}
             </div>
             <div>
               <label htmlFor="lName" className="text-sm ">
@@ -38,9 +59,19 @@ const SignUp = () => {
               <input
                 type="text"
                 placeholder="Type here"
-                className="input input-bordered  w-full max-w-xs my-2"
-                required
+                className="input input-bordered w-full max-w-xs my-2"
+                {...register('lname', {
+                  required: 'Last name is required', // Optionally add a custom error message
+                  setValueAs: (value) =>
+                    typeof value === 'string' ? value.trim() : '',
+                })}
               />
+
+              {errors.lname && (
+                <p className="text-red-500 my-2 text-xs">
+                  {errors.lname.message}
+                </p>
+              )}
             </div>
             <div>
               <label htmlFor="Email" className="text-sm ">
@@ -49,9 +80,19 @@ const SignUp = () => {
               <input
                 type="email"
                 placeholder="Type here"
-                className="input input-bordered  w-full max-w-xs my-2"
-                required
+                className="input input-bordered w-full max-w-xs my-2"
+                {...register('email', {
+                  required: 'Email is required', // Optionally add a custom error message
+                  setValueAs: (value) =>
+                    typeof value === 'string' ? value.trim() : '',
+                })}
               />
+
+              {errors.email && (
+                <p className="text-red-500 my-2 text-xs">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
             <div>
               <label htmlFor="password" className="text-sm ">
@@ -60,9 +101,19 @@ const SignUp = () => {
               <input
                 type="password"
                 placeholder="Type here"
-                className="input input-bordered  w-full max-w-xs my-2"
-                required
+                className="input input-bordered w-full max-w-xs my-2"
+                {...register('password', {
+                  required: 'Password is required', // Optionally add a custom error message
+                  setValueAs: (value) =>
+                    typeof value === 'string' ? value.trim() : '',
+                })}
               />
+
+              {errors.password && (
+                <p className="text-red-500 my-2 text-xs">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
             <input
               type="submit"
@@ -71,7 +122,7 @@ const SignUp = () => {
             />
             <p className="text-xs my-3">
               Have an account?{' '}
-              <Link className="text-blue-700 font-semibold" to="/singIn">
+              <Link className="text-blue-700 font-semibold" to="/signIn">
                 Login
               </Link>
             </p>
