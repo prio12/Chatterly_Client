@@ -8,12 +8,14 @@ import {
   createUserWithGoogle,
 } from '../../redux/features/loggedInUser/userSlice';
 import { useState } from 'react';
+import { useAddNewUserMutation } from '../../redux/api/users/usersApi';
 
 const SignUp = () => {
   //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const [addNewUser] = useAddNewUserMutation();
   const {
     register,
     handleSubmit,
@@ -22,6 +24,7 @@ const SignUp = () => {
 
   //with email pass sign up handler
   const onSubmit = async (data) => {
+    //userinfo for firebase auth
     const userInfo = {
       fname: data.fname,
       lname: data.lname,
@@ -33,9 +36,20 @@ const SignUp = () => {
       const payload = await dispatch(createUserWithEmail(userInfo)).unwrap();
 
       if (payload.currentUser) {
-        navigate('/');
+        console.log(payload.currentUser);
+
+        const userInfo = {
+          name: `${data.fname} ${data.lname}`,
+          email: data.email,
+          uid: payload.currentUser,
+        };
+        const response = await addNewUser(userInfo);
+        if (response) {
+          navigate('/');
+        }
       }
     } catch (error) {
+      console.log(error);
       setError(error.message);
     }
   };

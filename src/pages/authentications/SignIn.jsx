@@ -13,7 +13,6 @@ const SignIn = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
-
   return (
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left Div */}
