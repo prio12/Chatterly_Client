@@ -9,6 +9,7 @@ import {
 } from '../../redux/features/loggedInUser/userSlice';
 import { useState } from 'react';
 import { useAddNewUserMutation } from '../../redux/api/users/usersApi';
+import toast, { Toaster } from 'react-hot-toast';
 
 const SignUp = () => {
   //hooks
@@ -44,7 +45,22 @@ const SignUp = () => {
         };
         const response = await addNewUser(userInfo);
         if (response) {
-          navigate('/');
+          toast.success('Account created successfully! 🎉', {
+            duration: 5000, // Toast stays visible for 5 seconds
+            style: {
+              border: '1px solid #4caf50',
+              padding: '16px',
+              color: '#4caf50',
+            },
+            iconTheme: {
+              primary: '#4caf50',
+              secondary: '#fff',
+            },
+          });
+
+          setTimeout(() => {
+            navigate('/');
+          }, 1000);
         }
       }
     } catch (error) {
@@ -66,7 +82,22 @@ const SignUp = () => {
         };
         const response = await addNewUser(userInfo);
         if (response) {
-          navigate('/');
+          toast.success('Account created successfully! 🎉', {
+            duration: 5000, // Toast stays visible for 5 seconds
+            style: {
+              border: '1px solid #4caf50',
+              padding: '16px',
+              color: '#4caf50',
+            },
+            iconTheme: {
+              primary: '#4caf50',
+              secondary: '#fff',
+            },
+          });
+
+          setTimeout(() => {
+            navigate('/');
+          }, 1000);
         }
       }
     } catch (error) {
@@ -90,6 +121,7 @@ const SignUp = () => {
             </span>{' '}
             Sign up with Google
           </button>
+          <Toaster />
         </div>
         <div className="divider mx-5 text-xs">or</div>
         <div className="shadow-slate-600 p-5 shadow-sm">
