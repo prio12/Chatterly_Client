@@ -36,8 +36,7 @@ const SignUp = () => {
       const payload = await dispatch(createUserWithEmail(userInfo)).unwrap();
 
       if (payload.currentUser) {
-        console.log(payload.currentUser);
-
+        //gathering data of user to save in db
         const userInfo = {
           name: `${data.fname} ${data.lname}`,
           email: data.email,
@@ -59,8 +58,16 @@ const SignUp = () => {
     try {
       const payload = await dispatch(createUserWithGoogle()).unwrap();
       if (payload) {
-        console.log(payload);
-        navigate('/');
+        //gathering data of user to save in db
+        const userInfo = {
+          name: payload.currentUser.displayName,
+          email: payload.currentUser.email,
+          uid: payload.currentUser.uid,
+        };
+        const response = await addNewUser(userInfo);
+        if (response) {
+          navigate('/');
+        }
       }
     } catch (error) {
       setError(error.message);

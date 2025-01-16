@@ -18,7 +18,6 @@ const PrivateRoute = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user.uid);
         dispatch(setUser(user.uid));
         dispatch(toggleLoading(false));
       } else {
