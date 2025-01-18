@@ -27,7 +27,7 @@ const RightSideBar = () => {
         {/* Menu Toggle */}
         <RiMenu2Fill
           onClick={toggleSidebarWidth}
-          className="mt-12 cursor-pointer"
+          className="mt-12 ms-3 cursor-pointer"
         />
 
         {/* Grid layout for icons and corresponding text */}

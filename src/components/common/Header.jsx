@@ -1,4 +1,3 @@
-import { RiMenu2Fill } from 'react-icons/ri';
 import { IoHomeOutline } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
 import { IoAlbumsOutline } from 'react-icons/io5';
@@ -6,13 +5,17 @@ import { IoNotificationsOutline } from 'react-icons/io5';
 import { FaRegMessage } from 'react-icons/fa6';
 import { SlPeople } from 'react-icons/sl';
 import { Link } from 'react-router';
+import cIcon from '../../assets/icon/letter-c (1).png';
 
 const Header = () => {
   return (
-    <div>
+    <div className="sticky top-0 z-50 bg-white">
       <div className="h-16 hidden md:flex lg:flex justify-between p-5">
-        <div className="text-2xl none">
-          <RiMenu2Fill />
+        <div className="w-12">
+          <Link to="/">
+            {' '}
+            <img src={cIcon} className="w-full" alt="" />
+          </Link>
         </div>
         <div className="text-xl flex ms-24 items-center gap-12">
           <Link

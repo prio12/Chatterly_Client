@@ -4,10 +4,10 @@ import RightSideBar from '../components/common/RightSideBar';
 const Home = () => {
   return (
     <div className="flex justify-between bg-gray-100">
-      <div className="  mt-[-64px] bg-white hidden md:block">
+      <div className="   bg-white hidden md:block">
         <LeftSideBar />
       </div>
-      <div className="w-full md:w-1/2 content ">
+      <div className="w-full md:w-1/2  content ">
         <div className="hero bg-base-200 min-h-screen">
           <div className="hero-content text-center">
             <div className="max-w-md">

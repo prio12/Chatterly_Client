@@ -20,12 +20,12 @@ const LeftSideBar = () => {
     <div
       className={`${
         isExpanded ? 'w-48' : 'w-16'
-      } h-full transition-all duration-300 ease-in-out overflow-hidden`}
+      } fixed left-0 h-full bg-white transition-all duration-300 ease-in-out overflow-hidden`}
       style={{ transitionProperty: 'width' }}
     >
-      <div className="text-2xl flex flex-col ps-5 justify-evenly cursor-pointer gap-12">
+      <div className="text-2xl flex flex-col ps-5  justify-evenly cursor-pointer gap-12">
         {/* Menu Toggle */}
-        <RiMenu2Fill onClick={toggleSidebarWidth} className="mt-5" />
+        <RiMenu2Fill onClick={toggleSidebarWidth} className="mt-5 ms-3" />
 
         {/* Grid layout for icons and corresponding text */}
         <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
