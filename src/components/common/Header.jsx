@@ -14,8 +14,11 @@ import {
   MdOutlineOndemandVideo,
   MdOutlinePhotoSizeSelectActual,
 } from 'react-icons/md';
+import { useState } from 'react';
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="sticky top-0 z-50 bg-white">
       <div className="h-16 hidden md:flex lg:flex justify-between p-5">
@@ -75,8 +78,70 @@ const Header = () => {
           <img src={cIcon} className="w-full" alt="" />
         </div>
         <div>
-          <LuMenu className="text-xl" />
+          {/* Menu Button */}
+          <div>
+            <LuMenu
+              onClick={() => setIsOpen(true)}
+              className="text-xl cursor-pointer"
+            />
+          </div>
+
+          {/* Drawer */}
+          <div
+            className={`fixed top-0 left-0 w-full h-72  z-50 bg-gray-100 shadow-md transform transition-transform 
+                duration-300 ${isOpen ? 'translate-y-0' : '-translate-y-full'}`}
+          >
+            <div className="p-5 w-1/2 mx-auto relative">
+              <div className="grid grid-cols-1 ms-2 gap-5 pt-2">
+                <Link to="/">
+                  <div
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center space-x-2"
+                  >
+                    <IoHomeOutline className="text-xl" />
+                    <span>Home</span>
+                  </div>
+                </Link>
+                <div
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center space-x-2"
+                >
+                  <IoAlbumsOutline className="text-xl" />
+                  <span>Albums</span>
+                </div>
+                <div
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center space-x-2"
+                >
+                  <FaRegMessage className="text-xl" />
+                  <span>Chats</span>
+                </div>
+                <div
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center space-x-2"
+                >
+                  <IoAlbumsOutline className="text-xl" />
+                  <span>Notifications</span>
+                </div>
+                <div
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center space-x-2"
+                >
+                  <IoPeopleOutline className="text-xl" />
+                  <span>Connections</span>
+                </div>
+                {/* Add more items as needed */}
+              </div>
+
+              {/* Close Icon with Enhanced Styling and Animations */}
+              <IoMdClose
+                onClick={() => setIsOpen(false)}
+                className="text-4xl absolute bottom-[-38px] left-1/2 transform -translate-x-1/2 text-gray-800 hover:text-gray-900 transition-all duration-300 p-2 bg-white rounded-full shadow-lg hover:scale-125 hover:rotate-180"
+              />
+            </div>
+          </div>
         </div>
+
         <div>
           <IoIosSearch className="text-xl" />
         </div>
@@ -86,6 +151,8 @@ const Header = () => {
           </div>
         </div>
       </div>
+      {/* dropdown drawer */}
+
       {/* drawer for small screen */}
       <div className="drawer">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
