@@ -23,9 +23,13 @@ const LeftSideBar = () => {
       } fixed left-0 h-full bg-white transition-all duration-300 ease-in-out overflow-hidden`}
       style={{ transitionProperty: 'width' }}
     >
+      {/* <RiMenu2Fill onClick={toggleSidebarWidth} className="ms-8 mt-[-12px]" /> */}
       <div className="text-2xl flex flex-col ps-5  justify-evenly cursor-pointer gap-12">
         {/* Menu Toggle */}
-        <RiMenu2Fill onClick={toggleSidebarWidth} className="mt-5 ms-3" />
+        <RiMenu2Fill
+          onClick={toggleSidebarWidth}
+          className="mt-5 ms-3 md:block lg:block hidden"
+        />
 
         {/* Grid layout for icons and corresponding text */}
         <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
