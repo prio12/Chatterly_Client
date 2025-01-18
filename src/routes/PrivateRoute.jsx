@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'; // Import PropTypes
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,15 +7,15 @@ import {
   setUser,
   toggleLoading,
 } from '../redux/features/loggedInUser/userSlice';
-import { Navigate, Outlet } from 'react-router';
+import { Navigate } from 'react-router';
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ children }) => {
   //hooks
   const dispatch = useDispatch();
   const { currentUser, isLoading } = useSelector((state) => state.loggedInUser);
   const [isDelayComplete, setIsDelayComplete] = useState(false);
 
-  //observing the loggedInUser
+  // Observing the logged-in user
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -42,7 +43,13 @@ const PrivateRoute = () => {
   if (isLoading) {
     return <div>Loading.....</div>;
   }
-  return currentUser ? <Outlet /> : <Navigate to="/signUp" />;
+
+  return currentUser ? children : <Navigate to="/signUp" />;
+};
+
+// Add prop validation for children
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired, // Expect children to be a React node and required
 };
 
 export default PrivateRoute;

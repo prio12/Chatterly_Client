@@ -1,9 +1,10 @@
 import { Outlet } from 'react-router';
+import Header from '../components/common/Header';
 
 const UserLayout = () => {
   return (
     <div>
-      <h1>this is header</h1>
+      <Header />
       <Outlet />
     </div>
   );
