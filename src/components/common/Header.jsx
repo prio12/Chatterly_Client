@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <div>
       <div className="h-16 hidden md:flex lg:flex justify-between p-5">
-        <div className="text-2xl">
+        <div className="text-2xl none">
           <RiMenu2Fill />
         </div>
         <div className="text-xl flex ms-24 items-center gap-12">
