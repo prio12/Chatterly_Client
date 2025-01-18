@@ -1,4 +1,5 @@
 import LeftSideBar from '../components/common/LeftSideBar';
+import RightSideBar from '../components/common/RightSideBar';
 
 const Home = () => {
   return (
@@ -21,7 +22,9 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="w-32 hidden md:block bg-blue-500">Right side bar</div>
+      <div className="w-32 hidden md:block ">
+        <RightSideBar />
+      </div>
     </div>
   );
 };
