@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Feed from './Feed';
+import About from './About';
 
 const ProfileContent = () => {
   //hooks
@@ -72,6 +74,8 @@ const ProfileContent = () => {
           Videos
         </h4>
       </div>
+      {activeTab === 'feed' && <Feed />}
+      {activeTab === 'about' && <About />}
     </div>
   );
 };

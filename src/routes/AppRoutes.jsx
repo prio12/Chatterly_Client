@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router';
 import SignUp from '../pages/authentications/SignUp';
 import Home from '../pages/Home';
-import About from '../pages/About';
 import UserLayout from '../outlet/UserLayout';
 import SignIn from '../pages/authentications/SignIn';
 import PrivateRoute from './PrivateRoute';
@@ -19,7 +18,6 @@ const AppRoutes = () => {
         }
       >
         <Route path="/" index element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
         <Route path="/profile" element={<ProfilePage />}></Route>
       </Route>
       <Route path="/signUp" element={<SignUp />}></Route>
