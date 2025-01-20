@@ -5,7 +5,9 @@ const UserLayout = () => {
   return (
     <div>
       <Header />
-      <Outlet />
+      <div className="md:p-5 px-2 bg-gray-100">
+        <Outlet />
+      </div>
     </div>
   );
 };

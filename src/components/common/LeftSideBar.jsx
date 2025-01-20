@@ -28,7 +28,7 @@ const LeftSideBar = () => {
         {/* Menu Toggle */}
         <RiMenu2Fill
           onClick={toggleSidebarWidth}
-          className="mt-5 ms-3 md:block lg:block hidden"
+          className="mt-5 ms-2 md:block lg:block hidden"
         />
 
         {/* Grid layout for icons and corresponding text */}
