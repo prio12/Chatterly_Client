@@ -64,8 +64,12 @@ const Header = () => {
       <div className="divider my-2"></div>
       <div className="flex items-center justify-between">
         <p className="text-sm">Mode</p>
-        <CiLight className="text-lg cursor-pointer " />
-        <MdDarkMode className="text-lg cursor-pointer" />
+        <div className="tooltip hover:tooltip-open" data-tip="Light Mode">
+          <CiLight className="text-lg cursor-pointer" />
+        </div>
+        <div className="tooltip hover:tooltip-open" data-tip="Dark Mode">
+          <MdDarkMode className="text-lg cursor-pointer" />
+        </div>
       </div>
     </div>
   );
