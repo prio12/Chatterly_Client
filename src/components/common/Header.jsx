@@ -1,4 +1,4 @@
-import { IoHomeOutline, IoPeopleOutline } from 'react-icons/io5';
+import { IoBookOutline, IoHomeOutline, IoPeopleOutline } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
 import { IoAlbumsOutline } from 'react-icons/io5';
 import { IoNotificationsOutline } from 'react-icons/io5';
@@ -9,19 +9,70 @@ import cIcon from '../../assets/icon/letter-c (1).png';
 import { RiMenu2Fill } from 'react-icons/ri';
 import { LuMenu } from 'react-icons/lu';
 import { IoIosSearch, IoMdClose } from 'react-icons/io';
-import { CiSettings, CiViewTimeline } from 'react-icons/ci';
+import { CiLight, CiSettings, CiViewTimeline } from 'react-icons/ci';
 import {
+  MdDarkMode,
   MdOutlineOndemandVideo,
   MdOutlinePhotoSizeSelectActual,
 } from 'react-icons/md';
 import { useState } from 'react';
+import { BsQuestionOctagon } from 'react-icons/bs';
+import { ImSwitch } from 'react-icons/im';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropDownOpen, setDropDownOpen] = useState(false);
+
+  const handleDropdown = () => {
+    setDropDownOpen(!isDropDownOpen);
+  };
+
+  let avatarDropdownContent = (
+    <div>
+      <div className="flex items-center gap-5">
+        <div className="avatar">
+          <div className="w-12 rounded-full">
+            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+          </div>
+        </div>
+        <div>
+          <h5 className="font-semibold">John Doe</h5>
+          <p className="text-xs">Web Developer</p>
+        </div>
+      </div>
+      <Link className="btn btn-sm mt-5  bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white w-full">
+        View Profile
+      </Link>
+      <Link className="flex items-center gap-2 hover:text-blue-600 my-3">
+        <CiSettings className="text-xl" />
+        <p className="text-sm leading-none">Settings</p>
+      </Link>
+      <Link className="flex items-center hover:text-blue-600 gap-2 my-3">
+        <IoBookOutline className="text-lg" />
+        <p className="text-sm leading-none">Guide</p>
+      </Link>
+      <Link className="flex items-center hover:text-blue-600 gap-2 my-3">
+        <BsQuestionOctagon className="text-lg" />
+        <p className="text-sm leading-none">F&A</p>
+      </Link>
+      <div className="divider my-2"></div>
+      <div className="flex items-center hover:text-blue-600 cursor-pointer gap-2 my-3">
+        <ImSwitch className="text-lg" />
+        <p className="text-sm leading-none">Sign Out</p>
+      </div>
+
+      <div className="divider my-2"></div>
+      <div className="flex items-center justify-between">
+        <p className="text-sm">Mode</p>
+        <CiLight className="text-lg cursor-pointer " />
+        <MdDarkMode className="text-lg cursor-pointer" />
+      </div>
+    </div>
+  );
 
   return (
     <div className="sticky top-0 z-50 bg-white">
-      <div className="h-16 hidden md:flex lg:flex justify-between p-5">
+      <div className="h-16 hidden relative md:flex lg:flex justify-between p-5">
         <div className="w-12">
           <Link to="/">
             {' '}
@@ -63,14 +114,20 @@ const Header = () => {
         <div className="flex items-center cursor-pointer gap-3">
           <IoSearchOutline />
           <div className="avatar cursor-pointer">
-            <div className="mask mask-squircle w-10">
+            <div onClick={handleDropdown} className="mask mask-squircle w-10">
               <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
             </div>
           </div>
         </div>
+        {/* dropdownContent */}
+        {isDropDownOpen && (
+          <div className="w-1/4 z-50 bg-slate-100 shadow-md hover:shadow-xl  absolute top-14 right-12 p-5 ">
+            {avatarDropdownContent}
+          </div>
+        )}
       </div>
       {/* header for small screen */}
-      <div className=" md:hidden flex items-center sticky top-0 justify-between lg:hidden py-4 px-2 w-full ">
+      <div className=" md:hidden  flex items-center sticky top-0  justify-between lg:hidden py-4 px-2 w-full ">
         <label htmlFor="my-drawer">
           <RiMenu2Fill className="text-xl" />
         </label>
@@ -81,7 +138,13 @@ const Header = () => {
           {/* Menu Button */}
           <div>
             <LuMenu
-              onClick={() => setIsOpen(true)}
+              // onClick={() => setIsOpen(true)}
+              onClick={() => {
+                if (isDropDownOpen) {
+                  handleDropdown();
+                }
+                setIsOpen(true);
+              }}
               className="text-xl cursor-pointer"
             />
           </div>
@@ -145,11 +208,16 @@ const Header = () => {
         <div>
           <IoIosSearch className="text-xl" />
         </div>
-        <div className="avatar cursor-pointer">
-          <div className="mask mask-squircle w-10">
+        <div className="avatar relative cursor-pointer">
+          <div onClick={handleDropdown} className="mask mask-squircle w-10">
             <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
           </div>
         </div>
+        {isDropDownOpen && (
+          <div className="w-3/4 p-5 bg-slate-100 shadow-md hover:shadow-xl z-50 absolute right-8 top-16">
+            {avatarDropdownContent}
+          </div>
+        )}
       </div>
       {/* dropdown drawer */}
 
