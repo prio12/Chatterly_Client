@@ -25,7 +25,7 @@ const Header = () => {
         <div className="w-12">
           <Link to="/">
             {' '}
-            <img src={cIcon} className="w-full" alt="" />
+            <img src={cIcon} className="w-full cursor-pointer" alt="" />
           </Link>
         </div>
         <div className="text-xl flex ms-24 items-center gap-12">
@@ -60,9 +60,9 @@ const Header = () => {
             <SlPeople />
           </Link>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center cursor-pointer gap-3">
           <IoSearchOutline />
-          <div className="avatar">
+          <div className="avatar cursor-pointer">
             <div className="mask mask-squircle w-10">
               <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
             </div>
@@ -145,7 +145,7 @@ const Header = () => {
         <div>
           <IoIosSearch className="text-xl" />
         </div>
-        <div className="avatar">
+        <div className="avatar cursor-pointer">
           <div className="mask mask-squircle w-10">
             <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
           </div>
