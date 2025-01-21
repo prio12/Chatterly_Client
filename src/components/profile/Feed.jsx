@@ -1,7 +1,11 @@
+import CreatePost from '../CreatePost';
+import PostCard from './PostCard';
+
 const Feed = () => {
   return (
     <div>
-      <div>heelo</div>
+      <CreatePost />
+      <PostCard />
     </div>
   );
 };

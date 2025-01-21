@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import Feed from './Feed';
 import About from './About';
+import Connections from './Connections';
 
 const ProfileContent = () => {
   //hooks
   const [activeTab, setActiveTab] = useState('feed');
 
   return (
-    <div className="border-b border-r border-l mb-2 py-5 px-5">
-      <div className="flex items-center justify-between">
+    <div className="bg-white">
+      <div className="flex  items-center justify-between border-b border-r border-l mb-2 p-5">
         {/* Feed Tab */}
         <h4
           onClick={() => setActiveTab('feed')}
@@ -74,8 +75,11 @@ const ProfileContent = () => {
           Videos
         </h4>
       </div>
-      {activeTab === 'feed' && <Feed />}
-      {activeTab === 'about' && <About />}
+      <div>
+        {activeTab === 'feed' && <Feed />}
+        {activeTab === 'about' && <About />}
+        {activeTab === 'connections' && <Connections />}
+      </div>
     </div>
   );
 };

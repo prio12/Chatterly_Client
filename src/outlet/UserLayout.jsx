@@ -4,8 +4,10 @@ import Header from '../components/common/Header';
 const UserLayout = () => {
   return (
     <div>
-      <Header />
-      <div className="md:p-5 px-2 bg-gray-100">
+      <div className="md:mx-5 ">
+        <Header />
+      </div>
+      <div className="md:px-5  bg-gray-100">
         <Outlet />
       </div>
     </div>

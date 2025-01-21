@@ -9,13 +9,16 @@ const Profile = () => {
       <img
         src="https://timelinecovers.pro/facebook-cover/download/anime-attack-on-titan-shingeki-no-kyojin-eren-titan-facebook-cover.jpg"
         alt="cover photo"
-        className="rounded-md"
+        className="rounded-md w-full"
       />
       <div className="flex items-center px-5 justify-between">
         <div className="flex items-center gap-5">
           <div className="avatar mt-[-48px]">
             <div className="w-36 rounded-full">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s" />
+              <img
+                className="w-full"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s"
+              />
             </div>
           </div>
           <div>
