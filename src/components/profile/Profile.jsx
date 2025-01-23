@@ -9,7 +9,7 @@ const Profile = () => {
       <img
         src="https://timelinecovers.pro/facebook-cover/download/anime-attack-on-titan-shingeki-no-kyojin-eren-titan-facebook-cover.jpg"
         alt="cover photo"
-        className="rounded-md w-full"
+        className="rounded-md w-full object-cover"
       />
       <div className="flex items-center px-5 justify-between">
         <div className="flex items-center gap-5">

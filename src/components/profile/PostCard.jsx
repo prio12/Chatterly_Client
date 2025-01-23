@@ -1,6 +1,7 @@
-import { FaHeart, FaRegComment } from 'react-icons/fa6';
+import { FaHeart } from 'react-icons/fa6';
 import CommentInputField from '../CommentInputField';
 import CommentBox from '../CommentBox';
+import { MdOutlineInsertComment } from 'react-icons/md';
 
 const PostCard = () => {
   return (
@@ -35,7 +36,7 @@ const PostCard = () => {
           <span>(123)</span>
         </div>
         <div className="flex text-sm items-center gap-2">
-          <FaRegComment className="text-blue-600" />
+          <MdOutlineInsertComment />
           <span>(23)</span>
         </div>
       </div>

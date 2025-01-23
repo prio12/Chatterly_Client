@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Feed from './Feed';
 import About from './About';
 import Connections from './Connections';
+import Media from './Media';
 
 const ProfileContent = () => {
   //hooks
@@ -9,7 +10,7 @@ const ProfileContent = () => {
 
   return (
     <div className="bg-white">
-      <div className="flex  items-center justify-between border-b border-r border-l mb-2 p-5">
+      <div className="flex  items-center gap-12 border-b border-r border-l mb-2 p-5">
         {/* Feed Tab */}
         <h4
           onClick={() => setActiveTab('feed')}
@@ -79,6 +80,7 @@ const ProfileContent = () => {
         {activeTab === 'feed' && <Feed />}
         {activeTab === 'about' && <About />}
         {activeTab === 'connections' && <Connections />}
+        {activeTab === 'media' && <Media />}
       </div>
     </div>
   );
