@@ -1,20 +1,57 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import Animation from '../../components/Animation';
 import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { signInUserWithEmail } from '../../redux/features/loggedInUser/userSlice';
+import toast, { Toaster } from 'react-hot-toast';
+import { useState } from 'react';
 
 const SignIn = () => {
+  //hooks
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    //userinfo for firebase auth
+    try {
+      const payload = await dispatch(
+        signInUserWithEmail({ email: data.email, password: data.password })
+      ).unwrap();
+
+      if (payload.currentUser) {
+        toast.success('Welcome back! 🎉', {
+          duration: 5000, // Toast stays visible for 5 seconds
+          style: {
+            border: '1px solid #4caf50',
+            padding: '16px',
+            color: '#4caf50',
+          },
+          iconTheme: {
+            primary: '#4caf50',
+            secondary: '#fff',
+          },
+        });
+
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    }
   };
   return (
     <div className="flex flex-col md:flex-row h-screen">
+      <Toaster />
+
       {/* Left Div */}
       <div className="w-full md:w-1/2 flex flex-col md:pt-12 pt-5 items-center">
         <h2 className="text-2xl font-semibold">Get Started Now</h2>
@@ -72,6 +109,7 @@ const SignIn = () => {
                 </p>
               )}
             </div>
+            {error && <p className="text-red-500 my-2 text-xs">{error}</p>}
             <input
               type="submit"
               className="btn w-full bg-slate-600 text-white hover:bg-slate-500 my-5"

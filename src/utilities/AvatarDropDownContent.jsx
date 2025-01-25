@@ -1,11 +1,31 @@
+import { signOut } from 'firebase/auth';
 import { BsQuestionOctagon } from 'react-icons/bs';
 import { CiLight, CiSettings } from 'react-icons/ci';
 import { ImSwitch } from 'react-icons/im';
 import { IoBookOutline } from 'react-icons/io5';
 import { MdDarkMode } from 'react-icons/md';
 import { Link } from 'react-router';
+import auth from '../firebase/firebase.cofig';
+import { useDispatch } from 'react-redux';
+import {
+  setUser,
+  toggleLoading,
+} from '../redux/features/loggedInUser/userSlice';
 
 const AvatarDropDownContent = () => {
+  //hooks
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        dispatch(setUser(null));
+        dispatch(toggleLoading(false));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div>
       <div className="flex items-center gap-5">
@@ -38,7 +58,10 @@ const AvatarDropDownContent = () => {
         <p className="text-sm leading-none">F&A</p>
       </Link>
       <div className="divider my-2"></div>
-      <div className="flex items-center hover:text-blue-600 cursor-pointer gap-2 my-3">
+      <div
+        onClick={handleSignOut}
+        className="flex items-center hover:text-blue-600 cursor-pointer gap-2 my-3"
+      >
         <ImSwitch className="text-lg" />
         <p className="text-sm leading-none">Sign Out</p>
       </div>

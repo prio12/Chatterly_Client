@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from 'firebase/auth';
 import auth from '../../../firebase/firebase.cofig';
 import { GoogleAuthProvider } from 'firebase/auth';
 
@@ -38,6 +42,17 @@ export const createUserWithGoogle = createAsyncThunk(
   }
 );
 
+//async thunk to sign in a existing user with email and pass
+export const signInUserWithEmail = createAsyncThunk(
+  'signIn/withEmailPass',
+  async ({ email, password }) => {
+    const response = await signInWithEmailAndPassword(auth, email, password);
+    return {
+      currentUser: response.user.uid,
+    };
+  }
+);
+
 export const userSlice = createSlice({
   name: 'loggedInUser',
   initialState,
@@ -47,6 +62,9 @@ export const userSlice = createSlice({
     },
     toggleLoading: (state, { payload }) => {
       state.isLoading = payload;
+    },
+    signOutUser: (state, { payload }) => {
+      state.currentUser = payload;
     },
   },
   extraReducers: (builder) => {
@@ -86,10 +104,28 @@ export const userSlice = createSlice({
           (state.isLoading = true),
           (state.isError = false),
           (state.error = action.error.message);
+      })
+      .addCase(signInUserWithEmail.pending, (state) => {
+        (state.currentUser = null),
+          (state.isLoading = true),
+          (state.isError = false),
+          (state.error = '');
+      })
+      .addCase(signInUserWithEmail.fulfilled, (state, { payload }) => {
+        (state.currentUser = payload.currentUser),
+          (state.isLoading = false),
+          (state.isError = false),
+          (state.error = '');
+      })
+      .addCase(signInUserWithEmail.rejected, (state, action) => {
+        (state.currentUser = null),
+          (state.isLoading = false),
+          (state.isError = true),
+          (state.error = action.error.message);
       });
   },
 });
 
-export const { setUser, toggleLoading } = userSlice.actions;
+export const { setUser, toggleLoading, signOutUser } = userSlice.actions;
 
 export default userSlice.reducer;
