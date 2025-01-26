@@ -17,21 +17,13 @@ const CommentInputField = () => {
       <form className="relative w-full">
         {/* Textarea */}
         <textarea
-          className="w-full h-10 p-2 pr-10 resize-none rounded-md bg-gray-200 border border-gray-300 focus:border-blue-200 focus:ring-1 focus:ring-blue-200 overflow-y-auto"
+          className="w-full h-10 p-2 pr-10 resize-none  rounded-md bg-gray-200 border border-gray-300 focus:border-blue-200 focus:ring-1 focus:ring-blue-200 overflow-y-scroll no-scrollbar"
           placeholder="Write your comment..."
           style={{
             scrollbarWidth: 'none', // For Firefox
             msOverflowStyle: 'none', // For IE and Edge
           }}
         ></textarea>
-
-        {/* Custom Style to Hide Scrollbar */}
-        <style>{`
-          textarea::-webkit-scrollbar {
-            display: none; /* For Chrome, Safari, and Opera */
-          }
-        `}</style>
-
         {/* Submit Button */}
         <button
           type="submit"

@@ -4,6 +4,34 @@ import CommentBox from '../CommentBox';
 import { MdOutlineInsertComment } from 'react-icons/md';
 
 const PostCard = () => {
+  //will be removed
+  const comments = [
+    {
+      id: 1,
+      author: 'Captain Levi',
+      avatar:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
+      content:
+        'Next time, try not to sit around screaming while I clean up your mess, brat. Never forget who had to save your sorry ass again. Make it worth it, Eren!',
+    },
+    {
+      id: 2,
+      author: 'Eren Yeager',
+      avatar:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
+      content:
+        "I'll make sure it's worth it next time, Captain. I promise I won't let you down again.",
+    },
+    {
+      id: 2,
+      author: 'Eren Yeager',
+      avatar:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
+      content:
+        "I'll make sure it's worth it next time, Captain. I promise I won't let you down again.",
+    },
+  ];
+
   return (
     <div className="my-5 bg-white border p-5 ">
       <div className="flex items-center gap-5">
@@ -41,7 +69,14 @@ const PostCard = () => {
         </div>
       </div>
       <CommentInputField />
-      <CommentBox />
+      {comments.length && (
+        <div className="max-h-48 overflow-y-scroll no-scrollbar">
+          {comments.length &&
+            comments.map((comment) => (
+              <CommentBox comment={comment} key={comment.id} />
+            ))}
+        </div>
+      )}
     </div>
   );
 };

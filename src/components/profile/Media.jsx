@@ -7,16 +7,28 @@ const Media = () => {
       src: 'https://cdn.pixabay.com/photo/2017/01/14/12/59/iceland-1979445_960_720.jpg',
       likes: 120,
       comments: 10,
+      author: 'Eren Yeager',
+      bio: 'Titan Hunter',
+      caption:
+        'Im so privileged to be involved in the @bootstrap hiring process!',
     },
     {
       src: 'https://cdn.pixabay.com/photo/2019/06/12/15/07/cat-4269479_960_720.jpg',
       likes: 200,
       comments: 15,
+      author: 'Eren Yeager',
+      bio: 'Titan Hunter',
+      caption:
+        'Im so privileged to be involved in the @bootstrap hiring process!',
     },
     {
       src: 'https://cdn.pixabay.com/photo/2016/12/04/21/58/rabbit-1882699_960_720.jpg',
       likes: 180,
       comments: 8,
+      author: 'Eren Yeager',
+      bio: 'Titan Hunter',
+      caption:
+        'Im so privileged to be involved in the @bootstrap hiring process!',
     },
   ];
 

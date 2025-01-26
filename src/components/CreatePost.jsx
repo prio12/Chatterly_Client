@@ -2,14 +2,6 @@ import { IoVideocamOffOutline } from 'react-icons/io5';
 import { MdEventAvailable, MdOutlineInsertPhoto } from 'react-icons/md';
 
 const CreatePost = () => {
-  {
-    /* Custom Style to Hide Scrollbar */
-  }
-  <style>{`
-    textarea::-webkit-scrollbar {
-      display: none; /* For Chrome, Safari, and Opera */
-    }
-  `}</style>;
   return (
     <div className="my-5 border p-5 ">
       {/* Avatar and Textarea */}
@@ -24,7 +16,7 @@ const CreatePost = () => {
         </div>
         <div className="w-full">
           <textarea
-            className="w-full p-2 resize-none overflow-y-auto focus:outline-none"
+            className="w-full p-2 resize-none overflow-y-scroll no-scrollbar focus:outline-none"
             placeholder="Share your thoughts..."
             style={{
               scrollbarWidth: 'none', // For Firefox

@@ -6,7 +6,7 @@ const Modal = ({ isOpen, setIsOpen, children }) => {
   return (
     <Dialog
       open={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={() => {}} // Prevent closing on background clicks
       className="fixed inset-0 z-50 flex items-center justify-center"
     >
       {/* Overlay */}
@@ -16,18 +16,21 @@ const Modal = ({ isOpen, setIsOpen, children }) => {
       ></div>
 
       {/* Modal Content */}
-      <div className="relative w-full max-w-md md:max-w-lg lg:max-w-xl p-4 mx-4 bg-white rounded-lg shadow-lg">
+      <div
+        className="relative bg-white rounded-lg shadow-lg max-w-5xl w-full p-8 sm:p-12"
+        onClick={(e) => e.stopPropagation()} // Prevent clicks inside modal from closing it
+      >
         {/* Close Button */}
         <button
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+          className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-full p-1"
           onClick={() => setIsOpen(false)}
-          aria-label="Close"
+          aria-label="Close Modal"
         >
           <FiX className="w-6 h-6" />
         </button>
 
         {/* Modal Children */}
-        <div className="p-4">{children}</div>
+        {children}
       </div>
     </Dialog>
   );

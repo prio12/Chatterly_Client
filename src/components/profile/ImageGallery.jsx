@@ -13,7 +13,7 @@ const ImageGallery = (post) => {
       className="cursor-pointer group relative overflow-hidden rounded-lg"
       onClick={() => setIsOpen(!isOpen)}
     >
-      <PostDetailsModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <PostDetailsModal post={post} isOpen={isOpen} setIsOpen={setIsOpen} />
       {/* Image */}
       <img
         src={src}
