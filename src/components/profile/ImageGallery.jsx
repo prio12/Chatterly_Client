@@ -9,11 +9,20 @@ const ImageGallery = (post) => {
   const { src, likes, comments } = post.post;
 
   return (
-    <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+    <div
+      className="cursor-pointer group relative overflow-hidden rounded-lg"
+      onClick={() => setIsOpen(!isOpen)}
+    >
       <PostDetailsModal isOpen={isOpen} setIsOpen={setIsOpen} />
-      <img src={src} className="rounded-lg object-cover" alt="" />
+      {/* Image */}
+      <img
+        src={src}
+        className="rounded-lg object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+        alt=""
+      />{' '}
+      {/* Likes and Comments */}
       <div className="flex items-center gap-5 mt-2">
-        <div className="flex items-center gap-2 ">
+        <div className="flex items-center gap-2">
           <FaHeart className="text-red-600" />
           <p>{likes}</p>
         </div>
