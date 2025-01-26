@@ -1,7 +1,7 @@
 const Connections = () => {
   return (
     <div className="p-5 bg-white border my-5">
-      <h4 className="font-bold text-xl mb-5">Connections</h4>
+      <h4 className="font-bold text-xl mb-8">Connections</h4>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-5">
           <div className="avatar cursor-pointer">
@@ -14,14 +14,22 @@ const Connections = () => {
             <p className="text-sm ">Team Lead of Levi Team</p>
           </div>
         </div>
-        <div>
-          <button className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white">
+        <div className="hidden md:block">
+          <button className="btn btn-sm  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white">
             Message
           </button>
           <button className="btn ms-2 btn-sm rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white">
             Delete
           </button>
         </div>
+      </div>
+      <div className=" md:hidden my-5 flex items-center gap-5">
+        <button className="btn btn-md  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white">
+          Message
+        </button>
+        <button className="btn ms-2 btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white">
+          UnFollow
+        </button>
       </div>
     </div>
   );

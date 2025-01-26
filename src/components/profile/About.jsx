@@ -1,9 +1,8 @@
 import { BsThreeDots } from 'react-icons/bs';
 import { CiHeart, CiLocationOn } from 'react-icons/ci';
-import { FaRegCalendarAlt } from 'react-icons/fa';
 import { FaRegCalendar } from 'react-icons/fa6';
-import { IoBookOutline } from 'react-icons/io5';
-import { MdOutlineEmail, MdOutlineWorkOutline } from 'react-icons/md';
+import { LiaBirthdayCakeSolid } from 'react-icons/lia';
+import { MdOutlineEmail } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
 
 const About = () => {
@@ -11,7 +10,7 @@ const About = () => {
     <div className="p-5 border bg-white my-5">
       <h3 className="text-xl font-bold">Profile Info</h3>
       <div className="p-5 border my-5">
-        <div className="font-semibold flex items-center justify-between">
+        <div className="font-semibold mb-3 flex items-center justify-between">
           <h5>Overview</h5>
           <BsThreeDots className="cursor-pointer" />
         </div>
@@ -26,17 +25,13 @@ const About = () => {
         </p>
       </div>
       <div className="grid grid-cols-2 gap-5 items-start">
-        <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
-          <FaRegCalendarAlt className="text-xl mb-1" />
-          <span>
-            Born: <span className="font-semibold">October 20, 1990</span>
-          </span>
+        <div className="flex  flex-col items-center border w-full p-3 text-sm rounded-lg">
+          <LiaBirthdayCakeSolid className="text-xl mb-1" />
+          <span className="font-semibold">October 20, 1990</span>
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <CiHeart className="text-xl mb-1" />
-          <span>
-            Status: <span className="font-semibold">Single</span>
-          </span>
+          <span className="font-semibold">Single</span>
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <PiSuitcaseSimple className="text-xl mb-1" />
@@ -44,30 +39,24 @@ const About = () => {
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <CiLocationOn className="text-xl mb-1" />
-          <span>
-            Lives in: <span className="font-semibold">Shiganshina</span>
-          </span>
+          <span className="font-semibold">Shiganshina</span>
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <FaRegCalendar className="text-xl mb-1" />
-          <span>
-            Joined on: <span className="font-semibold">Nov 26, 2019</span>
-          </span>
+          <span className="font-semibold">Since : Nov 26, 2019</span>
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <MdOutlineEmail className="text-xl mb-1" />
-          <span>
-            Email: <span className="font-semibold">eren@gmail.com</span>
-          </span>
+          <span className="font-semibold">eren@gmail.com</span>
         </div>
-        <div className="flex flex-col items-center cursor-pointer hover:text-blue-600 border w-full p-3 text-sm rounded-lg">
+        {/* <div className="flex flex-col items-center cursor-pointer hover:text-blue-600 border w-full p-3 text-sm rounded-lg">
           <MdOutlineWorkOutline className="text-xl mb-1" />
           <span>Add a workplace</span>
-        </div>
-        <div className="flex flex-col items-center cursor-pointer hover:text-blue-600 border w-full p-3 text-sm rounded-lg">
+        </div> */}
+        {/* <div className="flex flex-col items-center cursor-pointer hover:text-blue-600 border w-full p-3 text-sm rounded-lg">
           <IoBookOutline className="text-xl mb-1" />
           <span>Add Education</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

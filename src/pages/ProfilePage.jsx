@@ -11,7 +11,7 @@ const ProfilePage = () => {
         <Profile />
         <ProfileContent />
       </div>
-      <div className="col-span-1  ">
+      <div className="col-span-1 hidden md:block ">
         <div className="p-5 border">
           <div>
             <h3 className="text-xl font-bold">About</h3>

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 const CommentBox = ({ comment }) => {
   const { avatar, content, author } = comment;
-  console.log(comment);
   return (
     <div className="my-5 ">
       <div className="flex items-center rounded-lg gap-3 p-2 bg-gray-200">

@@ -3,6 +3,7 @@ import Feed from './Feed';
 import About from './About';
 import Connections from './Connections';
 import Media from './Media';
+import Videos from './Videos';
 
 const ProfileContent = () => {
   //hooks
@@ -10,7 +11,7 @@ const ProfileContent = () => {
 
   return (
     <div className="bg-white">
-      <div className="flex  items-center gap-12 border-b border-r border-l mb-2 p-5">
+      <div className="flex flex-wrap  items-center gap-12 border-b border-r border-l mb-2 p-5">
         {/* Feed Tab */}
         <h4
           onClick={() => setActiveTab('feed')}
@@ -81,6 +82,7 @@ const ProfileContent = () => {
         {activeTab === 'about' && <About />}
         {activeTab === 'connections' && <Connections />}
         {activeTab === 'media' && <Media />}
+        {activeTab === 'videos' && <Videos />}
       </div>
     </div>
   );

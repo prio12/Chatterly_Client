@@ -25,7 +25,7 @@ const Header = () => {
   };
 
   return (
-    <div className="sticky top-0 md:p-5 px-2 py-5 z-50 bg-white">
+    <div className="sticky top-0 md:p-5 px-2  py-5 z-50 bg-white">
       <div className="h-16 hidden relative md:flex lg:flex justify-between ">
         <div className="w-12">
           <Link to="/">
@@ -86,9 +86,11 @@ const Header = () => {
         <label htmlFor="my-drawer">
           <RiMenu2Fill className="text-xl" />
         </label>
-        <div className="w-12">
-          <img src={cIcon} className="w-full" alt="" />
-        </div>
+        <Link to="/">
+          <div className="w-12">
+            <img src={cIcon} className="w-full" alt="" />
+          </div>
+        </Link>
         <div>
           {/* Menu Button */}
           <div>

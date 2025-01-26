@@ -11,9 +11,9 @@ const Profile = () => {
         alt="cover photo"
         className="rounded-md w-full object-cover"
       />
-      <div className="flex items-center px-5 justify-between">
+      <div className="flex items-center px-5   justify-between">
         <div className="flex items-center gap-5">
-          <div className="avatar mt-[-48px]">
+          <div className="avatar  mt-[-48px]">
             <div className="w-36 rounded-full">
               <img
                 className="w-full"
@@ -26,7 +26,7 @@ const Profile = () => {
             <p>250 Connections</p>
           </div>
         </div>
-        <div>
+        <div className="hidden md:block ">
           <button className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white ">
             <span>
               <MdOutlineEdit className="inline mr-2" />
@@ -34,8 +34,11 @@ const Profile = () => {
             Edit Profile
           </button>
         </div>
+        <div className="block md:hidden ">
+          <MdOutlineEdit className="text-xl" />
+        </div>
       </div>
-      <div className="flex items-center px-5 gap-5 my-3">
+      <div className="md:flex hidden items-center px-5 gap-5 my-3">
         <div className="flex items-center gap-3">
           <PiSuitcaseSimple />
           <p>Titan Hunter</p>

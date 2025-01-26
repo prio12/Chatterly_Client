@@ -48,7 +48,7 @@ const PostDetailsModal = ({ isOpen, setIsOpen, post }) => {
         <div className="col-span-2 order-2 md:order-1">
           <div className="flex items-center gap-2">
             <div className="avatar">
-              <div className="w-8 ">
+              <div className="w-8 rounded-full">
                 <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
               </div>
             </div>

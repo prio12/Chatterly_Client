@@ -2,6 +2,7 @@ import { FaHeart } from 'react-icons/fa6';
 import CommentInputField from '../CommentInputField';
 import CommentBox from '../CommentBox';
 import { MdOutlineInsertComment } from 'react-icons/md';
+import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 const PostCard = () => {
   //will be removed
@@ -34,15 +35,20 @@ const PostCard = () => {
 
   return (
     <div className="my-5 bg-white border p-5 ">
-      <div className="flex items-center gap-5">
-        <div className="avatar">
-          <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s" />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-5">
+          <div className="avatar">
+            <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s" />
+            </div>
+          </div>
+          <div>
+            <h5 className="font-bold">Eren Yeager</h5>
+            <span className="text-xs">21 January, 2024</span>
           </div>
         </div>
         <div>
-          <h5 className="font-bold">Eren Yeager</h5>
-          <span className="text-xs">21 January, 2024</span>
+          <HiOutlineDotsHorizontal className="cursor-pointer" />
         </div>
       </div>
       <div>

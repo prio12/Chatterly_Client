@@ -27,7 +27,7 @@ const CreatePost = () => {
       </div>
 
       {/* Buttons */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between">
         <div className="flex items-center gap-5">
           <div className="flex btn btn-sm items-center gap-2">
             <MdOutlineInsertPhoto className="text-green-600 font-bold" />
@@ -42,10 +42,10 @@ const CreatePost = () => {
             <p className="text-sm font-semibold">Event</p>
           </div>
         </div>
-        <div>
+        <div className="my-5 md:my-0 ">
           <input
             type="submit"
-            className="btn btn-sm rounded-md bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
+            className="btn  btn-md md:btn-sm rounded-md bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
             value="Submit"
           />
         </div>
