@@ -1,28 +1,23 @@
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
+import Stories from '../components/home/Stories';
 
 const Home = () => {
   return (
-    <div className="flex justify-between bg-gray-100">
-      <div className="   bg-white hidden md:block">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
+      {/* Left Sidebar */}
+      <div className="hidden md:block col-span-3 bg-white">
         <LeftSideBar />
       </div>
-      <div className="w-full md:w-1/2  content ">
-        <div className="hero bg-base-200 min-h-screen">
-          <div className="hero-content text-center">
-            <div className="max-w-md">
-              <h1 className="text-5xl font-bold">Hello there</h1>
-              <p className="py-6">
-                Provident cupiditate voluptatem et in. Quaerat fugiat ut
-                assumenda excepturi exercitationem quasi. In deleniti eaque aut
-                repudiandae et a id nisi.
-              </p>
-              <button className="btn btn-primary">Get Started</button>
-            </div>
-          </div>
+
+      <div className="col-span-1 md:col-span-7 bg-white flex justify-center md:py-2 md:px-5 ">
+        <div className="w-full max-w-5xl md:px-5 px-0 py-2">
+          <Stories />
         </div>
       </div>
-      <div className="w-32 hidden md:block ">
+
+      {/* Right Sidebar */}
+      <div className="hidden md:block col-span-2 bg-white">
         <RightSideBar />
       </div>
     </div>
