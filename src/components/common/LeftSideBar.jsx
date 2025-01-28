@@ -19,8 +19,8 @@ const LeftSideBar = () => {
   return (
     <div
       className={`${
-        isExpanded ? 'w-48' : 'w-16'
-      } fixed left-0 h-full bg-white transition-all duration-300 ease-in-out overflow-hidden`}
+        isExpanded ? 'w-48 ' : 'w-16 '
+      } fixed left-0 h-full  transition-all duration-300 ease-in-out overflow-hidden`}
       style={{ transitionProperty: 'width' }}
     >
       {/* <RiMenu2Fill onClick={toggleSidebarWidth} className="ms-8 mt-[-12px]" /> */}

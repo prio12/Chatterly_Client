@@ -115,9 +115,9 @@ const Stories = () => {
   return (
     <div className="flex items-center gap-5">
       {/* Fixed Div */}
-      <div className="fixed_div">
+      <div className="fixed_div mb-4 md:mb-0">
         <div className="avatar placeholder">
-          <div className="bg-neutral text-neutral-content w-[75px] md:w-[80px] rounded-full">
+          <div className="bg-neutral text-neutral-content w-[55px] md:w-[80px] rounded-full">
             <FaPlus className="font-bold text-xl" />
           </div>
         </div>
@@ -127,11 +127,11 @@ const Stories = () => {
       </div>
 
       {/* Scrollable Map Part */}
-      <div className="flex gap-5 overflow-x-auto pt-1 ps-1 no-scrollbar ">
+      <div className="flex gap-3 md:gap-5 overflow-x-auto md:pt-1 pt-2 ps-1  md:ps-1 no-scrollbar">
         {users.map((user) => (
           <div key={user.id} className="flex-shrink-0">
             <div className="avatar">
-              <div className="ring-blue-500 ring-offset-base-100 w-16 md:w-[70px] rounded-full ring ring-offset-2">
+              <div className="ring-blue-500 ring-offset-base-100 w-12 md:w-[70px] rounded-full ring ring-offset-2">
                 <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
               </div>
             </div>
