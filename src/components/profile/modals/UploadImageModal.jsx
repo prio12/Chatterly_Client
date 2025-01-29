@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import Modal from '../../../utilities/Modal';
 
-const ProfilePicModal = ({ isOpen, setIsOpen }) => {
+const UploadImageModal = ({ isOpen, setIsOpen, type }) => {
+  console.log(type);
   //hooks
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +37,7 @@ const ProfilePicModal = ({ isOpen, setIsOpen }) => {
       const result = await response.json();
       if (result) {
         setIsLoading(false);
+        setIsOpen(false);
         console.log(result.url);
       }
     } catch (error) {
@@ -47,7 +49,9 @@ const ProfilePicModal = ({ isOpen, setIsOpen }) => {
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="md:w-1/2 w-full p-5   mx-auto ">
         <h5 className="text-center text-xl mb-5 font-bold">
-          Update Your Profile Pic
+          {/* Update Your Profile Pic */}
+          {type === 'Profile_Pic' && <span>Update Your Profile Pic</span>}
+          {type === 'Cover_Photo' && <span>Update Your Cover Photo</span>}
         </h5>
         <div className="avatar flex justify-center mb-5">
           <div className="mask mask-squircle w-24">
@@ -91,9 +95,12 @@ const ProfilePicModal = ({ isOpen, setIsOpen }) => {
             Loading...
           </div>
         )}
+        {error && (
+          <p className="my-5 text-xs font-semibold text-red-600">{error}</p>
+        )}
       </div>
     </Modal>
   );
 };
 
-export default ProfilePicModal;
+export default UploadImageModal;

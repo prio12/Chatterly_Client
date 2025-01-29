@@ -3,11 +3,12 @@ import { CiLocationOn } from 'react-icons/ci';
 import { FaRegCalendar } from 'react-icons/fa6';
 import { MdOutlineEdit } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
-import ProfilePicModal from './modals/ProfilePicModal';
+import UploadImageModal from './modals/UploadImageModal';
 
 const Profile = () => {
   //hooks
   const [isOpen, setIsOpen] = useState(false);
+  const [type, setType] = useState('');
 
   return (
     <div className="bg-white border">
@@ -15,11 +16,18 @@ const Profile = () => {
         src="https://timelinecovers.pro/facebook-cover/download/anime-attack-on-titan-shingeki-no-kyojin-eren-titan-facebook-cover.jpg"
         alt="cover photo"
         className="rounded-md w-full object-cover"
+        onClick={() => {
+          setType('Cover_Photo');
+          setIsOpen(true);
+        }}
       />
       <div className="flex items-center px-5   justify-between">
         <div className="flex items-center gap-5">
           <div
-            onClick={() => setIsOpen(true)}
+            onClick={() => {
+              setType('Profile_Pic');
+              setIsOpen(true);
+            }}
             className="avatar cursor-pointer mt-[-48px]"
           >
             <div className="w-36 rounded-full">
@@ -29,7 +37,7 @@ const Profile = () => {
               />
             </div>
           </div>
-          <ProfilePicModal isOpen={isOpen} setIsOpen={setIsOpen} />
+          <UploadImageModal isOpen={isOpen} setIsOpen={setIsOpen} type={type} />
           <div>
             <h5 className="text-xl font-bold">Eren Yeager</h5>
             <p>250 Connections</p>
