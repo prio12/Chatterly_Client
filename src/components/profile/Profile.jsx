@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import { CiLocationOn } from 'react-icons/ci';
 import { FaRegCalendar } from 'react-icons/fa6';
 import { MdOutlineEdit } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
+import ProfilePicModal from './modals/ProfilePicModal';
 
 const Profile = () => {
+  //hooks
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="bg-white border">
       <img
@@ -13,7 +18,10 @@ const Profile = () => {
       />
       <div className="flex items-center px-5   justify-between">
         <div className="flex items-center gap-5">
-          <div className="avatar  mt-[-48px]">
+          <div
+            onClick={() => setIsOpen(true)}
+            className="avatar cursor-pointer mt-[-48px]"
+          >
             <div className="w-36 rounded-full">
               <img
                 className="w-full"
@@ -21,6 +29,7 @@ const Profile = () => {
               />
             </div>
           </div>
+          <ProfilePicModal isOpen={isOpen} setIsOpen={setIsOpen} />
           <div>
             <h5 className="text-xl font-bold">Eren Yeager</h5>
             <p>250 Connections</p>
