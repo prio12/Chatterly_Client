@@ -16,7 +16,7 @@ const Profile = () => {
       <img
         src="https://timelinecovers.pro/facebook-cover/download/anime-attack-on-titan-shingeki-no-kyojin-eren-titan-facebook-cover.jpg"
         alt="cover photo"
-        className="rounded-md w-full object-cover"
+        className="rounded-md w-full object-cover cursor-pointer"
         onClick={() => {
           setError(false);
           setType('Cover_Photo');

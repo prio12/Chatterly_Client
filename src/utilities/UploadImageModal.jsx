@@ -17,6 +17,7 @@ const UploadImageModal = ({ isOpen, setIsOpen, type, error, setError }) => {
   };
 
   const handleSubmit = async () => {
+    console.log(type);
     if (!imageFile) {
       alert('Please select a file!');
       return;
@@ -57,6 +58,7 @@ const UploadImageModal = ({ isOpen, setIsOpen, type, error, setError }) => {
           updates,
         }).unwrap();
         if (updatedResult) {
+          console.log(updatedResult);
           setIsLoading(false);
           setIsOpen(false);
         }
