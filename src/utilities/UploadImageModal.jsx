@@ -17,7 +17,6 @@ const UploadImageModal = ({ isOpen, setIsOpen, type, error, setError }) => {
   };
 
   const handleSubmit = async () => {
-    console.log(type);
     if (!imageFile) {
       alert('Please select a file!');
       return;
@@ -64,19 +63,16 @@ const UploadImageModal = ({ isOpen, setIsOpen, type, error, setError }) => {
         }).unwrap();
 
         if (updatedResult) {
-          console.log(updatedResult);
           setIsLoading(false);
           setIsOpen(false);
         }
       } else {
-        console.log('no result found', result);
         setIsLoading(false);
         setError('Image upload failed');
       }
     } catch (error) {
       setIsLoading(false);
       setError(error?.data?.error || 'Something went wrong');
-      console.log(error?.data?.error || error);
     }
   };
 

@@ -15,7 +15,7 @@ const Profile = ({ user }) => {
 
   return (
     <div className="bg-white border">
-      <div className="w-full h-[400px] bg-gray-600">
+      <div className="w-full md:h-[400px] ">
         <img
           src={coverPhoto}
           alt="cover photo"
@@ -38,7 +38,7 @@ const Profile = ({ user }) => {
             }}
             className="avatar cursor-pointer mt-[-48px]"
           >
-            <div className="w-36 rounded-full">
+            <div className="w-36 rounded-full bg-gray-100">
               <img className="w-full object-cover" src={profilePicture} />
             </div>
           </div>
