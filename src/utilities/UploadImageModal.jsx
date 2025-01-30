@@ -38,17 +38,22 @@ const UploadImageModal = ({ isOpen, setIsOpen, type, error, setError }) => {
         }
       );
       const result = await response.json();
-      if (result) {
+
+      if (result.secure_url) {
         let updates = {};
 
         switch (type) {
           case 'Profile_Pic':
+            // Keep profile picture unmodified
             updates.profilePicture = result.secure_url;
             break;
           case 'Cover_Photo':
-            updates.coverPhoto = result.secure_url;
+            // Apply transformation only for cover photo
+            updates.coverPhoto = result.secure_url.replace(
+              '/upload/',
+              '/upload/w_1200,h_600,c_pad,b_auto/'
+            );
             break;
-
           default:
             break;
         }
@@ -57,16 +62,21 @@ const UploadImageModal = ({ isOpen, setIsOpen, type, error, setError }) => {
           userUid: currentUser,
           updates,
         }).unwrap();
+
         if (updatedResult) {
           console.log(updatedResult);
           setIsLoading(false);
           setIsOpen(false);
         }
+      } else {
+        console.log('no result found', result);
+        setIsLoading(false);
+        setError('Image upload failed');
       }
     } catch (error) {
       setIsLoading(false);
-      setError(error.data.error);
-      console.log(error.data.error);
+      setError(error?.data?.error || 'Something went wrong');
+      console.log(error?.data?.error || error);
     }
   };
 

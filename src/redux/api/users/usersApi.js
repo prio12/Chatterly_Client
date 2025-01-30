@@ -10,6 +10,14 @@ const usersApi = baseApi.injectEndpoints({
       }),
     }),
 
+    //fetch user specific info by uid
+    userInfoByUid: builder.query({
+      query: (userUid) => ({
+        url: `/users/${userUid}`,
+      }),
+      providesTags: ['profile'],
+    }),
+
     // Update user profile (profile pic, cover photo, bio, etc.)
     updateUserProfile: builder.mutation({
       query: ({ userUid, updates }) => ({
@@ -17,8 +25,13 @@ const usersApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body: updates,
       }),
+      invalidatesTags: ['profile'],
     }),
   }),
 });
 
-export const { useAddNewUserMutation, useUpdateUserProfileMutation } = usersApi;
+export const {
+  useAddNewUserMutation,
+  useUpdateUserProfileMutation,
+  useUserInfoByUidQuery,
+} = usersApi;

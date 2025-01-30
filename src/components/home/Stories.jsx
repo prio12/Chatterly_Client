@@ -15,7 +15,7 @@ const Stories = () => {
       ],
     },
     {
-      id: 1,
+      id: 2,
       name: 'Eren Yeager',
       avatar:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s',
@@ -27,7 +27,7 @@ const Stories = () => {
       ],
     },
     {
-      id: 1,
+      id: 3,
       name: 'Eren Yeager',
       avatar:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s',
@@ -39,7 +39,7 @@ const Stories = () => {
       ],
     },
     {
-      id: 1,
+      id: 4,
       name: 'Eren Yeager',
       avatar:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s',
@@ -51,7 +51,7 @@ const Stories = () => {
       ],
     },
     {
-      id: 1,
+      id: 5,
       name: 'Eren Yeager',
       avatar:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s',
@@ -63,7 +63,7 @@ const Stories = () => {
       ],
     },
     {
-      id: 1,
+      id: 6,
       name: 'Eren Yeager',
       avatar:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s',
@@ -75,7 +75,7 @@ const Stories = () => {
       ],
     },
     {
-      id: 1,
+      id: 7,
       name: 'Eren Yeager',
       avatar:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s',
@@ -87,7 +87,7 @@ const Stories = () => {
       ],
     },
     {
-      id: 1,
+      id: 8,
       name: 'Eren Yeager',
       avatar:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s',
@@ -99,7 +99,7 @@ const Stories = () => {
       ],
     },
     {
-      id: 1,
+      id: 9,
       name: 'Eren Yeager',
       avatar:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s',

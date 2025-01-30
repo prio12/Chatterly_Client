@@ -3,12 +3,28 @@ import Profile from '../components/profile/Profile';
 import ProfileContent from '../components/profile/ProfileContent';
 import { CiHeart } from 'react-icons/ci';
 import { FaRegCalendarAlt } from 'react-icons/fa';
+import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
+import { useSelector } from 'react-redux';
 
 const ProfilePage = () => {
+  //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { isLoading, data, isError, error } =
+    useUserInfoByUidQuery(currentUser);
+
+  const user = data?.user;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    return <div>Something Went Wrong! : {error}</div>;
+  }
+
   return (
     <div className="grid  md:grid-cols-3 bg-gray-100 gap-8 ">
       <div className="col-span-2  ">
-        <Profile />
+        <Profile user={user} />
         <ProfileContent />
       </div>
       <div className="col-span-1 hidden md:block ">
