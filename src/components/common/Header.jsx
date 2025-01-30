@@ -3,7 +3,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { IoAlbumsOutline } from 'react-icons/io5';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { FaRegMessage } from 'react-icons/fa6';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import cIcon from '../../assets/icon/letter-c (1).png';
 import { RiMenu2Fill } from 'react-icons/ri';
 import { LuMenu } from 'react-icons/lu';
@@ -13,16 +13,22 @@ import {
   MdOutlineOndemandVideo,
   MdOutlinePhotoSizeSelectActual,
 } from 'react-icons/md';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AvatarDropDownContent from '../../utilities/AvatarDropDownContent';
 
 const Header = () => {
+  //hooks
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDownOpen, setDropDownOpen] = useState(false);
+  const location = useLocation();
 
   const handleDropdown = () => {
     setDropDownOpen(!isDropDownOpen);
   };
+
+  useEffect(() => {
+    setDropDownOpen(false);
+  }, [location]);
 
   return (
     <div className="sticky top-0 md:p-5 px-2  py-5 z-50 bg-white">
