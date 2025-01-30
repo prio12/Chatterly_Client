@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import Modal from '../../../utilities/Modal';
+import Modal from './Modal';
+import { useUpdateUserProfileMutation } from '../redux/api/users/usersApi';
+import { useSelector } from 'react-redux';
 
-const UploadImageModal = ({ isOpen, setIsOpen, type }) => {
-  console.log(type);
+const UploadImageModal = ({ isOpen, setIsOpen, type, error, setError }) => {
   //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [updateUserInfo] = useUpdateUserProfileMutation();
 
   const handleOnChange = (e) => {
     const file = e.target.files[0];
@@ -36,12 +38,33 @@ const UploadImageModal = ({ isOpen, setIsOpen, type }) => {
       );
       const result = await response.json();
       if (result) {
-        setIsLoading(false);
-        setIsOpen(false);
-        console.log(result.url);
+        let updates = {};
+
+        switch (type) {
+          case 'Profile_Pic':
+            updates.profilePicture = result.secure_url;
+            break;
+          case 'Cover_Photo':
+            updates.coverPhoto = result.secure_url;
+            break;
+
+          default:
+            break;
+        }
+
+        const updatedResult = await updateUserInfo({
+          userUid: currentUser,
+          updates,
+        }).unwrap();
+        if (updatedResult) {
+          setIsLoading(false);
+          setIsOpen(false);
+        }
       }
     } catch (error) {
-      setError(error.message);
+      setIsLoading(false);
+      setError(error.data.error);
+      console.log(error.data.error);
     }
   };
 

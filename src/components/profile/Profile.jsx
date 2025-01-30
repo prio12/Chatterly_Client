@@ -3,12 +3,13 @@ import { CiLocationOn } from 'react-icons/ci';
 import { FaRegCalendar } from 'react-icons/fa6';
 import { MdOutlineEdit } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
-import UploadImageModal from './modals/UploadImageModal';
+import UploadImageModal from '../../utilities/UploadImageModal';
 
 const Profile = () => {
   //hooks
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
+  const [error, setError] = useState(null);
 
   return (
     <div className="bg-white border">
@@ -17,6 +18,7 @@ const Profile = () => {
         alt="cover photo"
         className="rounded-md w-full object-cover"
         onClick={() => {
+          setError(false);
           setType('Cover_Photo');
           setIsOpen(true);
         }}
@@ -25,6 +27,7 @@ const Profile = () => {
         <div className="flex items-center gap-5">
           <div
             onClick={() => {
+              setError(false);
               setType('Profile_Pic');
               setIsOpen(true);
             }}
@@ -37,7 +40,13 @@ const Profile = () => {
               />
             </div>
           </div>
-          <UploadImageModal isOpen={isOpen} setIsOpen={setIsOpen} type={type} />
+          <UploadImageModal
+            error={error}
+            setError={setError}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            type={type}
+          />
           <div>
             <h5 className="text-xl font-bold">Eren Yeager</h5>
             <p>250 Connections</p>

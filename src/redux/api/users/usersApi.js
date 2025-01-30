@@ -9,7 +9,16 @@ const usersApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    // Update user profile (profile pic, cover photo, bio, etc.)
+    updateUserProfile: builder.mutation({
+      query: ({ userUid, updates }) => ({
+        url: `/users/${userUid}`,
+        method: 'PATCH',
+        body: updates,
+      }),
+    }),
   }),
 });
 
-export const { useAddNewUserMutation } = usersApi;
+export const { useAddNewUserMutation, useUpdateUserProfileMutation } = usersApi;
