@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { signOut } from 'firebase/auth';
 import { BsQuestionOctagon } from 'react-icons/bs';
 import { CiLight, CiSettings } from 'react-icons/ci';
@@ -11,8 +12,9 @@ import {
   setUser,
   toggleLoading,
 } from '../redux/features/loggedInUser/userSlice';
+import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 
-const AvatarDropDownContent = () => {
+const AvatarDropDownContent = ({ user }) => {
   //hooks
   const dispatch = useDispatch();
 
@@ -29,10 +31,16 @@ const AvatarDropDownContent = () => {
   return (
     <div>
       <div className="flex items-center gap-5">
-        <div className="avatar">
-          <div className="w-12 rounded-full">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-          </div>
+        <div className="mask mask-squircle w-12">
+          {user?.profilePicture ? (
+            <img
+              src={user.profilePicture}
+              alt="User Profile"
+              className="w-full object-cover"
+            />
+          ) : (
+            <DefaultProfilePIcture /> // Shows the default avatar if no profile picture
+          )}
         </div>
         <div>
           <h5 className="font-semibold">John Doe</h5>

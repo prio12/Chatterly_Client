@@ -15,9 +15,16 @@ import {
 } from 'react-icons/md';
 import { useEffect, useState } from 'react';
 import AvatarDropDownContent from '../../utilities/AvatarDropDownContent';
+import { useSelector } from 'react-redux';
+import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
+import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 
 const Header = () => {
   //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { data } = useUserInfoByUidQuery(currentUser);
+  const user = data?.user;
+
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDownOpen, setDropDownOpen] = useState(false);
   const location = useLocation();
@@ -76,14 +83,22 @@ const Header = () => {
           <IoSearchOutline />
           <div className="avatar cursor-pointer">
             <div onClick={handleDropdown} className="mask mask-squircle w-10">
-              <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+              {user?.profilePicture ? (
+                <img
+                  src={user.profilePicture}
+                  alt="User Profile"
+                  className="w-full object-cover"
+                />
+              ) : (
+                <DefaultProfilePIcture />
+              )}
             </div>
           </div>
         </div>
         {/* dropdownContent */}
         {isDropDownOpen && (
           <div className="w-1/4 z-50 bg-slate-100 shadow-md hover:shadow-xl  absolute top-14 right-12 p-5 ">
-            <AvatarDropDownContent />
+            <AvatarDropDownContent user={user} />
           </div>
         )}
       </div>
@@ -173,12 +188,20 @@ const Header = () => {
         </div>
         <div className="avatar relative cursor-pointer">
           <div onClick={handleDropdown} className="mask mask-squircle w-10">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            {user?.profilePicture ? (
+              <img
+                src={user.profilePicture}
+                alt="User Profile"
+                className="w-full object-cover"
+              />
+            ) : (
+              <DefaultProfilePIcture /> // Shows the default avatar if no profile picture
+            )}
           </div>
         </div>
         {isDropDownOpen && (
           <div className="w-3/4 p-5 bg-slate-100 shadow-md hover:shadow-xl z-50 absolute right-8 top-16">
-            <AvatarDropDownContent />
+            <AvatarDropDownContent user={user} />
           </div>
         )}
       </div>

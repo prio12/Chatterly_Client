@@ -9,17 +9,10 @@ import { useSelector } from 'react-redux';
 const ProfilePage = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
-  const { isLoading, data, isError, error } =
-    useUserInfoByUidQuery(currentUser);
+  const { data } = useUserInfoByUidQuery(currentUser);
 
   const user = data?.user;
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (isError) {
-    return <div>Something Went Wrong! : {error}</div>;
-  }
+  console.log(user);
 
   return (
     <div className="grid  md:grid-cols-3 bg-gray-100 gap-8 ">

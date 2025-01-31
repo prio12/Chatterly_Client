@@ -5,9 +5,11 @@ import { FaRegCalendar } from 'react-icons/fa6';
 import { MdOutlineEdit } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
 import UploadImageModal from '../../utilities/UploadImageModal';
+import DefaultCoverPhoto from './DefaultCoverPhoto';
+import DefaultProfilePIcture from './DefaultProfilePIcture';
 
 const Profile = ({ user }) => {
-  const { name, profilePicture, coverPhoto } = user;
+  // const { name, profilePicture, coverPhoto } = user;
   //hooks
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
@@ -15,31 +17,42 @@ const Profile = ({ user }) => {
 
   return (
     <div className="bg-white border">
-      <div className="w-full md:h-[400px] ">
-        <img
-          src={coverPhoto}
-          alt="cover photo"
-          className="rounded-md max-w-full max-h-full object-cover cursor-pointer"
-          onClick={() => {
-            setError(false);
-            setType('Cover_Photo');
-            setIsOpen(true);
-          }}
-        />
+      <div
+        onClick={() => {
+          setType('Cover_Photo');
+          setIsOpen(true);
+        }}
+        className="w-full cursor-pointer md:h-[400px]"
+      >
+        {user?.coverPhoto ? (
+          <img
+            src={user.coverPhoto}
+            alt="cover photo"
+            className="rounded-md max-w-full max-h-full object-cover "
+          />
+        ) : (
+          <DefaultCoverPhoto />
+        )}
       </div>
 
       <div className="flex items-center px-5   justify-between">
         <div className="flex items-center gap-5">
           <div
             onClick={() => {
-              setError(false);
               setType('Profile_Pic');
               setIsOpen(true);
             }}
             className="avatar cursor-pointer mt-[-48px]"
           >
             <div className="w-36 rounded-full bg-gray-100">
-              <img className="w-full object-cover" src={profilePicture} />
+              {user?.profilePicture ? (
+                <img
+                  className="w-full object-cover"
+                  src={user.profilePicture}
+                />
+              ) : (
+                <DefaultProfilePIcture />
+              )}
             </div>
           </div>
           <UploadImageModal
@@ -50,7 +63,7 @@ const Profile = ({ user }) => {
             type={type}
           />
           <div>
-            <h5 className="text-xl font-bold">{name}</h5>
+            <h5 className="text-xl font-bold">{user?.name}</h5>
             <p>250 Connections</p>
           </div>
         </div>
