@@ -17,8 +17,6 @@ const ProfilePage = () => {
     return <div>Loading...</div>;
   }
 
-  console.log(user);
-
   return (
     <div className="grid  md:grid-cols-3 bg-gray-100 gap-8 ">
       <div className="col-span-2  ">

@@ -7,6 +7,7 @@ import { PiSuitcaseSimple } from 'react-icons/pi';
 import UploadImageModal from '../../utilities/UploadImageModal';
 import DefaultCoverPhoto from './DefaultCoverPhoto';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
+import UpdateNameModal from './modals/UpdateNameModal';
 
 const Profile = ({ user }) => {
   const { name, profilePicture, coverPhoto } = user;
@@ -14,6 +15,7 @@ const Profile = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
   const [error, setError] = useState(null);
+  const [isUpdateNameOpen, setIsUpdateNameOpen] = useState(false);
 
   return (
     <div className="bg-white border">
@@ -69,16 +71,26 @@ const Profile = ({ user }) => {
           </div>
         </div>
         <div className="hidden md:block ">
-          <button className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white ">
+          <button
+            onClick={() => setIsUpdateNameOpen(true)}
+            className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
+          >
             <span>
               <MdOutlineEdit className="inline mr-2" />
             </span>
             Edit Profile
           </button>
         </div>
-        <div className="block md:hidden ">
+        <div
+          onClick={() => setIsUpdateNameOpen(true)}
+          className="block md:hidden "
+        >
           <MdOutlineEdit className="text-xl" />
         </div>
+        <UpdateNameModal
+          isUpdateNameOpen={isUpdateNameOpen}
+          setIsUpdateNameOpen={setIsUpdateNameOpen}
+        />
       </div>
       <div className="md:flex hidden items-center px-5 gap-5 my-3">
         <div className="flex items-center gap-3">
