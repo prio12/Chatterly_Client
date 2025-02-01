@@ -7,8 +7,11 @@ import { MdOutlineEmail } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
 import UpdateProfileModal from './modals/UpdateProfileModal';
 
-const About = () => {
+const About = ({ user }) => {
   const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
+
+  //user object destructuring
+  const { about, location, birthDate, profession, relationshipStatus } = user;
 
   return (
     <div className="p-5 border bg-white my-5">
@@ -25,32 +28,45 @@ const About = () => {
           isUpdateProfileOpen={isUpdateProfileOpen}
           setIsUpdateProfileOpen={setIsUpdateProfileOpen}
         />
-        <p>
-          I’m someone who’ll stop at nothing to achieve freedom for my people.
-          My mission: to break the chains that bind us and explore the world
-          beyond the walls. No matter the cost, I fight for what I believe in,
-          even if it means going against my friends or making impossible
-          choices. The Titans? They will fall. Oppression? It ends with me.
-          Freedom is the ultimate goal, and I’ll do whatever it takes to achieve
-          it—no matter the consequences.
-        </p>
+        {about ? (
+          <p>{about}</p>
+        ) : (
+          <p className="text-gray-500 italic">No bio added yet.</p>
+        )}
       </div>
       <div className="grid grid-cols-2 gap-5 items-start">
         <div className="flex  flex-col items-center border w-full p-3 text-sm rounded-lg">
           <LiaBirthdayCakeSolid className="text-xl mb-1" />
-          <span className="font-semibold">October 20, 1990</span>
+          {/* <span className="font-semibold">October 20, 1990</span> */}
+          {birthDate ? (
+            <span className="font-semibold">{birthDate}</span>
+          ) : (
+            <p className="text-gray-500 italic">Not added yet.</p>
+          )}
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <CiHeart className="text-xl mb-1" />
-          <span className="font-semibold">Single</span>
+          {relationshipStatus ? (
+            <span className="font-semibold">{relationshipStatus}</span>
+          ) : (
+            <p className="text-gray-500 italic">Not added yet.</p>
+          )}
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <PiSuitcaseSimple className="text-xl mb-1" />
-          <span className="font-semibold">Titan Hunter</span>
+          {profession ? (
+            <span className="font-semibold">{profession}</span>
+          ) : (
+            <p className="text-gray-500 italic">Not added yet.</p>
+          )}
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <CiLocationOn className="text-xl mb-1" />
-          <span className="font-semibold">Shiganshina</span>
+          {location ? (
+            <span className="font-semibold">{location}</span>
+          ) : (
+            <p className="text-gray-500 italic">Not added yet.</p>
+          )}
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <FaRegCalendar className="text-xl mb-1" />

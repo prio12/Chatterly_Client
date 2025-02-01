@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import Feed from './Feed';
 import About from './About';
@@ -5,7 +6,7 @@ import Connections from './Connections';
 import Media from './Media';
 import Videos from './Videos';
 
-const ProfileContent = () => {
+const ProfileContent = ({ user }) => {
   //hooks
   const [activeTab, setActiveTab] = useState('feed');
 
@@ -79,7 +80,7 @@ const ProfileContent = () => {
       </div>
       <div>
         {activeTab === 'feed' && <Feed />}
-        {activeTab === 'about' && <About />}
+        {activeTab === 'about' && <About user={user} />}
         {activeTab === 'connections' && <Connections />}
         {activeTab === 'media' && <Media />}
         {activeTab === 'videos' && <Videos />}

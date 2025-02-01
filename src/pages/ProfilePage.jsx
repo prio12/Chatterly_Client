@@ -21,7 +21,7 @@ const ProfilePage = () => {
     <div className="grid  md:grid-cols-3 bg-gray-100 gap-8 ">
       <div className="col-span-2  ">
         <Profile user={user} />
-        <ProfileContent />
+        <ProfileContent user={user} />
       </div>
       <div className="col-span-1 hidden md:block ">
         <div className="p-5 border">
