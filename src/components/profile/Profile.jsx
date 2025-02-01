@@ -9,8 +9,8 @@ import DefaultCoverPhoto from './DefaultCoverPhoto';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 
 const Profile = ({ user }) => {
-  // const { name, profilePicture, coverPhoto } = user;
-  //hooks
+  const { name, profilePicture, coverPhoto } = user;
+
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
   const [error, setError] = useState(null);
@@ -24,7 +24,7 @@ const Profile = ({ user }) => {
         }}
         className="w-full cursor-pointer md:h-[400px]"
       >
-        {user?.coverPhoto ? (
+        {coverPhoto ? (
           <img
             src={user.coverPhoto}
             alt="cover photo"
@@ -45,7 +45,7 @@ const Profile = ({ user }) => {
             className="avatar cursor-pointer mt-[-48px]"
           >
             <div className="w-36 rounded-full bg-gray-100">
-              {user?.profilePicture ? (
+              {profilePicture ? (
                 <img
                   className="w-full object-cover"
                   src={user.profilePicture}
@@ -56,6 +56,7 @@ const Profile = ({ user }) => {
             </div>
           </div>
           <UploadImageModal
+            user={user}
             error={error}
             setError={setError}
             isOpen={isOpen}
@@ -63,7 +64,7 @@ const Profile = ({ user }) => {
             type={type}
           />
           <div>
-            <h5 className="text-xl font-bold">{user?.name}</h5>
+            <h5 className="text-xl font-bold">{name}</h5>
             <p>250 Connections</p>
           </div>
         </div>

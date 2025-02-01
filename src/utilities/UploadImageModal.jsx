@@ -4,7 +4,14 @@ import Modal from './Modal';
 import { useUpdateUserProfileMutation } from '../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
 
-const UploadImageModal = ({ isOpen, setIsOpen, type, error, setError }) => {
+const UploadImageModal = ({
+  user,
+  isOpen,
+  setIsOpen,
+  type,
+  error,
+  setError,
+}) => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const [imageFile, setImageFile] = useState(null);

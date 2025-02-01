@@ -12,6 +12,11 @@ const ProfilePage = () => {
   const { data } = useUserInfoByUidQuery(currentUser);
 
   const user = data?.user;
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
   console.log(user);
 
   return (
