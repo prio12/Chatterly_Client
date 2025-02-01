@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Modal from './Modal';
 import { useUpdateUserProfileMutation } from '../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
+import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 
 const UploadImageModal = ({
   user,
@@ -17,6 +18,9 @@ const UploadImageModal = ({
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [updateUserInfo] = useUpdateUserProfileMutation();
+
+  // user destructure
+  const { profilePicture, coverPhoto } = user;
 
   const handleOnChange = (e) => {
     const file = e.target.files[0];
@@ -83,6 +87,23 @@ const UploadImageModal = ({
     }
   };
 
+  let modalImage;
+
+  if (type === 'Profile_Pic' && profilePicture) {
+    modalImage = (
+      <div className="mask mask-squircle w-24">
+        <img src={profilePicture} />
+      </div>
+    );
+  }
+  if (type === 'Profile_Pic' && !profilePicture) {
+    modalImage = (
+      <div className="mask mask-squircle w-24">
+        <DefaultProfilePIcture />
+      </div>
+    );
+  }
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="md:w-1/2 w-full p-5   mx-auto ">
@@ -91,11 +112,8 @@ const UploadImageModal = ({
           {type === 'Profile_Pic' && <span>Update Your Profile Pic</span>}
           {type === 'Cover_Photo' && <span>Update Your Cover Photo</span>}
         </h5>
-        <div className="avatar flex justify-center mb-5">
-          <div className="mask mask-squircle w-24">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-          </div>
-        </div>
+        <div className="avatar flex justify-center mb-5">{modalImage}</div>
+
         <input
           type="file"
           accept="image/jpeg, image/png, image/webp, image/jpg"
