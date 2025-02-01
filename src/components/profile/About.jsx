@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 import { CiHeart, CiLocationOn } from 'react-icons/ci';
@@ -11,7 +12,7 @@ const About = ({ user }) => {
   const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
 
   //user object destructuring
-  const { about, location, birthDate, profession, relationshipStatus } = user;
+  const { bio, location, birthDate, profession, relationshipStatus } = user;
 
   return (
     <div className="p-5 border bg-white my-5">
@@ -25,11 +26,12 @@ const About = ({ user }) => {
           />
         </div>
         <UpdateProfileModal
+          user={user}
           isUpdateProfileOpen={isUpdateProfileOpen}
           setIsUpdateProfileOpen={setIsUpdateProfileOpen}
         />
-        {about ? (
-          <p>{about}</p>
+        {bio ? (
+          <p>{bio}</p>
         ) : (
           <p className="text-gray-500 italic">No bio added yet.</p>
         )}

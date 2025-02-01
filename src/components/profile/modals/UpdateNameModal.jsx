@@ -2,12 +2,13 @@
 import { useForm } from 'react-hook-form';
 import Modal from '../../../utilities/Modal';
 import { useUpdateUserProfileMutation } from '../../../redux/api/users/usersApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
   // user object destructure
   const { name, uid } = user;
   const [fName, lName] = name.split(' ');
+  console.log(name);
 
   //hooks
   const [updateUserInfo] = useUpdateUserProfileMutation();
@@ -17,6 +18,7 @@ const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -25,6 +27,14 @@ const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
     },
   });
 
+  // ✅ Sync form when `user.name` changes
+  useEffect(() => {
+    reset({
+      fname: fName,
+      lname: lName,
+    });
+  }, [fName, lName, reset]);
+
   const onSubmit = async (data) => {
     const updatedFName = data.fname;
     const updatedLName = data.lname;
@@ -32,6 +42,7 @@ const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
     let updates = {};
     if (updatedFullName === name) {
       alert('You have to make changes to update!');
+      reset();
       return;
     }
     updates.name = updatedFullName;
@@ -43,10 +54,12 @@ const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
       }).unwrap();
 
       if (updatedResult.user) {
+        reset();
         setIsLoading(false);
         setIsUpdateNameOpen(false);
       }
     } catch (error) {
+      reset();
       setIsLoading(false);
       setError(error.message);
     }
@@ -58,7 +71,10 @@ const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
         <h3 className="text-center text-xl font-semibold">Update Your Name</h3>
         <form onSubmit={handleSubmit(onSubmit)} className=" w-full   my-5 ">
           <div>
-            <label htmlFor="fName" className="text-sm mb-3 font-semibold">
+            <label
+              htmlFor="fName"
+              className="text-sm mb-3 font-semibold border-b-2 border-blue-500"
+            >
               First Name
             </label>
             <input
@@ -78,7 +94,10 @@ const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
             )}
           </div>
           <div>
-            <label htmlFor="lName" className="text-sm mb-3 font-semibold">
+            <label
+              htmlFor="lName"
+              className="text-sm mb-3 font-semibold border-b-2 border-blue-500"
+            >
               Last Name
             </label>
             <input
