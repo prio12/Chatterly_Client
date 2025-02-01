@@ -4,6 +4,7 @@ import Modal from './Modal';
 import { useUpdateUserProfileMutation } from '../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
+import DefaultCoverPhoto from '../components/profile/DefaultCoverPhoto';
 
 const UploadImageModal = ({
   user,
@@ -91,15 +92,33 @@ const UploadImageModal = ({
 
   if (type === 'Profile_Pic' && profilePicture) {
     modalImage = (
-      <div className="mask mask-squircle w-24">
-        <img src={profilePicture} />
+      <div className="avatar flex justify-center mb-5">
+        <div className="mask mask-squircle w-24">
+          <img src={profilePicture} />
+        </div>
       </div>
     );
   }
   if (type === 'Profile_Pic' && !profilePicture) {
     modalImage = (
-      <div className="mask mask-squircle w-24">
-        <DefaultProfilePIcture />
+      <div className="avatar flex justify-center mb-5">
+        <div className="mask mask-squircle w-24">
+          <DefaultProfilePIcture />
+        </div>
+      </div>
+    );
+  }
+  if (type === 'Cover_Photo' && coverPhoto) {
+    modalImage = (
+      <div className="avatar flex justify-center mb-5">
+        <img src={coverPhoto} alt="" />
+      </div>
+    );
+  }
+  if (type === 'Cover_Photo' && !coverPhoto) {
+    modalImage = (
+      <div className="avatar flex justify-center mb-5">
+        <DefaultCoverPhoto />
       </div>
     );
   }
@@ -112,7 +131,7 @@ const UploadImageModal = ({
           {type === 'Profile_Pic' && <span>Update Your Profile Pic</span>}
           {type === 'Cover_Photo' && <span>Update Your Cover Photo</span>}
         </h5>
-        <div className="avatar flex justify-center mb-5">{modalImage}</div>
+        {modalImage}
 
         <input
           type="file"
