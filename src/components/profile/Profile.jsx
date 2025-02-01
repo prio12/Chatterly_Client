@@ -88,6 +88,7 @@ const Profile = ({ user }) => {
           <MdOutlineEdit className="text-xl" />
         </div>
         <UpdateNameModal
+          user={user}
           isUpdateNameOpen={isUpdateNameOpen}
           setIsUpdateNameOpen={setIsUpdateNameOpen}
         />
