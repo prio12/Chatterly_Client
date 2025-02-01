@@ -1,19 +1,30 @@
+import { useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 import { CiHeart, CiLocationOn } from 'react-icons/ci';
 import { FaRegCalendar } from 'react-icons/fa6';
 import { LiaBirthdayCakeSolid } from 'react-icons/lia';
 import { MdOutlineEmail } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
+import UpdateProfileModal from './modals/UpdateProfileModal';
 
 const About = () => {
+  const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
+
   return (
     <div className="p-5 border bg-white my-5">
       <h3 className="text-xl font-bold">Profile Info</h3>
       <div className="p-5 border my-5">
         <div className="font-semibold mb-3 flex items-center justify-between">
           <h5>Overview</h5>
-          <BsThreeDots className="cursor-pointer" />
+          <BsThreeDots
+            onClick={() => setIsUpdateProfileOpen(true)}
+            className="cursor-pointer"
+          />
         </div>
+        <UpdateProfileModal
+          isUpdateProfileOpen={isUpdateProfileOpen}
+          setIsUpdateProfileOpen={setIsUpdateProfileOpen}
+        />
         <p>
           I’m someone who’ll stop at nothing to achieve freedom for my people.
           My mission: to break the chains that bind us and explore the world
