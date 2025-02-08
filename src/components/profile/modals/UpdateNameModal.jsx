@@ -8,7 +8,6 @@ const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
   // user object destructure
   const { name, uid } = user;
   const [fName, lName] = name.split(' ');
-  console.log(name);
 
   //hooks
   const [updateUserInfo] = useUpdateUserProfileMutation();

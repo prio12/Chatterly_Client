@@ -10,14 +10,24 @@ const UpdateProfileModal = ({
   setIsUpdateProfileOpen,
 }) => {
   //user object destructuring
-  const { bio, location, birthDate, profession, relationshipStatus, uid } =
-    user;
+  const {
+    bio,
+    location,
+    birthDate,
+    profession,
+    relationshipStatus,
+    uid,
+    gender,
+  } = user;
+
+  //prv Details of the specific user from db.
   const prvAbout = {
     bio,
     location,
     birthDate,
     profession,
     relationshipStatus,
+    gender,
   };
 
   //hooks
@@ -34,6 +44,7 @@ const UpdateProfileModal = ({
       birthDate,
       profession,
       relationshipStatus,
+      gender,
     },
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -47,8 +58,9 @@ const UpdateProfileModal = ({
       birthDate,
       profession,
       relationshipStatus,
+      gender,
     });
-  }, [bio, location, birthDate, profession, relationshipStatus, reset]);
+  }, [bio, location, birthDate, profession, relationshipStatus, gender, reset]);
 
   const onSubmit = async (data) => {
     let updates = {};
@@ -183,17 +195,26 @@ const UpdateProfileModal = ({
               {errors.location.message}
             </p>
           )}
-          <div className="flex items-center mb-5 justify-between gap-5">
+          <div className="flex items-center justify-between mb-5 ">
             <div>
               <label
-                htmlFor="birthday"
+                htmlFor="relationshipStatus"
                 className="border-b-2 border-blue-500 text-sm"
               >
-                Add Birthday
+                Add Gender
               </label>
             </div>
-            <input {...register('birthDate')} type="date" />
+            <select
+              {...register('gender')}
+              id="gender"
+              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
           </div>
+
           <div className="flex items-center justify-between mb-5 ">
             <div>
               <label
@@ -214,6 +235,17 @@ const UpdateProfileModal = ({
               <option value="In_a_relation">In a Relationship</option>
               <option value="Divorced">Divorced</option>
             </select>
+          </div>
+          <div className="flex items-center mb-5 justify-between gap-5">
+            <div>
+              <label
+                htmlFor="birthday"
+                className="border-b-2 border-blue-500 text-sm"
+              >
+                Add Birthday
+              </label>
+            </div>
+            <input {...register('birthDate')} type="date" />
           </div>
           {!isLoading ? (
             <input
