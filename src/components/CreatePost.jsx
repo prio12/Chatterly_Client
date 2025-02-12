@@ -4,12 +4,14 @@ import { IoVideocamOffOutline } from 'react-icons/io5';
 import { MdEventAvailable, MdOutlineInsertPhoto } from 'react-icons/md';
 import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 import toast, { Toaster } from 'react-hot-toast';
+import ContentUploadModal from '../utilities/ContentUploadModal ';
 
 const CreatePost = ({ user }) => {
   //hooks
   const [text, setText] = useState('');
   const [createPost] = useCreateAPostMutation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleOnChange = (e) => {
     setText(e.target.value);
@@ -69,10 +71,16 @@ const CreatePost = ({ user }) => {
       {/* Buttons */}
       <div className="flex flex-wrap items-center justify-between">
         <div className="flex items-center gap-5">
-          <div className="flex btn btn-sm items-center gap-2">
+          <div
+            onClick={() => {
+              setIsOpen(true);
+            }}
+            className="flex btn btn-sm items-center gap-2"
+          >
             <MdOutlineInsertPhoto className="text-green-600 font-bold" />
             <p className="text-sm font-semibold">Photo</p>
           </div>
+          <ContentUploadModal isOpen={isOpen} setIsOpen={setIsOpen} />
           {/* <UploadImageModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
           <div className="flex btn btn-sm items-center gap-2">
             <IoVideocamOffOutline className="text-green-600 font-bold" />
