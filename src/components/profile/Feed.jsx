@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import CreatePost from '../CreatePost';
 import PostCard from './PostCard';
 
-const Feed = () => {
+const Feed = ({ user }) => {
   return (
     <div>
-      <CreatePost />
+      <CreatePost user={user} />
       <PostCard />
     </div>
   );

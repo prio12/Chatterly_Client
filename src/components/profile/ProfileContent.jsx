@@ -79,7 +79,7 @@ const ProfileContent = ({ user }) => {
         </h4>
       </div>
       <div>
-        {activeTab === 'feed' && <Feed />}
+        {activeTab === 'feed' && <Feed user={user} />}
         {activeTab === 'about' && <About user={user} />}
         {activeTab === 'connections' && <Connections />}
         {activeTab === 'media' && <Media />}
