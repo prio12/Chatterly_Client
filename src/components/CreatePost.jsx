@@ -73,6 +73,7 @@ const CreatePost = ({ user }) => {
             <MdOutlineInsertPhoto className="text-green-600 font-bold" />
             <p className="text-sm font-semibold">Photo</p>
           </div>
+          {/* <UploadImageModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
           <div className="flex btn btn-sm items-center gap-2">
             <IoVideocamOffOutline className="text-green-600 font-bold" />
             <p className="text-sm font-semibold">Video</p>

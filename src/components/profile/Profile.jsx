@@ -4,7 +4,7 @@ import { CiLocationOn } from 'react-icons/ci';
 import { FaRegCalendar } from 'react-icons/fa6';
 import { MdOutlineEdit } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
-import UploadImageModal from '../../utilities/UploadImageModal';
+import UploadImageModal from './ProfileMediaModal';
 import DefaultCoverPhoto from './DefaultCoverPhoto';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import UpdateNameModal from './modals/UpdateNameModal';
