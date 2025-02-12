@@ -25,9 +25,7 @@ const CreatePost = ({ user }) => {
   };
   const handleSubmit = async () => {
     if (!text) {
-      alert(
-        "Write something to post. If you're posting an image, a caption is required!"
-      );
+      alert('Write something to post!');
       return;
     }
     // await createPost(post);

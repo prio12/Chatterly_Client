@@ -4,10 +4,10 @@ import { CiLocationOn } from 'react-icons/ci';
 import { FaRegCalendar } from 'react-icons/fa6';
 import { MdOutlineEdit } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
-import UploadImageModal from './ProfileMediaModal';
 import DefaultCoverPhoto from './DefaultCoverPhoto';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import UpdateNameModal from './modals/UpdateNameModal';
+import ProfileMediaModal from './ProfileMediaModal';
 
 const Profile = ({ user }) => {
   const { name, profilePicture, coverPhoto } = user;
@@ -57,7 +57,7 @@ const Profile = ({ user }) => {
               )}
             </div>
           </div>
-          <UploadImageModal
+          <ProfileMediaModal
             user={user}
             error={error}
             setError={setError}

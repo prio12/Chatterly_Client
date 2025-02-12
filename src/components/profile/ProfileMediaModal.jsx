@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import DefaultCoverPhoto from './DefaultCoverPhoto';
 
-const UploadImageModal = ({
+const ProfileMediaModal = ({
   user,
   isOpen,
   setIsOpen,
@@ -178,4 +178,4 @@ const UploadImageModal = ({
   );
 };
 
-export default UploadImageModal;
+export default ProfileMediaModal;
