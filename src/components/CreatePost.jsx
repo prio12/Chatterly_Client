@@ -12,6 +12,7 @@ const CreatePost = ({ user }) => {
   const [createPost] = useCreateAPostMutation();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [type, setType] = useState('');
 
   const handleOnChange = (e) => {
     setText(e.target.value);
@@ -73,6 +74,7 @@ const CreatePost = ({ user }) => {
         <div className="flex items-center gap-5">
           <div
             onClick={() => {
+              setType('image');
               setIsOpen(true);
             }}
             className="flex btn btn-sm items-center gap-2"
@@ -80,7 +82,12 @@ const CreatePost = ({ user }) => {
             <MdOutlineInsertPhoto className="text-green-600 font-bold" />
             <p className="text-sm font-semibold">Photo</p>
           </div>
-          <ContentUploadModal isOpen={isOpen} setIsOpen={setIsOpen} />
+          <ContentUploadModal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            type={type}
+            user={user}
+          />
           {/* <UploadImageModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
           <div className="flex btn btn-sm items-center gap-2">
             <IoVideocamOffOutline className="text-green-600 font-bold" />
@@ -118,7 +125,8 @@ const CreatePost = ({ user }) => {
           ) : (
             <button
               onClick={handleSubmit}
-              className="btn  btn-md md:btn-sm rounded-md bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
+              className="btn  btn-md md:btn-sm rounded-md bg-blue-100 text-blue-500
+               hover:bg-blue-500 hover:text-white"
             >
               Submit
             </button>
