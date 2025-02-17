@@ -1,10 +1,14 @@
+/* eslint-disable react/prop-types */
 import { FaHeart } from 'react-icons/fa6';
 import CommentInputField from '../CommentInputField';
 import CommentBox from '../CommentBox';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
-const PostCard = () => {
+const PostCard = ({ post }) => {
+  //post object destructuring
+  const { content } = post;
+  console.log(post);
   //will be removed
   const comments = [
     {
@@ -52,12 +56,7 @@ const PostCard = () => {
         </div>
       </div>
       <div>
-        <p className="my-5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, odio
-          quia numquam vitae minima a voluptates laborum porro perferendis est
-          in sunt facilis consectetur laudantium, veniam dignissimos debitis ex.
-          Culpa?
-        </p>
+        <p className="my-5">{content}</p>
         <img
           src="https://static1.thegamerimages.com/wordpress/wp-content/uploads/wm/2024/08/10-10-best-attack-on-titan-episodes-ranked.jpg"
           alt="cover photo"

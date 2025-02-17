@@ -9,7 +9,12 @@ const postsApi = baseApi.injectEndpoints({
         body: post,
       }),
     }),
+    getAllPosts: builder.query({
+      query: () => ({
+        url: '/posts',
+      }),
+    }),
   }),
 });
 
-export const { useCreateAPostMutation } = postsApi;
+export const { useCreateAPostMutation, useGetAllPostsQuery } = postsApi;

@@ -5,16 +5,36 @@ import CreatePost from '../components/CreatePost';
 import Stories from '../components/home/Stories';
 import PostCard from '../components/profile/PostCard';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
+import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
 
 const Home = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
+  const { data: postData, error, isLoading, isError } = useGetAllPostsQuery();
 
   const user = data?.user;
+  const posts = postData?.result;
+
+  let content;
 
   if (!user) {
     return <div>Loading...</div>;
+  }
+
+  if (isLoading) {
+    content = <div>Loading...</div>;
+  }
+
+  if (!isLoading && isError) {
+    <div>
+      <h5>Something Went wrong!!</h5>
+      <p>{error.message}</p>
+    </div>;
+  }
+
+  if (!isLoading && !isError && posts.length > 0) {
+    content = posts.map((post) => <PostCard key={post._id} post={post} />);
   }
 
   return (
@@ -28,7 +48,7 @@ const Home = () => {
         <div className="w-full max-w-5xl md:px-5 px-0 py-2">
           <Stories />
           <CreatePost user={user} />
-          <PostCard />
+          {content}
         </div>
       </div>
 
