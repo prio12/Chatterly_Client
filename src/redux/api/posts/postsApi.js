@@ -8,11 +8,13 @@ const postsApi = baseApi.injectEndpoints({
         method: 'POST',
         body: post,
       }),
+      invalidatesTags: ['posts'],
     }),
     getAllPosts: builder.query({
       query: () => ({
         url: '/posts',
       }),
+      providesTags: ['posts'],
     }),
   }),
 });

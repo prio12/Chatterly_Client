@@ -4,11 +4,19 @@ import CommentInputField from '../CommentInputField';
 import CommentBox from '../CommentBox';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
+import { formatDistanceToNow } from 'date-fns';
 
 const PostCard = ({ post }) => {
   //post object destructuring
-  const { content, img } = post;
-  console.log(post);
+  const { content, img, author, createdAt, likes } = post;
+
+  // Converts createdAt timestamp into a human-readable relative time format.
+  const timeAgo = (timestamp) => {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  };
+
+  console.log(timeAgo);
+
   //will be removed
   const comments = [
     {
@@ -48,7 +56,7 @@ const PostCard = ({ post }) => {
           </div>
           <div>
             <h5 className="font-bold">Eren Yeager</h5>
-            <span className="text-xs">21 January, 2024</span>
+            <span className="text-xs">{timeAgo(createdAt)}</span>
           </div>
         </div>
         <div>
@@ -70,11 +78,15 @@ const PostCard = ({ post }) => {
       <div className="flex items-center my-5 gap-5">
         <div className="flex text-sm items-center gap-2">
           <FaHeart className="text-red-600" />
-          <span>(123)</span>
+          {likes?.length > 0 ? <span>{likes.length}</span> : <span>(0)</span>}
         </div>
         <div className="flex text-sm items-center gap-2">
           <MdOutlineInsertComment />
-          <span>(23)</span>
+          {comments?.length > 0 ? (
+            <span>({comments.length})</span>
+          ) : (
+            <span>(0)</span>
+          )}
         </div>
       </div>
       <CommentInputField />
