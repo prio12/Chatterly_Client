@@ -7,7 +7,7 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 const PostCard = ({ post }) => {
   //post object destructuring
-  const { content } = post;
+  const { content, img } = post;
   console.log(post);
   //will be removed
   const comments = [
@@ -38,7 +38,7 @@ const PostCard = ({ post }) => {
   ];
 
   return (
-    <div className="my-5 bg-white border p-5 ">
+    <div className="my-8 bg-white border p-5 ">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-5">
           <div className="avatar">
@@ -56,12 +56,16 @@ const PostCard = ({ post }) => {
         </div>
       </div>
       <div>
-        <p className="my-5">{content}</p>
-        <img
-          src="https://static1.thegamerimages.com/wordpress/wp-content/uploads/wm/2024/08/10-10-best-attack-on-titan-episodes-ranked.jpg"
-          alt="cover photo"
-          className="rounded-md w-full"
-        />
+        <div>
+          {content && <p className="my-5">{content}</p>}
+          {img && (
+            <img
+              src={img}
+              alt="cover photo"
+              className="rounded-md w-full my-5"
+            />
+          )}
+        </div>
       </div>
       <div className="flex items-center my-5 gap-5">
         <div className="flex text-sm items-center gap-2">
