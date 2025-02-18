@@ -15,7 +15,7 @@ const usersApi = baseApi.injectEndpoints({
       query: (userUid) => ({
         url: `/users/${userUid}`,
       }),
-      providesTags: ['profile'],
+      providesTags: ['profile', 'posts'],
     }),
 
     // Update user profile (profile pic, cover photo, bio, etc.)

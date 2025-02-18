@@ -15,8 +15,6 @@ const PostCard = ({ post }) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
 
-  console.log(timeAgo);
-
   //will be removed
   const comments = [
     {
