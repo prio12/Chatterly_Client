@@ -3,7 +3,7 @@ const CommentBox = ({ comment }) => {
   const { avatar, content, author } = comment;
   return (
     <div className="my-5 ">
-      <div className="flex items-center rounded-lg gap-3 p-2 bg-gray-200">
+      <div className="flex items-center rounded-lg gap-3 p-2 bg-gray-100">
         <div className="avatar">
           <div className="w-8 mt-[-36px] rounded-full">
             <img src={avatar} />

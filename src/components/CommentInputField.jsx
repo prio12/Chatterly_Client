@@ -17,7 +17,7 @@ const CommentInputField = () => {
       <form className="relative w-full">
         {/* Textarea */}
         <textarea
-          className="w-full h-10 p-2 pr-10 resize-none  rounded-md bg-gray-200 border border-gray-300 focus:border-blue-200 focus:ring-1 focus:ring-blue-200 overflow-y-scroll no-scrollbar"
+          className="w-full h-10 p-2 pr-10 resize-none  rounded-md bg-gray-100 border border-gray-200 focus:border-blue-100 focus:ring-1 focus:ring-blue-100 overflow-y-scroll no-scrollbar"
           placeholder="Write your comment..."
           style={{
             scrollbarWidth: 'none', // For Firefox

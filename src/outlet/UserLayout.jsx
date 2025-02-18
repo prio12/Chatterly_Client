@@ -7,7 +7,7 @@ const UserLayout = () => {
       <div className="sticky top-0 z-50">
         <Header />
       </div>
-      <div className="md:px-5  bg-gray-100">
+      <div className="md:px-5  ">
         <Outlet />
       </div>
     </div>

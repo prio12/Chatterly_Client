@@ -22,13 +22,13 @@ const ProfilePage = () => {
   console.log(bio);
 
   return (
-    <div className="grid  md:grid-cols-3 bg-gray-100 gap-8 ">
-      <div className="col-span-2  ">
+    <div className="grid  md:grid-cols-3   bg-gray-100 gap-8 ">
+      <div className="col-span-2 ">
         <Profile user={user} />
         <ProfileContent user={user} />
       </div>
-      <div className="col-span-1 hidden md:block ">
-        <div className="p-5 border">
+      <div className="col-span-1 hidden md:block relative bg-white">
+        <div className="p-5 border sticky top-[6.5rem]  ">
           <div>
             <h3 className="text-xl font-bold">About</h3>
 
@@ -42,25 +42,31 @@ const ProfilePage = () => {
             {/* Row 1 */}
             <FaRegCalendarAlt className="text-lg" />
             {birthDate ? (
-              <span className="font-semibold">{birthDate}</span>
+              <span className="font-semibold text-sm">{birthDate}</span>
             ) : (
               <p className="text-gray-500 italic">Not added yet.</p>
             )}
 
             {/* Row 2 */}
             <CiHeart className="text-lg" />
-            <p className="text-sm">
-              Status: <span className="font-semibold">Single</span>
-            </p>
+            {relationshipStatus ? (
+              <span className="font-semibold text-sm">
+                {relationshipStatus}
+              </span>
+            ) : (
+              <p className="text-gray-500 italic">Not added yet.</p>
+            )}
 
             {/* Row 3 */}
             <MdOutlineEmail className="text-lg" />
-            <p className="text-sm">
-              Email: <span className="font-semibold">eren@gmail.com</span>
-            </p>
+            {email ? (
+              <span className="font-semibold text-sm">{email}</span>
+            ) : (
+              <p className="text-gray-500 italic">Not added yet.</p>
+            )}
           </div>
         </div>
-        <div className="p-5 border my-5">
+        <div className="p-5 border my-5 sticky top-[19.85rem]">
           <h4 className="font-bold my-5">Who to follow</h4>
           <div className="flex justify-between my-5 items-center">
             <div className="flex items-center gap-5">

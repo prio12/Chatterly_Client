@@ -12,7 +12,8 @@ const About = ({ user }) => {
   const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
 
   //user object destructuring
-  const { bio, location, birthDate, profession, relationshipStatus } = user;
+  const { bio, location, birthDate, profession, relationshipStatus, email } =
+    user;
 
   return (
     <div className="p-5 border bg-white my-5">
@@ -76,7 +77,11 @@ const About = ({ user }) => {
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <MdOutlineEmail className="text-xl mb-1" />
-          <span className="font-semibold">eren@gmail.com</span>
+          {email ? (
+            <span className="font-semibold">{email}</span>
+          ) : (
+            <p className="text-gray-500 italic">Not added yet.</p>
+          )}
         </div>
         {/* <div className="flex flex-col items-center cursor-pointer hover:text-blue-600 border w-full p-3 text-sm rounded-lg">
           <MdOutlineWorkOutline className="text-xl mb-1" />

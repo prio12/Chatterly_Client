@@ -7,6 +7,7 @@ const Feed = ({ user }) => {
   //user object destructuring
   const { posts } = user;
 
+  console.log(user);
   let content;
 
   if (posts.length === 0) {

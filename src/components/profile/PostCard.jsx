@@ -5,6 +5,7 @@ import CommentBox from '../CommentBox';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { formatDistanceToNow } from 'date-fns';
+import DefaultProfilePIcture from './DefaultProfilePIcture';
 
 const PostCard = ({ post }) => {
   //post object destructuring
@@ -47,13 +48,21 @@ const PostCard = ({ post }) => {
     <div className="my-8 bg-white border p-5 ">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-5">
-          <div className="avatar">
-            <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s" />
+          {author?.profilePicture ? (
+            <div className="avatar">
+              <div className=" w-10 rounded-full ">
+                <img src={author.profilePicture} />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="avatar">
+              <div className=" w-10 rounded-full">
+                <DefaultProfilePIcture />
+              </div>
+            </div>
+          )}
           <div>
-            <h5 className="font-bold">Eren Yeager</h5>
+            <h5 className="font-bold">{author?.name}</h5>
             <span className="text-xs">{timeAgo(createdAt)}</span>
           </div>
         </div>
