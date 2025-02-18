@@ -63,7 +63,16 @@ const PostCard = ({ post }) => {
       </div>
       <div>
         <div>
-          {content && <p className="my-5">{content}</p>}
+          {content && (
+            <p className="my-5">
+              {content.split('\n').map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
+          )}
           {img && (
             <img
               src={img}
