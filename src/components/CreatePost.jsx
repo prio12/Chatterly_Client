@@ -126,7 +126,7 @@ const CreatePost = ({ user }) => {
               className="btn  btn-md md:btn-sm rounded-md bg-blue-100 text-blue-500
                hover:bg-blue-500 hover:text-white"
             >
-              Submit
+              Post
             </button>
           )}
         </div>

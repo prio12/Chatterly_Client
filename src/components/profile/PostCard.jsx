@@ -6,10 +6,17 @@ import { MdOutlineInsertComment } from 'react-icons/md';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { formatDistanceToNow } from 'date-fns';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import UpdatePostModal from '../../utilities/UpdatePostModal';
 
 const PostCard = ({ post }) => {
   //post object destructuring
   const { content, img, author, createdAt, likes } = post;
+
+  //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
@@ -66,9 +73,12 @@ const PostCard = ({ post }) => {
             <span className="text-xs">{timeAgo(createdAt)}</span>
           </div>
         </div>
-        <div>
-          <HiOutlineDotsHorizontal className="cursor-pointer" />
-        </div>
+        {author.uid === currentUser && (
+          <div onClick={() => setIsOpen(true)}>
+            <HiOutlineDotsHorizontal className="cursor-pointer" />
+          </div>
+        )}
+        <UpdatePostModal isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
       <div>
         <div>
