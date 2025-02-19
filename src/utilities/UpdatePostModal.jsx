@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useForm } from 'react-hook-form';
 import Modal from './Modal';
-import { useUpdateAPostMutation } from '../redux/api/posts/postsApi';
+import {
+  useDeleteAPostMutation,
+  useUpdateAPostMutation,
+} from '../redux/api/posts/postsApi';
 import { useEffect, useState } from 'react';
 import LoadingButton from './btn/LoadingButton';
 
@@ -19,7 +22,11 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   });
 
   const [updateAPost] = useUpdateAPostMutation();
+  const [deleteAPost] = useDeleteAPostMutation();
+
   const [isLoading, setIsLoading] = useState(false);
+  //loading state for delete btn
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -60,6 +67,20 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      const response = await deleteAPost({ _id: id });
+      if (response.data.success) {
+        setLoading(false);
+        setIsOpen(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error.message);
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="md:w-1/2 md:mx-auto mt-5 p-4 md:p-6 bg-white shadow-lg rounded-lg">
@@ -93,12 +114,17 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
           )}
 
           <div className="flex justify-end gap-3 mt-4">
-            <button
-              type="button"
-              className="btn rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
-            >
-              Delete
-            </button>
+            {loading ? (
+              <LoadingButton />
+            ) : (
+              <button
+                onClick={handleDelete}
+                type="button"
+                className="btn rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
+              >
+                Delete
+              </button>
+            )}
             {isLoading ? (
               <LoadingButton />
             ) : (

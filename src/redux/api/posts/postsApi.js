@@ -32,10 +32,11 @@ const postsApi = baseApi.injectEndpoints({
 
     //deleting a post
     deleteAPost: builder.mutation({
-      query: (_id) => ({
+      query: ({ _id }) => ({
         url: `/posts/${_id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['posts'],
     }),
   }),
 });
