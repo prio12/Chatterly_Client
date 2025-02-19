@@ -33,8 +33,8 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
   };
 
   const handleSubmit = async () => {
-    if (!imageFile && !caption) {
-      alert('Post content cannot be empty!');
+    if (!imageFile || !caption) {
+      alert('Please provide both an image and a caption before submitting!');
       return;
     }
 
