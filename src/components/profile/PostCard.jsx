@@ -9,14 +9,16 @@ import DefaultProfilePIcture from './DefaultProfilePIcture';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import UpdatePostModal from '../../utilities/UpdatePostModal';
+import { useLocation } from 'react-router';
 
 const PostCard = ({ post }) => {
   //post object destructuring
-  const { content, img, author, createdAt, likes } = post;
+  const { content, img, author, createdAt, likes, _id } = post;
 
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const [isOpen, setIsOpen] = useState(false);
+  const { pathname } = useLocation();
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
@@ -73,12 +75,18 @@ const PostCard = ({ post }) => {
             <span className="text-xs">{timeAgo(createdAt)}</span>
           </div>
         </div>
-        {author.uid === currentUser && (
+        {author.uid === currentUser && pathname !== '/' && (
           <div onClick={() => setIsOpen(true)}>
             <HiOutlineDotsHorizontal className="cursor-pointer" />
           </div>
         )}
-        <UpdatePostModal isOpen={isOpen} setIsOpen={setIsOpen} />
+        <UpdatePostModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          img={img}
+          content={content}
+          id={_id}
+        />
       </div>
       <div>
         <div>

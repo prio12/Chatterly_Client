@@ -10,13 +10,26 @@ const postsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['posts'],
     }),
+
     getAllPosts: builder.query({
       query: () => ({
         url: '/posts',
       }),
       providesTags: ['posts'],
     }),
+
+    updateAPost: builder.mutation({
+      query: ({ id, content }) => ({
+        url: `/posts/${id}`,
+        method: 'PATCH',
+        body: { content },
+      }),
+    }),
   }),
 });
 
-export const { useCreateAPostMutation, useGetAllPostsQuery } = postsApi;
+export const {
+  useCreateAPostMutation,
+  useGetAllPostsQuery,
+  useUpdateAPostMutation,
+} = postsApi;

@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import Modal from '../../utilities/Modal';
-import { useUpdateUserProfileMutation } from '../../redux/api/users/usersApi';
+import Modal from '../../../utilities/Modal';
+import { useUpdateUserProfileMutation } from '../../../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
-import DefaultProfilePIcture from './DefaultProfilePIcture';
-import DefaultCoverPhoto from './DefaultCoverPhoto';
+import DefaultProfilePIcture from '../DefaultProfilePIcture';
+import DefaultCoverPhoto from '../DefaultCoverPhoto';
 
 const ProfileMediaModal = ({
   user,

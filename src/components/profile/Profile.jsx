@@ -7,7 +7,7 @@ import { PiSuitcaseSimple } from 'react-icons/pi';
 import DefaultCoverPhoto from './DefaultCoverPhoto';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import UpdateNameModal from './modals/UpdateNameModal';
-import ProfileMediaModal from './ProfileMediaModal';
+import ProfileMediaModal from './modals/ProfileMediaModal';
 
 const Profile = ({ user }) => {
   const { name, profilePicture, coverPhoto } = user;
