@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import Modal from './Modal';
 import { useUpdateAPostMutation } from '../redux/api/posts/postsApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingButton from './btn/LoadingButton';
 
 const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
@@ -21,6 +21,12 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   const [updateAPost] = useUpdateAPostMutation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    reset({
+      content: content,
+    });
+  }, [content, reset]);
 
   const updates = {
     id,
