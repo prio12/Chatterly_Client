@@ -7,6 +7,7 @@ import {
 } from '../redux/api/posts/postsApi';
 import { useEffect, useState } from 'react';
 import LoadingButton from './btn/LoadingButton';
+import toast, { Toaster } from 'react-hot-toast';
 
 const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   // hooks
@@ -59,6 +60,7 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
         setIsLoading(false);
         reset();
         setIsOpen(false);
+        toast.success('Post Updated Successfully!!');
       }
     } catch (error) {
       setIsLoading(false);
@@ -68,12 +70,19 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   };
 
   const handleDelete = async () => {
+    const confirmation = window.confirm(
+      'Are you sure you want to delete this post? This action cannot be undone!'
+    );
+    if (!confirmation) {
+      return;
+    }
     try {
       setLoading(true);
       const response = await deleteAPost({ _id: id });
       if (response.data.success) {
         setLoading(false);
         setIsOpen(false);
+        toast.success('Post Deleted Successfully!!');
       }
     } catch (error) {
       setLoading(false);
@@ -84,6 +93,7 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="md:w-1/2 md:mx-auto mt-5 p-4 md:p-6 bg-white shadow-lg rounded-lg">
+        <Toaster />
         <h1 className="text-center text-lg font-semibold my-5 text-gray-700">
           Manage Your Post
         </h1>
