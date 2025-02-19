@@ -24,6 +24,7 @@ const postsApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body: { content },
       }),
+      invalidatesTags: ['posts'],
     }),
   }),
 });

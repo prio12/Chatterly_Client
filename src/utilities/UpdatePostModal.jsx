@@ -2,12 +2,15 @@
 import { useForm } from 'react-hook-form';
 import Modal from './Modal';
 import { useUpdateAPostMutation } from '../redux/api/posts/postsApi';
+import { useState } from 'react';
+import LoadingButton from './btn/LoadingButton';
 
 const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   // hooks
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -16,12 +19,14 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   });
 
   const [updateAPost] = useUpdateAPostMutation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const updates = {
     id,
   };
 
-  const submit = (data) => {
+  const submit = async (data) => {
     // This will now log the form values
     if (data.content === content) {
       alert('You have to make changes to update!');
@@ -32,7 +37,21 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
       return;
     }
     updates.content = data.content;
-    updateAPost(updates);
+
+    // sending update req to server
+    try {
+      setIsLoading(true);
+      const response = await updateAPost(updates).unwrap();
+      if (response.success) {
+        setIsLoading(false);
+        reset();
+        setIsOpen(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      reset();
+      setError(error.message);
+    }
   };
 
   return (
@@ -74,14 +93,21 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
             >
               Delete
             </button>
-            <button
-              type="submit"
-              className="btn rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
-            >
-              Update
-            </button>
+            {isLoading ? (
+              <LoadingButton />
+            ) : (
+              <button
+                type="submit"
+                className="btn rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
+              >
+                Update
+              </button>
+            )}
           </div>
         </form>
+        {error && (
+          <p className="my-5 text-xs font-semibold text-red-600">{error}</p>
+        )}
       </div>
     </Modal>
   );
