@@ -2,6 +2,7 @@ import baseApi from '../baseApi';
 
 const postsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    //creating a post
     createAPost: builder.mutation({
       query: (post) => ({
         url: '/posts',
@@ -11,6 +12,7 @@ const postsApi = baseApi.injectEndpoints({
       invalidatesTags: ['posts'],
     }),
 
+    //fetching all posts
     getAllPosts: builder.query({
       query: () => ({
         url: '/posts',
@@ -18,6 +20,7 @@ const postsApi = baseApi.injectEndpoints({
       providesTags: ['posts'],
     }),
 
+    //updating a post
     updateAPost: builder.mutation({
       query: ({ id, content }) => ({
         url: `/posts/${id}`,
@@ -26,6 +29,14 @@ const postsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['posts'],
     }),
+
+    //deleting a post
+    deleteAPost: builder.mutation({
+      query: (_id) => ({
+        url: `/posts/${_id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -33,4 +44,5 @@ export const {
   useCreateAPostMutation,
   useGetAllPostsQuery,
   useUpdateAPostMutation,
+  useDeleteAPostMutation,
 } = postsApi;
