@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../DefaultProfilePIcture';
 import DefaultCoverPhoto from '../DefaultCoverPhoto';
 import LoadingButton from '../../../utilities/btn/LoadingButton';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ProfileMediaModal = ({
   user,
@@ -71,6 +72,7 @@ const ProfileMediaModal = ({
               '/upload/',
               '/upload/w_1200,h_600,c_pad,b_auto/'
             );
+
             break;
           default:
             break;
@@ -84,6 +86,7 @@ const ProfileMediaModal = ({
         if (updatedResult) {
           setIsLoading(false);
           setIsOpen(false);
+          toast.success('Updated successfully!');
         }
       } else {
         setIsLoading(false);
@@ -133,6 +136,7 @@ const ProfileMediaModal = ({
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="md:w-1/2 w-full p-5   mx-auto ">
+        <Toaster />
         <h5 className="text-center text-xl mb-5 font-bold">
           {/* Update Your Profile Pic */}
           {type === 'Profile_Pic' && <span>Update Your Profile Pic</span>}

@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import UpdatePostModal from '../../utilities/UpdatePostModal';
 import { useLocation } from 'react-router';
+import { Link } from 'react-router';
 
 const PostCard = ({ post }) => {
   //post object destructuring
@@ -58,20 +59,26 @@ const PostCard = ({ post }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-5">
           {author?.profilePicture ? (
-            <div className="avatar">
-              <div className=" w-10 rounded-full ">
-                <img src={author.profilePicture} />
+            <Link to={`/profile/${author.uid}`}>
+              <div className="avatar cursor-pointer">
+                <div className=" w-10 rounded-full ">
+                  <img src={author.profilePicture} />
+                </div>
               </div>
-            </div>
+            </Link>
           ) : (
-            <div className="avatar">
-              <div className=" w-10 rounded-full">
-                <DefaultProfilePIcture />
+            <Link to={`/profile/${author.uid}`}>
+              <div className="avatar">
+                <div className=" w-10 rounded-full">
+                  <DefaultProfilePIcture />
+                </div>
               </div>
-            </div>
+            </Link>
           )}
           <div>
-            <h5 className="font-bold">{author?.name}</h5>
+            <Link to={`/profile/${author.uid}`}>
+              <h5 className="font-bold">{author?.name}</h5>
+            </Link>
             <span className="text-xs">{timeAgo(createdAt)}</span>
           </div>
         </div>

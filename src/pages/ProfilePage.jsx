@@ -5,11 +5,14 @@ import { CiHeart } from 'react-icons/ci';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
 const ProfilePage = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
-  const { data } = useUserInfoByUidQuery(currentUser);
+  const { uid } = useParams();
+
+  const { data } = useUserInfoByUidQuery(uid);
 
   const user = data?.user;
 
@@ -18,8 +21,6 @@ const ProfilePage = () => {
   }
 
   const { bio, birthDate, relationshipStatus, email } = user;
-
-  console.log(bio);
 
   return (
     <div className="grid  md:grid-cols-3   bg-gray-100 gap-8 ">

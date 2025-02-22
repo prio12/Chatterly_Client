@@ -18,7 +18,7 @@ const AppRoutes = () => {
         }
       >
         <Route path="/" index element={<Home />}></Route>
-        <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/profile/:uid" element={<ProfilePage />}></Route>
       </Route>
       <Route path="/signUp" element={<SignUp />}></Route>
       <Route path="/signIn" element={<SignIn />}></Route>

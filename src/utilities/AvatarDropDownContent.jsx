@@ -7,7 +7,7 @@ import { IoBookOutline } from 'react-icons/io5';
 import { MdDarkMode } from 'react-icons/md';
 import { Link } from 'react-router';
 import auth from '../firebase/firebase.cofig';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setUser,
   toggleLoading,
@@ -17,6 +17,7 @@ import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 const AvatarDropDownContent = ({ user }) => {
   //hooks
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.loggedInUser);
 
   const handleSignOut = () => {
     signOut(auth)
@@ -48,7 +49,7 @@ const AvatarDropDownContent = ({ user }) => {
         </div>
       </div>
       <Link
-        to="/profile"
+        to={`/profile/${currentUser}`}
         className="btn btn-sm mt-5  bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white w-full"
       >
         View Profile
