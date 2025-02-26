@@ -4,12 +4,11 @@ import ProfileContent from '../components/profile/ProfileContent';
 import { CiHeart } from 'react-icons/ci';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
-import { useSelector } from 'react-redux';
+
 import { useParams } from 'react-router';
 
 const ProfilePage = () => {
   //hooks
-  const { currentUser } = useSelector((state) => state.loggedInUser);
   const { uid } = useParams();
 
   const { data } = useUserInfoByUidQuery(uid);

@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
+import { useSelector } from 'react-redux';
 import CreatePost from '../CreatePost';
 import PostCard from './PostCard';
 import { BiNotepad } from 'react-icons/bi';
+import { useParams } from 'react-router';
 
 const Feed = ({ user }) => {
   //user object destructuring
   const { posts } = user;
+
+  //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { uid } = useParams();
 
   let content;
 
@@ -25,7 +31,7 @@ const Feed = ({ user }) => {
 
   return (
     <div>
-      <CreatePost user={user} />
+      {currentUser === uid && <CreatePost user={user} />}
       {content}
     </div>
   );

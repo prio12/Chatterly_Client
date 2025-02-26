@@ -7,9 +7,15 @@ import { LiaBirthdayCakeSolid } from 'react-icons/lia';
 import { MdOutlineEmail } from 'react-icons/md';
 import { PiSuitcaseSimple } from 'react-icons/pi';
 import UpdateProfileModal from './modals/UpdateProfileModal';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
 const About = ({ user }) => {
   const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
+
+  //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { uid } = useParams();
 
   //user object destructuring
   const { bio, location, birthDate, profession, relationshipStatus, email } =
@@ -21,10 +27,12 @@ const About = ({ user }) => {
       <div className="p-5 border my-5">
         <div className="font-semibold mb-3 flex items-center justify-between">
           <h5>Overview</h5>
-          <BsThreeDots
-            onClick={() => setIsUpdateProfileOpen(true)}
-            className="cursor-pointer"
-          />
+          {currentUser === uid && (
+            <BsThreeDots
+              onClick={() => setIsUpdateProfileOpen(true)}
+              className="cursor-pointer"
+            />
+          )}
         </div>
         <UpdateProfileModal
           user={user}

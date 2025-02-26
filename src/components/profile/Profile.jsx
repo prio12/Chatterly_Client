@@ -8,14 +8,22 @@ import DefaultCoverPhoto from './DefaultCoverPhoto';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import UpdateNameModal from './modals/UpdateNameModal';
 import ProfileMediaModal from './modals/ProfileMediaModal';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
 const Profile = ({ user }) => {
   const { name, profilePicture, coverPhoto } = user;
+
+  //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { uid } = useParams();
 
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
   const [error, setError] = useState(null);
   const [isUpdateNameOpen, setIsUpdateNameOpen] = useState(false);
+
+  console.log(currentUser === uid);
 
   return (
     <div className="bg-white border">
@@ -70,23 +78,27 @@ const Profile = ({ user }) => {
             <p>250 Connections</p>
           </div>
         </div>
-        <div className="hidden md:block ">
-          <button
+        {currentUser === uid && (
+          <div className="hidden md:block ">
+            <button
+              onClick={() => setIsUpdateNameOpen(true)}
+              className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
+            >
+              <span>
+                <MdOutlineEdit className="inline mr-2" />
+              </span>
+              Edit Profile
+            </button>
+          </div>
+        )}
+        {currentUser === uid && (
+          <div
             onClick={() => setIsUpdateNameOpen(true)}
-            className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
+            className="block md:hidden "
           >
-            <span>
-              <MdOutlineEdit className="inline mr-2" />
-            </span>
-            Edit Profile
-          </button>
-        </div>
-        <div
-          onClick={() => setIsUpdateNameOpen(true)}
-          className="block md:hidden "
-        >
-          <MdOutlineEdit className="text-xl" />
-        </div>
+            <MdOutlineEdit className="text-xl" />
+          </div>
+        )}
         <UpdateNameModal
           user={user}
           isUpdateNameOpen={isUpdateNameOpen}
