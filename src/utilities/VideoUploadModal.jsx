@@ -1,32 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import Modal from './Modal';
-import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 import LoadingButton from './btn/LoadingButton';
 
-const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
+const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
   //destructuring
   const { profilePicture, name } = user;
 
   //hooks
-  const [imageFile, setImageFile] = useState(null);
-  const [caption, setCaption] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (!isOpen) {
-      setError('');
-    }
-  }, [isOpen, setError]);
-
-  const [createPost] = useCreateAPostMutation();
-
-  const handleFileOnChange = (e) => {
-    const file = e.target.files[0];
-    setImageFile(file);
-  };
+  const [caption, setCaption] = useState('');
+  const [videoFile, setVideoFile] = useState(null);
 
   const handleCaptionOnChange = (e) => {
     const trimmedCaption = e.target.value.trim();
@@ -37,64 +23,60 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
     setCaption(trimmedCaption);
   };
 
+  const handleFileOnChange = (e) => {
+    const file = e.target.files[0];
+    setVideoFile(file);
+  };
+
   const handleSubmit = async () => {
-    if (!imageFile || !caption) {
-      alert('Please provide both an image and a caption before submitting!');
+    if (!videoFile || !caption) {
+      alert('Please provide both a Video and a Caption before submitting!');
       setCaption('');
-      setImageFile(null);
+      setVideoFile(null);
+      return;
+    }
+
+    //declaring expected video files
+    const allowedVideoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+
+    //showing an alert to prevent unexpected file upload
+    if (![...allowedVideoTypes].includes(videoFile.type)) {
+      alert('Only videos of type MP4, WebM, or OGG are allowed.');
+      return;
+    }
+
+    // Validate file size (max 50MB)
+    const maxFileSize = 50 * 1024 * 1024; // 50MB in bytes
+    if (videoFile.size > maxFileSize) {
+      alert('File size should not exceed 50MB.');
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', imageFile);
-    formData.append('upload_preset', 'Using_Cloudinary_for_First_TIme');
+    formData.append('file', videoFile);
+    formData.append('upload_preset', 'video_hosting');
     formData.append('cloud_name', 'dxzvyancg');
 
+    //uploading the video to cloudinary
     try {
-      setIsLoading(true);
       const response = await fetch(
-        'https://api.cloudinary.com/v1_1/dxzvyancg/image/upload',
+        'https://api.cloudinary.com/v1_1/dxzvyancg/video/upload',
         {
           method: 'POST',
           body: formData,
         }
       );
+
       const result = await response.json();
 
-      if (result.secure_url) {
-        //preparing post details
-        let post = {
-          author: user?._id,
-          content: caption,
-          // Apply transformation only for cover photo
-          img: result.secure_url.replace(
-            '/upload/',
-            '/upload/w_1000,h_500,c_pad,b_auto/'
-          ),
-        };
-
-        //sending to server
-        const uploadResult = await createPost(post).unwrap();
-        if (uploadResult.result.author) {
-          setIsLoading(false);
-          setImageFile('');
-          setCaption('');
-          setIsOpen(false);
-        }
-      } else {
-        setIsLoading(false);
-        setError('Upload failed!');
-      }
+      console.log(result);
     } catch (error) {
-      setIsLoading(false);
-      setError(error?.data?.error || 'Something went wrong');
-      setImageFile(null);
-      setCaption('');
+      setError(error.message);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
       <div className="md:w-1/2 md:mx-auto mt-5 p-2 md:p-5 shadow-md">
         <div className="flex items-center gap-5">
           <div>
@@ -131,7 +113,7 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
           <input
             type="file"
             onChange={handleFileOnChange}
-            accept="image/jpeg, image/png, image/webp, image/jpg"
+            accept="video/*"
             className="file-input w-full max-w-xs"
             // onChange={handleOnChange}
           />
@@ -154,4 +136,4 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
   );
 };
 
-export default ContentUploadModal;
+export default VideoUploadModal;

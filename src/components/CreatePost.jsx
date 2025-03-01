@@ -6,6 +6,7 @@ import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 import toast, { Toaster } from 'react-hot-toast';
 import ContentUploadModal from '../utilities/ContentUploadModal ';
 import LoadingButton from '../utilities/btn/LoadingButton';
+import VideoUploadModal from '../utilities/VideoUploadModal';
 
 const CreatePost = ({ user }) => {
   //hooks
@@ -13,7 +14,7 @@ const CreatePost = ({ user }) => {
   const [createPost] = useCreateAPostMutation();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [type, setType] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOnChange = (e) => {
     setText(e.target.value);
@@ -73,7 +74,6 @@ const CreatePost = ({ user }) => {
         <div className="flex items-center gap-5">
           <div
             onClick={() => {
-              setType('image');
               setIsOpen(true);
             }}
             className="flex btn btn-sm items-center gap-2"
@@ -84,14 +84,21 @@ const CreatePost = ({ user }) => {
           <ContentUploadModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            type={type}
             user={user}
           />
           {/* <UploadImageModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
-          <div className="flex btn btn-sm items-center gap-2">
+          <div
+            onClick={() => setIsModalOpen(true)}
+            className="flex btn btn-sm items-center gap-2"
+          >
             <IoVideocamOffOutline className="text-green-600 font-bold" />
             <p className="text-sm font-semibold">Video</p>
           </div>
+          <VideoUploadModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            user={user}
+          />
           <div className="flex btn btn-sm items-center gap-2">
             <MdEventAvailable className="text-green-600 font-bold" />
             <p className="text-sm font-semibold">Event</p>
