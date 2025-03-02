@@ -14,7 +14,7 @@ import { Link } from 'react-router';
 
 const PostCard = ({ post }) => {
   //post object destructuring
-  const { content, img, author, createdAt, likes, _id } = post;
+  const { content, img, author, createdAt, likes, _id, video } = post;
 
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -112,6 +112,16 @@ const PostCard = ({ post }) => {
               src={img}
               alt="cover photo"
               className="rounded-md w-full my-5"
+            />
+          )}
+          {video && (
+            <video
+              src={video}
+              controls
+              autoPlay
+              loop
+              muted
+              className="rounded-md w-full max-h-[500px] object-cover"
             />
           )}
         </div>

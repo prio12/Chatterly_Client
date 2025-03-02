@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import Modal from './Modal';
 import LoadingButton from './btn/LoadingButton';
+import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 
 const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
   //destructuring
@@ -28,11 +29,17 @@ const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
     setVideoFile(file);
   };
 
+  useEffect(() => {
+    if (!isModalOpen) {
+      setError('');
+    }
+  }, [isModalOpen, setError]);
+
+  const [createPost] = useCreateAPostMutation();
+
   const handleSubmit = async () => {
     if (!videoFile || !caption) {
       alert('Please provide both a Video and a Caption before submitting!');
-      setCaption('');
-      setVideoFile(null);
       return;
     }
 
@@ -59,6 +66,7 @@ const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
 
     //uploading the video to cloudinary
     try {
+      setIsLoading(true);
       const response = await fetch(
         'https://api.cloudinary.com/v1_1/dxzvyancg/video/upload',
         {
@@ -68,10 +76,37 @@ const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
       );
 
       const result = await response.json();
-
       console.log(result);
+
+      if (result.secure_url) {
+        let post = {
+          author: user?._id,
+          content: caption,
+          // Apply transformation only for cover photo
+          // video: result.secure_url.replace(
+          //   '/upload/',
+          //   '/upload/w_1000,h_500,c_pad,b_auto/'
+          // ),
+          video: result.secure_url,
+        };
+
+        // sending to server
+        const uploadResult = await createPost(post).unwrap();
+        if (uploadResult.result.author) {
+          setIsLoading(false);
+          setVideoFile('');
+          setCaption('');
+          setIsModalOpen(false);
+        }
+      } else {
+        setIsLoading(false);
+        setError('Upload failed!');
+      }
     } catch (error) {
-      setError(error.message);
+      setIsLoading(false);
+      setError(error?.data?.error || 'Something went wrong');
+      setVideoFile(null);
+      setCaption('');
     }
   };
 
