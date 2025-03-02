@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import LoadingButton from './btn/LoadingButton';
 import toast, { Toaster } from 'react-hot-toast';
 
-const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
+const UpdatePostModal = ({ isOpen, setIsOpen, img, video, content, id }) => {
   // hooks
   const {
     register,
@@ -26,6 +26,7 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   const [deleteAPost] = useDeleteAPostMutation();
 
   const [isLoading, setIsLoading] = useState(false);
+
   //loading state for delete btn
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -39,6 +40,11 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
   const updates = {
     id,
   };
+
+  // Generate a thumbnail at the 2-second mark
+  const thumbnailUrl = video
+    .replace('/upload/', '/upload/w_1000,h_500,c_fill,so_2/') // Width: 300px, Height: 200px, Crop, Seek 2 sec
+    .replace('.mp4', '.jpg'); // Convert video to image
 
   const submit = async (data) => {
     // This will now log the form values
@@ -99,6 +105,9 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, content, id }) => {
         </h1>
 
         {img && <img src={img} className="w-full mt-5" alt="Post" />}
+        {thumbnailUrl && (
+          <img src={thumbnailUrl} className="w-full mt-5" alt="Post" />
+        )}
 
         {/* Ensure the form properly submits */}
         <form onSubmit={handleSubmit(submit)}>

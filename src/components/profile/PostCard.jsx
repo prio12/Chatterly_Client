@@ -91,6 +91,7 @@ const PostCard = ({ post }) => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           img={img}
+          video={video}
           content={content}
           id={_id}
         />
