@@ -7,7 +7,7 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { formatDistanceToNow } from 'date-fns';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import UpdatePostModal from '../../utilities/UpdatePostModal';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router';
@@ -20,11 +20,31 @@ const PostCard = ({ post }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
+  const videoRef = useRef(null); // Reference for video
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
+
+  // Play/Pause Video on Scroll
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    const videoElement = videoRef.current;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !document.fullscreenElement) {
+        videoElement.play();
+      } else {
+        videoElement.pause();
+      }
+    });
+
+    observer.observe(videoElement);
+
+    return () => observer.unobserve(videoElement);
+  }, []);
 
   //will be removed
   const comments = [
@@ -117,11 +137,11 @@ const PostCard = ({ post }) => {
           )}
           {video && (
             <video
+              ref={videoRef}
               src={video}
               controls
               autoPlay
               loop
-              muted
               className="rounded-md w-full max-h-[500px] object-cover"
             />
           )}
