@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
-import { FaHeart } from 'react-icons/fa6';
+import {
+  FaHeart,
+  FaHeartCircleMinus,
+  FaHeartCirclePlus,
+} from 'react-icons/fa6';
 import CommentInputField from '../CommentInputField';
 import CommentBox from '../CommentBox';
 import { MdOutlineInsertComment } from 'react-icons/md';
@@ -15,7 +19,15 @@ import { io } from 'socket.io-client';
 
 const PostCard = ({ post, id }) => {
   //post object destructuring
-  const { content, img, author, createdAt, likes, _id, video } = post;
+  const {
+    content,
+    img,
+    author,
+    createdAt,
+    likes: postLikes,
+    _id,
+    video,
+  } = post;
 
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -23,6 +35,7 @@ const PostCard = ({ post, id }) => {
   const { pathname } = useLocation();
   const videoRef = useRef(null); // Reference for video
   const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(postLikes);
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
@@ -66,11 +79,23 @@ const PostCard = ({ post, id }) => {
   }, [id, socket]);
 
   const handleLikeAndNotify = () => {
-    socket.emit('liked', { userId: id, postId: _id }, (response) => {
-      console.log(response);
-    });
-  };
+    // Determine action based on current state
+    const action = isLiked ? 'dislike' : 'like';
+    console.log(action);
 
+    socket.emit(
+      'liked',
+      { userId: id, postId: _id, action: action },
+      (response) => {
+        if (response.success) {
+          setIsLiked(response.liked);
+          setLikes(response.likes); // Directly use the updated likes array
+        } else {
+          console.error(response.error);
+        }
+      }
+    );
+  };
   //will be removed
   const comments = [
     {
@@ -102,20 +127,20 @@ const PostCard = ({ post, id }) => {
   let likeIcon;
 
   if (author._id === id) {
-    likeIcon = <FaHeart title="Own post!" className="cursor-not-allowed " />;
-  } else if (isLiked) {
     likeIcon = (
-      <FaHeart
-        onClick={() => handleLikeAndNotify()}
-        className="text-red-600 cursor-pointer"
-      />
+      <button className="btn btn-disabled">
+        <FaHeart className="text-red-500 text-2xl" />
+      </button>
     );
-  } else if (!isLiked) {
+  } else {
     likeIcon = (
-      <FaHeart
-        onClick={() => handleLikeAndNotify()}
-        className=" cursor-pointer"
-      />
+      <button className="btn" onClick={handleLikeAndNotify}>
+        {isLiked ? (
+          <FaHeartCircleMinus className="text-red-500 cursor-pointer text-2xl " />
+        ) : (
+          <FaHeartCirclePlus className="text-red-500 cursor-pointer text-2xl" />
+        )}
+      </button>
     );
   }
 
@@ -195,14 +220,18 @@ const PostCard = ({ post, id }) => {
       <div className="flex items-center my-5 gap-5">
         <div className="flex text-sm items-center gap-2">
           {likeIcon}
-          {likes?.length > 0 ? <span>{likes?.length}</span> : <span>(0)</span>}
+          {likes?.length > 0 ? (
+            <span className="font-semibold">({likes?.length})</span>
+          ) : (
+            <span className="font-semibold">(0)</span>
+          )}
         </div>
         <div className="flex text-sm items-center gap-2">
-          <MdOutlineInsertComment />
+          <MdOutlineInsertComment className="text-2xl" />
           {comments?.length > 0 ? (
-            <span>({comments.length})</span>
+            <span className="font-semibold">({comments.length})</span>
           ) : (
-            <span>(0)</span>
+            <span className="font-semibold">(0)</span>
           )}
         </div>
       </div>
