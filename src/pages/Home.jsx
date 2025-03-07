@@ -34,7 +34,9 @@ const Home = () => {
   }
 
   if (!isLoading && !isError && posts.length > 0) {
-    content = posts.map((post) => <PostCard key={post._id} post={post} />);
+    content = posts.map((post) => (
+      <PostCard id={user?._id} key={post._id} post={post} />
+    ));
   }
 
   return (

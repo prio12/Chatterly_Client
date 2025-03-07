@@ -11,8 +11,9 @@ import { useEffect, useRef, useState } from 'react';
 import UpdatePostModal from '../../utilities/UpdatePostModal';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router';
+import { io } from 'socket.io-client';
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, id }) => {
   //post object destructuring
   const { content, img, author, createdAt, likes, _id, video } = post;
 
@@ -21,11 +22,18 @@ const PostCard = ({ post }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
   const videoRef = useRef(null); // Reference for video
+  const [isLiked, setIsLiked] = useState(false);
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
+
+  useEffect(() => {
+    if (likes.includes(id)) {
+      setIsLiked(true);
+    }
+  }, [id, likes]);
 
   // Play/Pause Video on Scroll
   useEffect(() => {
@@ -45,6 +53,23 @@ const PostCard = ({ post }) => {
 
     return () => observer.unobserve(videoElement);
   }, []);
+
+  //socket connection
+  const socket = io('http://localhost:5000', {
+    path: '/socket.io/', // Ensures correct connection path
+    transports: ['websocket'], // Use WebSockets for real-time communication
+  });
+
+  useEffect(() => {
+    //registering user in server for socket.io using user specific mongodb _id
+    socket.emit('register', id);
+  }, [id, socket]);
+
+  const handleLikeAndNotify = () => {
+    socket.emit('liked', { userId: id, postId: _id }, (response) => {
+      console.log(response);
+    });
+  };
 
   //will be removed
   const comments = [
@@ -73,6 +98,26 @@ const PostCard = ({ post }) => {
         "I'll make sure it's worth it next time, Captain. I promise I won't let you down again.",
     },
   ];
+
+  let likeIcon;
+
+  if (author._id === id) {
+    likeIcon = <FaHeart title="Own post!" className="cursor-not-allowed " />;
+  } else if (isLiked) {
+    likeIcon = (
+      <FaHeart
+        onClick={() => handleLikeAndNotify()}
+        className="text-red-600 cursor-pointer"
+      />
+    );
+  } else if (!isLiked) {
+    likeIcon = (
+      <FaHeart
+        onClick={() => handleLikeAndNotify()}
+        className=" cursor-pointer"
+      />
+    );
+  }
 
   return (
     <div className="my-8 bg-white border p-5 ">
@@ -149,8 +194,8 @@ const PostCard = ({ post }) => {
       </div>
       <div className="flex items-center my-5 gap-5">
         <div className="flex text-sm items-center gap-2">
-          <FaHeart className="text-red-600" />
-          {likes?.length > 0 ? <span>{likes.length}</span> : <span>(0)</span>}
+          {likeIcon}
+          {likes?.length > 0 ? <span>{likes?.length}</span> : <span>(0)</span>}
         </div>
         <div className="flex text-sm items-center gap-2">
           <MdOutlineInsertComment />
