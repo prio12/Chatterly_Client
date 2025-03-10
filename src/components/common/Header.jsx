@@ -19,13 +19,17 @@ import { useSelector } from 'react-redux';
 import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import SocketContext from '../../context/SocketContext';
+import { useGetUserSpecificNotificationsQuery } from '../../redux/api/notifications/notificationsApi';
 
 const Header = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
   const user = data?.user;
-  // const [notifications, setNotifications] = useState([]);
+  const { data: notifications } = useGetUserSpecificNotificationsQuery({
+    _id: user?._id,
+  });
+  const [unseenNotifications, setUnseenNotifications] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDownOpen, setDropDownOpen] = useState(false);
@@ -37,14 +41,27 @@ const Header = () => {
   };
 
   useEffect(() => {
-    socket.on('likedNotification', ({ message, post }) => {
-      console.log('printing data from socket event', message);
+    if (notifications?.response?.length > 0) {
+      const unseenNotifications = notifications?.response?.filter(
+        (notification) => !notification.seen
+      );
+
+      setUnseenNotifications(unseenNotifications);
+    }
+  }, [notifications]);
+
+  useEffect(() => {
+    socket.on('likedNotification', (savedNotification) => {
+      console.log(savedNotification); //getting the latest notification with _id
     });
   }, [socket]);
 
   useEffect(() => {
     setDropDownOpen(false);
   }, [location]);
+
+  console.log(unseenNotifications);
+  console.log(notifications?.response);
 
   return (
     <div className="md:p-5 px-2  py-5 z-50 bg-white">
@@ -75,17 +92,29 @@ const Header = () => {
           >
             <FaRegMessage />
           </Link>
+
           <Link
             title="Notifications"
             className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
           >
-            <IoNotificationsOutline />
+            {/* Notification Icon */}
+            <IoNotificationsOutline className="text-2xl" />
+
+            {/* Notification Badge (Only Shows if Unseen Notifications Exist) */}
+            {unseenNotifications.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-blue-400 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[18px] text-center">
+                {unseenNotifications.length >= 9
+                  ? '9+'
+                  : unseenNotifications.length}
+              </span>
+            )}
           </Link>
+
           <Link
             title="Friends"
             className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
           >
-            <IoPeopleOutline className="text-xl" />
+            <IoPeopleOutline className="text-2xl" />
           </Link>
         </div>
         <div className="flex items-center cursor-pointer gap-3">
