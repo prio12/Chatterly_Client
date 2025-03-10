@@ -4,6 +4,7 @@ import { IoIosSearch, IoMdClose } from 'react-icons/io';
 import {
   IoAlbumsOutline,
   IoHomeOutline,
+  IoNotificationsOutline,
   IoPeopleOutline,
 } from 'react-icons/io5';
 import { LuMenu } from 'react-icons/lu';
@@ -19,6 +20,7 @@ const SmallScreenHeader = ({
   handleDropdown,
   cIcon,
   user,
+  unseenNotifications,
 }) => {
   return (
     <div className=" md:hidden  flex items-center sticky top-0  justify-between lg:hidden  w-full ">
@@ -104,6 +106,22 @@ const SmallScreenHeader = ({
       <div>
         <IoIosSearch className="text-xl" />
       </div>
+      <Link
+        title="Notifications"
+        className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+      >
+        {/* Notification Icon */}
+        <IoNotificationsOutline className="text-2xl" />
+
+        {/* Notification Badge (Only Shows if Unseen Notifications Exist) */}
+        {unseenNotifications.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[18px] text-center">
+            {unseenNotifications.length >= 9
+              ? '9+'
+              : unseenNotifications.length}
+          </span>
+        )}
+      </Link>
 
       <div className="avatar relative cursor-pointer">
         <div onClick={handleDropdown} className="mask mask-squircle w-10">
