@@ -36,7 +36,7 @@ const Notifications = () => {
             Notifications
           </h3>
         </div>
-        <div className="fixed top-44 max-h-96 overflow-y-scroll no-scrollbar">
+        <div className="fixed top-44 max-h-[600px] overflow-y-scroll no-scrollbar">
           {notifications?.response?.map((notification) => {
             return (
               <div
