@@ -13,25 +13,34 @@ import {
   MdOutlineOndemandVideo,
   MdOutlinePhotoSizeSelectActual,
 } from 'react-icons/md';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AvatarDropDownContent from '../../utilities/AvatarDropDownContent';
 import { useSelector } from 'react-redux';
 import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
+import SocketContext from '../../context/SocketContext';
 
 const Header = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
   const user = data?.user;
+  // const [notifications, setNotifications] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isDropDownOpen, setDropDownOpen] = useState(false);
   const location = useLocation();
+  const socket = useContext(SocketContext);
 
   const handleDropdown = () => {
     setDropDownOpen(!isDropDownOpen);
   };
+
+  useEffect(() => {
+    socket.on('likedNotification', ({ message, post }) => {
+      console.log('printing data from socket event', message);
+    });
+  }, [socket]);
 
   useEffect(() => {
     setDropDownOpen(false);

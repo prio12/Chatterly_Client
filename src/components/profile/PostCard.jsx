@@ -11,11 +11,11 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { formatDistanceToNow } from 'date-fns';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import { useSelector } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import UpdatePostModal from '../../utilities/UpdatePostModal';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router';
-import { io } from 'socket.io-client';
+import SocketContext from '../../context/SocketContext';
 
 const PostCard = ({ post, id }) => {
   //post object destructuring
@@ -36,6 +36,9 @@ const PostCard = ({ post, id }) => {
   const videoRef = useRef(null); // Reference for video
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(postLikes);
+
+  //hook to get socket
+  const socket = useContext(SocketContext);
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
@@ -67,25 +70,15 @@ const PostCard = ({ post, id }) => {
     return () => observer.unobserve(videoElement);
   }, []);
 
-  //socket connection
-  const socket = io('http://localhost:5000', {
-    path: '/socket.io/', // Ensures correct connection path
-    transports: ['websocket'], // Use WebSockets for real-time communication
-  });
-
-  useEffect(() => {
-    //registering user in server for socket.io using user specific mongodb _id
-    socket.emit('register', id);
-  }, [id, socket]);
+  const authorUid = author?.uid;
 
   const handleLikeAndNotify = () => {
     // Determine action based on current state
     const action = isLiked ? 'dislike' : 'like';
-    console.log(action);
 
     socket.emit(
       'liked',
-      { userId: id, postId: _id, action: action },
+      { userId: id, postId: _id, action: action, authorUid },
       (response) => {
         if (response.success) {
           setIsLiked(response.liked);
