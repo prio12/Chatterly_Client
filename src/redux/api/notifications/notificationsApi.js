@@ -5,7 +5,6 @@ const notifications = baseApi.injectEndpoints({
     // fetching a user-specific notifications
     getUserSpecificNotifications: builder.query({
       query: ({ _id }) => {
-        console.log(_id); // Prints _id correctly
         return {
           url: `/notifications/${_id}`,
           method: 'GET',
