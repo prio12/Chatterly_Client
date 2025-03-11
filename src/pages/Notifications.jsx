@@ -64,7 +64,10 @@ const Notifications = () => {
                 } mb-5`}
                 key={notification._id}
               >
-                <div onClick={handleNavigate} className="cursor-pointer">
+                <div
+                  onClick={() => handleNavigate(notification?.post?._id)}
+                  className="cursor-pointer"
+                >
                   <div className="relative inline-block ">
                     {/* Avatar Section */}
                     <div className="w-12 h-12 rounded-full overflow-hidden">
@@ -91,7 +94,7 @@ const Notifications = () => {
                 </div>
                 <div>
                   <h5
-                    onClick={handleNavigate}
+                    onClick={() => handleNavigate(notification?.post?._id)}
                     className="text-sm cursor-pointer"
                   >
                     <span className="font-semibold">
