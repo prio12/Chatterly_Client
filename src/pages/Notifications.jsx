@@ -21,6 +21,10 @@ const Notifications = () => {
 
   let content;
 
+  const handleDelete = (_id) => {
+    console.log('clicked', _id);
+  };
+
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
@@ -91,7 +95,10 @@ const Notifications = () => {
                     <small className="text-xs">
                       {timeAgo(notification?.createdAt)}
                     </small>
-                    <MdDelete className="inline ms-5 cursor-pointer" />
+                    <MdDelete
+                      onClick={() => handleDelete(notification?._id)}
+                      className="inline ms-5 cursor-pointer"
+                    />
                   </div>
                 </div>
               </div>
