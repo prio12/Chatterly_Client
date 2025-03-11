@@ -1,7 +1,10 @@
 import { useParams } from 'react-router';
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
-import { useGetUserSpecificNotificationsQuery } from '../redux/api/notifications/notificationsApi';
+import {
+  useGetUserSpecificNotificationsQuery,
+  useHandleDeleteMutation,
+} from '../redux/api/notifications/notificationsApi';
 import { IoNotificationsOffOutline } from 'react-icons/io5';
 import { FaHeart } from 'react-icons/fa6';
 import { MdDelete, MdOutlineInsertComment } from 'react-icons/md';
@@ -19,10 +22,12 @@ const Notifications = () => {
     _id: id,
   });
 
+  const [deleteNotification] = useHandleDeleteMutation();
+
   let content;
 
-  const handleDelete = (_id) => {
-    console.log('clicked', _id);
+  const handleDelete = async (_id) => {
+    await deleteNotification({ _id });
   };
 
   // Converts createdAt timestamp into a human-readable relative time format.

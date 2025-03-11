@@ -23,10 +23,20 @@ const notifications = baseApi.injectEndpoints({
       },
       invalidatesTags: ['markAsSeen'],
     }),
+
+    //handle delete a notification
+    handleDelete: builder.mutation({
+      query: ({ _id }) => ({
+        url: `/notifications/${_id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['markAsSeen'],
+    }),
   }),
 });
 
 export const {
   useGetUserSpecificNotificationsQuery,
   useHandleMarkAsSeenMutation,
+  useHandleDeleteMutation,
 } = notifications;
