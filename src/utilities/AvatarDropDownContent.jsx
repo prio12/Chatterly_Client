@@ -29,6 +29,8 @@ const AvatarDropDownContent = ({ user }) => {
         console.log(err);
       });
   };
+
+  console.log(user);
   return (
     <div>
       <div className="flex items-center gap-5">
@@ -44,8 +46,8 @@ const AvatarDropDownContent = ({ user }) => {
           )}
         </div>
         <div>
-          <h5 className="font-semibold">John Doe</h5>
-          <p className="text-xs">Web Developer</p>
+          <h5 className="font-semibold">{user?.name}</h5>
+          {user?.profession && <p className="text-xs">{user?.profession}</p>}
         </div>
       </div>
       <Link

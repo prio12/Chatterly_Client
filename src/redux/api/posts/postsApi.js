@@ -26,6 +26,7 @@ const postsApi = baseApi.injectEndpoints({
         console.log('API Request for Post ID:', id); // Debugging line
         return { url: `/posts/${id}` };
       },
+      providesTags: ['postDetails'],
     }),
 
     //updating a post
@@ -35,7 +36,7 @@ const postsApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body: { content },
       }),
-      invalidatesTags: ['posts'],
+      invalidatesTags: ['posts', 'postDetails'],
     }),
 
     //deleting a post

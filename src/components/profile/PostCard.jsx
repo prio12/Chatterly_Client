@@ -231,11 +231,13 @@ const PostCard = ({ post, id }) => {
         </div>
       </div>
       {likes?.length > 0 && (
-        <p className="my-5 flex items-center gap-2 text-sm">
-          <FaHeart className="text-red-500" />
-          <span className="font-semibold">{likes.slice(-1)[0]?.name}</span>
-          {likes.length === 2 && <span> and 1 other</span>}
-          {likes.length > 2 && <span> and {likes.length - 1} others</span>}
+        <p className=" my-5 flex items-center gap-2 text-sm">
+          <FaHeart className="text-red-500  " />
+          <span className="font-semibold">
+            {' '}
+            {likes.slice(-1)[0]?.name}
+          </span>{' '}
+          <span>{likes.length > 1 && ` and ${likes.length - 1} others`}</span>
         </p>
       )}
 

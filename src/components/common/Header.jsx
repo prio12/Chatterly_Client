@@ -3,7 +3,7 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { IoAlbumsOutline } from 'react-icons/io5';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { FaRegMessage } from 'react-icons/fa6';
-import { Link, useLocation } from 'react-router';
+import { Link, NavLink, useLocation } from 'react-router';
 import cIcon from '../../assets/icon/letter-c (1).png';
 import { useContext, useEffect, useState } from 'react';
 import AvatarDropDownContent from '../../utilities/AvatarDropDownContent';
@@ -77,13 +77,18 @@ const Header = () => {
           </Link>
         </div>
         <div className="text-xl flex ms-24 items-center gap-12">
-          <Link
+          <NavLink
             to="/"
             title="Home"
-            className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+            className={({ isActive }) =>
+              `relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+                isActive ? 'after:scale-x-100 after:bg-blue-500' : ''
+              }`
+            }
           >
             <IoHomeOutline />
-          </Link>
+          </NavLink>
+
           <Link
             title="Albums"
             className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
@@ -97,11 +102,15 @@ const Header = () => {
             <FaRegMessage />
           </Link>
 
-          <Link
+          <NavLink
             onClick={markAsSeen}
             to={`/notifications/${user?._id}`}
             title="Notifications"
-            className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+            className={({ isActive }) =>
+              `relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+                isActive ? 'after:scale-x-100 after:bg-blue-500' : ''
+              }`
+            }
           >
             {/* Notification Icon */}
             <IoNotificationsOutline className="text-2xl" />
@@ -114,7 +123,7 @@ const Header = () => {
                   : unseenNotifications.length}
               </span>
             )}
-          </Link>
+          </NavLink>
 
           <Link
             title="Friends"

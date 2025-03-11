@@ -9,7 +9,7 @@ import {
 } from 'react-icons/io5';
 import { LuMenu } from 'react-icons/lu';
 import { RiMenu2Fill } from 'react-icons/ri';
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import DefaultProfilePIcture from '../../profile/DefaultProfilePIcture';
 import AvatarDropDownContent from '../../../utilities/AvatarDropDownContent';
 
@@ -107,11 +107,15 @@ const SmallScreenHeader = ({
       <div>
         <IoIosSearch className="text-xl" />
       </div>
-      <Link
+      <NavLink
         onClick={markAsSeen}
         to={`/notifications/${user?._id}`}
         title="Notifications"
-        className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+        className={({ isActive }) =>
+          `relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+            isActive ? 'after:scale-x-100 after:bg-blue-500' : ''
+          }`
+        }
       >
         {/* Notification Icon */}
         <IoNotificationsOutline className="text-2xl" />
@@ -124,7 +128,7 @@ const SmallScreenHeader = ({
               : unseenNotifications.length}
           </span>
         )}
-      </Link>
+      </NavLink>
 
       <div className="avatar relative cursor-pointer">
         <div onClick={handleDropdown} className="mask mask-squircle w-10">

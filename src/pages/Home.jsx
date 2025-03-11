@@ -33,6 +33,10 @@ const Home = () => {
     </div>;
   }
 
+  if (!isLoading && !isError && posts.length === 0) {
+    content = <div>No post Available</div>;
+  }
+
   if (!isLoading && !isError && posts.length > 0) {
     content = posts.map((post) => (
       <PostCard id={user?._id} key={post._id} post={post} />
