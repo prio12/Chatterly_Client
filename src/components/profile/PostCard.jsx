@@ -137,6 +137,8 @@ const PostCard = ({ post, id }) => {
     );
   }
 
+  console.log(post);
+
   return (
     <div className="my-8 bg-white border p-5 ">
       <div className="flex items-center justify-between">
@@ -228,6 +230,15 @@ const PostCard = ({ post, id }) => {
           )}
         </div>
       </div>
+      {likes?.length > 0 && (
+        <p className="my-5 flex items-center gap-2 text-sm">
+          <FaHeart className="text-red-500" />
+          <span className="font-semibold">{likes.slice(-1)[0]?.name}</span>
+          {likes.length === 2 && <span> and 1 other</span>}
+          {likes.length > 2 && <span> and {likes.length - 1} others</span>}
+        </p>
+      )}
+
       <CommentInputField />
       {comments.length && (
         <div className="max-h-48 overflow-y-scroll no-scrollbar">

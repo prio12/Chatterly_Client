@@ -20,6 +20,14 @@ const postsApi = baseApi.injectEndpoints({
       providesTags: ['posts'],
     }),
 
+    //fetching a specific post details
+    getAPost: builder.query({
+      query: (id) => {
+        console.log('API Request for Post ID:', id); // Debugging line
+        return { url: `/posts/${id}` };
+      },
+    }),
+
     //updating a post
     updateAPost: builder.mutation({
       query: ({ id, content }) => ({
@@ -46,4 +54,5 @@ export const {
   useGetAllPostsQuery,
   useUpdateAPostMutation,
   useDeleteAPostMutation,
+  useGetAPostQuery,
 } = postsApi;

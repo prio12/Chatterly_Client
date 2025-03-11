@@ -1,11 +1,27 @@
 import { useParams } from 'react-router';
 import LeftSideBar from '../LeftSideBar';
 import RightSideBar from '../RightSideBar';
+import { useGetAPostQuery } from '../../../redux/api/posts/postsApi';
+import PostCard from '../../profile/PostCard';
+import { useSelector } from 'react-redux';
+import { useUserInfoByUidQuery } from '../../../redux/api/users/usersApi';
 
 const PostDetails = () => {
   //hooks
   const { id } = useParams();
-  console.log(id);
+  const { data, isLoading } = useGetAPostQuery(id);
+  const post = data?.response;
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+
+  const { data: user, isLoading: loading } = useUserInfoByUidQuery(currentUser);
+  const _id = user?.user?._id;
+
+  if (isLoading && loading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(post);
+  console.log(user);
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
       {/* Left Sidebar */}
@@ -18,6 +34,9 @@ const PostDetails = () => {
           {/* <Stories />
           <CreatePost user={user} />
           {content} */}
+          <div className="fixed top-24">
+            <PostCard post={post} id={_id} />
+          </div>
         </div>
       </div>
 

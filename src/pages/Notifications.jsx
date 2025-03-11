@@ -144,7 +144,7 @@ const Notifications = () => {
         <LeftSideBar />
       </div>
 
-      <div className="col-span-1 sticky top-4 md:col-span-7 bg-white p-2 md:py-2 md:px-5">
+      <div className="col-span-1  md:col-span-7 bg-white p-2 md:py-2 md:px-5">
         {content}
       </div>
 

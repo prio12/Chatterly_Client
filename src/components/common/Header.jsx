@@ -63,7 +63,7 @@ const Header = () => {
   // Mark Notifications as Seen
   const markAsSeen = async () => {
     if (user?._id) {
-      await handleMarkAsSeen({ _id: user._id });
+      await handleMarkAsSeen({ _id: user?._id });
     }
   };
 
