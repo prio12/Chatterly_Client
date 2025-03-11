@@ -10,8 +10,23 @@ const notifications = baseApi.injectEndpoints({
           method: 'GET',
         };
       },
+      providesTags: ['markAsSeen'],
+    }),
+
+    //handle mark as seen
+    handleMarkAsSeen: builder.mutation({
+      query: ({ _id }) => {
+        return {
+          url: `/notifications/${_id}`,
+          method: 'PATCH',
+        };
+      },
+      invalidatesTags: ['markAsSeen'],
     }),
   }),
 });
 
-export const { useGetUserSpecificNotificationsQuery } = notifications;
+export const {
+  useGetUserSpecificNotificationsQuery,
+  useHandleMarkAsSeenMutation,
+} = notifications;

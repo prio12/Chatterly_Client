@@ -11,7 +11,10 @@ import { useSelector } from 'react-redux';
 import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import SocketContext from '../../context/SocketContext';
-import { useGetUserSpecificNotificationsQuery } from '../../redux/api/notifications/notificationsApi';
+import {
+  useGetUserSpecificNotificationsQuery,
+  useHandleMarkAsSeenMutation,
+} from '../../redux/api/notifications/notificationsApi';
 import SmallScreenHeader from './smallScreenHeader/SmallScreenHeader';
 import SmallScreenDropdown from './smallScreenHeader/SmallScreenDropdown';
 
@@ -23,6 +26,7 @@ const Header = () => {
   const { data: notifications } = useGetUserSpecificNotificationsQuery({
     _id: user?._id,
   });
+  const [handleMarkAsSeen] = useHandleMarkAsSeenMutation();
   const [unseenNotifications, setUnseenNotifications] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -55,6 +59,13 @@ const Header = () => {
     setDropDownOpen(false);
   }, [location]);
 
+  // Mark Notifications as Seen
+  const markAsSeen = () => {
+    if (user?._id) {
+      handleMarkAsSeen({ _id: user._id });
+    }
+  };
+
   return (
     <div className="md:p-5 px-2  py-5 z-50 bg-white">
       <div className="h-16 hidden relative md:flex lg:flex justify-between ">
@@ -86,6 +97,7 @@ const Header = () => {
           </Link>
 
           <Link
+            onClick={markAsSeen}
             to={`/notifications/${user?._id}`}
             title="Notifications"
             className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"

@@ -4,8 +4,9 @@ import RightSideBar from '../components/common/RightSideBar';
 import { useGetUserSpecificNotificationsQuery } from '../redux/api/notifications/notificationsApi';
 import { IoNotificationsOffOutline } from 'react-icons/io5';
 import { FaHeart } from 'react-icons/fa6';
-import { MdOutlineInsertComment } from 'react-icons/md';
+import { MdDelete, MdOutlineInsertComment } from 'react-icons/md';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
+import { formatDistanceToNow } from 'date-fns';
 
 const Notifications = () => {
   //hooks
@@ -19,6 +20,11 @@ const Notifications = () => {
   });
 
   let content;
+
+  // Converts createdAt timestamp into a human-readable relative time format.
+  const timeAgo = (timestamp) => {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  };
 
   if (isLoading) {
     content = <div>Loading...</div>;
@@ -81,7 +87,12 @@ const Notifications = () => {
                       <span>commented on a post you shared</span>
                     )}
                   </h5>
-                  <small className="text-xs">1 h</small>
+                  <div>
+                    <small className="text-xs">
+                      {timeAgo(notification?.createdAt)}
+                    </small>
+                    <MdDelete className="inline ms-5 cursor-pointer" />
+                  </div>
                 </div>
               </div>
             );
