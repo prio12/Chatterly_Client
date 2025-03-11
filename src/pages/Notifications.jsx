@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
 import {
@@ -23,6 +23,7 @@ const Notifications = () => {
   });
 
   const [deleteNotification] = useHandleDeleteMutation();
+  const navigate = useNavigate();
 
   let content;
 
@@ -35,6 +36,9 @@ const Notifications = () => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
 
+  const handleNavigate = (id) => {
+    navigate(`/posts/${id}`);
+  };
   if (isLoading) {
     content = <div>Loading...</div>;
   }
@@ -60,7 +64,7 @@ const Notifications = () => {
                 } mb-5`}
                 key={notification._id}
               >
-                <div>
+                <div onClick={handleNavigate} className="cursor-pointer">
                   <div className="relative inline-block ">
                     {/* Avatar Section */}
                     <div className="w-12 h-12 rounded-full overflow-hidden">
@@ -86,7 +90,10 @@ const Notifications = () => {
                   </div>
                 </div>
                 <div>
-                  <h5 className="text-sm">
+                  <h5
+                    onClick={handleNavigate}
+                    className="text-sm cursor-pointer"
+                  >
                     <span className="font-semibold">
                       {notification?.sender?.name}
                     </span>{' '}
@@ -115,7 +122,7 @@ const Notifications = () => {
   }
   if (!isLoading && !isError && notifications?.response?.length < 1) {
     content = (
-      <div className="text-center py-10 ">
+      <div className=" py-10 ">
         <IoNotificationsOffOutline className="text-5xl text-gray-400 mb-4" />
         <h2 className="text-xl text-gray-500 font-semibold">
           No notifications yet!

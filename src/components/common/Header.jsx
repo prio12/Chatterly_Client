@@ -26,17 +26,7 @@ const Header = () => {
   const { data: notifications } = useGetUserSpecificNotificationsQuery({
     _id: user?._id,
   });
-  const [handleMarkAsSeen] = useHandleMarkAsSeenMutation();
   const [unseenNotifications, setUnseenNotifications] = useState([]);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDropDownOpen, setDropDownOpen] = useState(false);
-  const location = useLocation();
-  const socket = useContext(SocketContext);
-
-  const handleDropdown = () => {
-    setDropDownOpen(!isDropDownOpen);
-  };
 
   useEffect(() => {
     if (notifications?.response?.length > 0) {
@@ -47,6 +37,17 @@ const Header = () => {
       setUnseenNotifications(unseenNotifications);
     }
   }, [notifications]);
+
+  const [handleMarkAsSeen] = useHandleMarkAsSeenMutation();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDropDownOpen, setDropDownOpen] = useState(false);
+  const location = useLocation();
+  const socket = useContext(SocketContext);
+
+  const handleDropdown = () => {
+    setDropDownOpen(!isDropDownOpen);
+  };
 
   useEffect(() => {
     socket.on('likedNotification', (savedNotification) => {
@@ -60,9 +61,9 @@ const Header = () => {
   }, [location]);
 
   // Mark Notifications as Seen
-  const markAsSeen = () => {
+  const markAsSeen = async () => {
     if (user?._id) {
-      handleMarkAsSeen({ _id: user._id });
+      await handleMarkAsSeen({ _id: user._id });
     }
   };
 
@@ -154,6 +155,7 @@ const Header = () => {
         cIcon={cIcon}
         user={user}
         unseenNotifications={unseenNotifications}
+        markAsSeen={markAsSeen}
       />
 
       {/* drawer for small screen */}

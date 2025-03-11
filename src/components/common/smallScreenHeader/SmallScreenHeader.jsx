@@ -14,6 +14,7 @@ import DefaultProfilePIcture from '../../profile/DefaultProfilePIcture';
 import AvatarDropDownContent from '../../../utilities/AvatarDropDownContent';
 
 const SmallScreenHeader = ({
+  markAsSeen,
   setIsOpen,
   isOpen,
   isDropDownOpen,
@@ -107,6 +108,7 @@ const SmallScreenHeader = ({
         <IoIosSearch className="text-xl" />
       </div>
       <Link
+        onClick={markAsSeen}
         to={`/notifications/${user?._id}`}
         title="Notifications"
         className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"

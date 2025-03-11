@@ -6,6 +6,7 @@ import SignIn from '../pages/authentications/SignIn';
 import PrivateRoute from './PrivateRoute';
 import ProfilePage from '../pages/ProfilePage';
 import Notifications from '../pages/Notifications';
+import PostDetails from '../components/common/posts/PostDetails';
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
         <Route path="/" index element={<Home />}></Route>
         <Route path="/profile/:uid" element={<ProfilePage />}></Route>
         <Route path="/notifications/:id" element={<Notifications />}></Route>
+        <Route path="/posts/:id" element={<PostDetails />}></Route>
       </Route>
       <Route path="/signUp" element={<SignUp />}></Route>
       <Route path="/signIn" element={<SignIn />}></Route>
