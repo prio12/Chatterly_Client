@@ -39,6 +39,18 @@ const postsApi = baseApi.injectEndpoints({
       invalidatesTags: ['posts', 'postDetails'],
     }),
 
+    //update likes unLikes
+    handleLikeUnlike: builder.mutation({
+      query: ({ postId, data }) => {
+        return {
+          url: `/posts/likes/${postId}`,
+          method: 'PATCH',
+          body: data,
+        };
+      },
+      invalidatesTags: ['posts'],
+    }),
+
     //deleting a post
     deleteAPost: builder.mutation({
       query: ({ _id }) => ({
@@ -56,4 +68,5 @@ export const {
   useUpdateAPostMutation,
   useDeleteAPostMutation,
   useGetAPostQuery,
+  useHandleLikeUnlikeMutation,
 } = postsApi;

@@ -11,45 +11,28 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { formatDistanceToNow } from 'date-fns';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import { useSelector } from 'react-redux';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import UpdatePostModal from '../../utilities/UpdatePostModal';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router';
-import SocketContext from '../../context/SocketContext';
+import { useHandleLikeUnlikeMutation } from '../../redux/api/posts/postsApi';
 
 const PostCard = ({ post, id }) => {
+  const [handleLikeUnlike] = useHandleLikeUnlikeMutation();
   //post object destructuring
-  const {
-    content,
-    img,
-    author,
-    createdAt,
-    likes: postLikes,
-    _id,
-    video,
-  } = post;
+  const { content, img, author, createdAt, likes, _id, video } = post;
 
   //hooks
+
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
   const videoRef = useRef(null); // Reference for video
-  const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(postLikes);
-
-  //hook to get socket
-  const socket = useContext(SocketContext);
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
-
-  useEffect(() => {
-    if (likes.includes(id)) {
-      setIsLiked(true);
-    }
-  }, [id, likes]);
 
   // Play/Pause Video on Scroll
   useEffect(() => {
@@ -72,22 +55,20 @@ const PostCard = ({ post, id }) => {
 
   const authorUid = author?.uid;
 
-  const handleLikeAndNotify = () => {
-    // Determine action based on current state
-    const action = isLiked ? 'dislike' : 'like';
+  const handleLikeAndNotify = async ({ action }) => {
+    const likePayload = {
+      userId: id,
+      postId: _id,
+      action,
+      authorUid,
+    };
 
-    socket.emit(
-      'liked',
-      { userId: id, postId: _id, action: action, authorUid },
-      (response) => {
-        if (response.success) {
-          setIsLiked(response.liked);
-          setLikes(response.likes); // Directly use the updated likes array
-        } else {
-          console.error(response.error);
-        }
-      }
-    );
+    // await useHandleLikeUnlikeMutation({ postId: id, data: likePayload });
+    try {
+      await handleLikeUnlike({ postId: _id, data: likePayload });
+    } catch (error) {
+      console.log(error);
+    }
   };
   //will be removed
   const comments = [
@@ -119,25 +100,28 @@ const PostCard = ({ post, id }) => {
 
   let likeIcon;
 
+  console.log(likes);
   if (author._id === id) {
     likeIcon = (
       <button className="btn btn-disabled">
         <FaHeart className="text-red-500 text-2xl" />
       </button>
     );
+  } else if (likes.some((like) => like._id === id)) {
+    likeIcon = (
+      <button onClick={() => handleLikeAndNotify({ action: 'unLike' })}>
+        {' '}
+        <FaHeartCircleMinus className="text-red-500 cursor-pointer text-2xl " />
+      </button>
+    );
   } else {
     likeIcon = (
-      <button className="btn" onClick={handleLikeAndNotify}>
-        {isLiked ? (
-          <FaHeartCircleMinus className="text-red-500 cursor-pointer text-2xl " />
-        ) : (
-          <FaHeartCirclePlus className="text-red-500 cursor-pointer text-2xl" />
-        )}
+      <button onClick={() => handleLikeAndNotify({ action: 'like' })}>
+        {' '}
+        <FaHeartCirclePlus className="text-red-500 cursor-pointer text-2xl" />
       </button>
     );
   }
-
-  console.log(post);
 
   return (
     <div className="my-8 bg-white border p-5 ">
