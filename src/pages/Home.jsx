@@ -6,15 +6,33 @@ import Stories from '../components/home/Stories';
 import PostCard from '../components/profile/PostCard';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
+import { useContext, useEffect } from 'react';
+import SocketContext from '../context/SocketContext';
 
 const Home = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
-  const { data: postData, error, isLoading, isError } = useGetAllPostsQuery();
+  const {
+    data: postData,
+    error,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetAllPostsQuery();
+  //getting socket to listen event
+  const socket = useContext(SocketContext);
 
   const user = data?.user;
   const posts = postData?.result;
+
+  useEffect(() => {
+    socket.on('newPost', (data) => {
+      if (data) {
+        refetch();
+      }
+    });
+  }, [socket, refetch]);
 
   let content;
 

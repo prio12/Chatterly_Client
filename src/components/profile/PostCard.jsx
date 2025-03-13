@@ -100,7 +100,6 @@ const PostCard = ({ post, id }) => {
 
   let likeIcon;
 
-  console.log(likes);
   if (author._id === id) {
     likeIcon = (
       <button className="btn btn-disabled">

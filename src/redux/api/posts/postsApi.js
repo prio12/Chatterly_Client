@@ -48,7 +48,7 @@ const postsApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ['posts'],
+      invalidatesTags: ['posts', 'profile'],
     }),
 
     //deleting a post

@@ -30,7 +30,6 @@ const AvatarDropDownContent = ({ user }) => {
       });
   };
 
-  console.log(user);
   return (
     <div>
       <div className="flex items-center gap-5">

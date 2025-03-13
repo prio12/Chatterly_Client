@@ -23,8 +23,6 @@ const Profile = ({ user }) => {
   const [error, setError] = useState(null);
   const [isUpdateNameOpen, setIsUpdateNameOpen] = useState(false);
 
-  console.log(currentUser === uid);
-
   return (
     <div className="bg-white border">
       <div
