@@ -34,6 +34,15 @@ const Home = () => {
     });
   }, [socket, refetch]);
 
+  useEffect(() => {
+    socket.on('likeUnlikeEvent', (data) => {
+      if (data) {
+        console.log(data);
+        refetch();
+      }
+    });
+  }, [socket, refetch]);
+
   let content;
 
   if (!user) {
