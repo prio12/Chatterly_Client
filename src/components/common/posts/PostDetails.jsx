@@ -55,8 +55,6 @@ const PostDetails = () => {
     );
   }
 
-  console.log(post);
-  console.log(user);
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-5  bg-gray-100 min-h-screen">
       {/* Left Sidebar */}

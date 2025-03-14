@@ -12,17 +12,58 @@ import { RiMenu2Fill } from 'react-icons/ri';
 import { Link, NavLink } from 'react-router';
 import DefaultProfilePIcture from '../../profile/DefaultProfilePIcture';
 import AvatarDropDownContent from '../../../utilities/AvatarDropDownContent';
+import {
+  useGetUserSpecificNotificationsQuery,
+  useHandleMarkAsSeenMutation,
+} from '../../../redux/api/notifications/notificationsApi';
+import { useContext, useEffect, useState } from 'react';
+import SocketContext from '../../../context/SocketContext';
 
 const SmallScreenHeader = ({
-  markAsSeen,
   setIsOpen,
   isOpen,
   isDropDownOpen,
   handleDropdown,
   cIcon,
   user,
-  unseenNotifications,
 }) => {
+  //write here
+  //fetching all notifications
+  const { data: notifications } = useGetUserSpecificNotificationsQuery({
+    _id: user?._id,
+  });
+
+  const [unseenNotifications, setUnseenNotifications] = useState([]);
+
+  useEffect(() => {
+    if (notifications?.response?.length > 0) {
+      const unseenNotifications = notifications?.response?.filter(
+        (notification) => !notification.seen
+      );
+
+      setUnseenNotifications(unseenNotifications);
+    }
+  }, [notifications]);
+
+  const [handleMarkAsSeen] = useHandleMarkAsSeenMutation();
+
+  const socket = useContext(SocketContext);
+
+  useEffect(() => {
+    socket.on('likedNotification', (savedNotification) => {
+      // console.log(savedNotification); //getting the latest notification with _id
+      setUnseenNotifications([...unseenNotifications, savedNotification]);
+    });
+
+    return () => socket.off('likeUnlikeEvent');
+  }, [socket, unseenNotifications]);
+
+  // Mark Notifications as Seen
+  const markAsSeen = async () => {
+    if (user?._id) {
+      await handleMarkAsSeen({ _id: user?._id });
+    }
+  };
   return (
     <div className=" md:hidden  flex items-center sticky top-0  justify-between lg:hidden  w-full ">
       <label htmlFor="my-drawer">

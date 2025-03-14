@@ -19,7 +19,9 @@ const Home = () => {
     isLoading,
     isError,
     refetch,
-  } = useGetAllPostsQuery();
+  } = useGetAllPostsQuery(null, {
+    refetchOnMountOrArgChange: true,
+  });
   //getting socket to listen event
   const socket = useContext(SocketContext);
 
@@ -27,18 +29,22 @@ const Home = () => {
   const posts = postData?.result;
 
   useEffect(() => {
-    socket.on('newPost', (data) => {
-      if (data) {
-        refetch();
+    socket.on('newPost', ({ success }) => {
+      if (success) {
+        console.log('printing when post create', success);
+        setTimeout(() => {
+          refetch();
+        }, 1000);
       }
     });
   }, [socket, refetch]);
 
   useEffect(() => {
-    socket.on('likeUnlikeEvent', (data) => {
-      if (data) {
-        console.log(data);
-        refetch();
+    socket.on('likeUnlikeEvent', ({ success }) => {
+      if (success) {
+        setTimeout(() => {
+          refetch();
+        }, 1000);
       }
     });
   }, [socket, refetch]);

@@ -10,7 +10,7 @@ const notifications = baseApi.injectEndpoints({
           method: 'GET',
         };
       },
-      providesTags: ['markAsSeen'],
+      providesTags: ['notifications'],
     }),
 
     //handle mark as seen
@@ -21,7 +21,19 @@ const notifications = baseApi.injectEndpoints({
           method: 'PATCH',
         };
       },
-      invalidatesTags: ['markAsSeen'],
+      invalidatesTags: ['notifications'],
+    }),
+
+    //handle mark as read
+    handleMarkAsRead: builder.mutation({
+      query: ({ _id }) => {
+        console.log(_id);
+        return {
+          url: `/notifications/${_id}/mark-as-read`,
+          method: 'PATCH',
+        };
+      },
+      invalidatesTags: ['notifications'],
     }),
 
     //handle delete a notification
@@ -30,7 +42,7 @@ const notifications = baseApi.injectEndpoints({
         url: `/notifications/${_id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['markAsSeen'],
+      invalidatesTags: ['notifications'],
     }),
   }),
 });
@@ -39,4 +51,5 @@ export const {
   useGetUserSpecificNotificationsQuery,
   useHandleMarkAsSeenMutation,
   useHandleDeleteMutation,
+  useHandleMarkAsReadMutation,
 } = notifications;

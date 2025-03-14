@@ -4,6 +4,7 @@ import RightSideBar from '../components/common/RightSideBar';
 import {
   useGetUserSpecificNotificationsQuery,
   useHandleDeleteMutation,
+  useHandleMarkAsReadMutation,
 } from '../redux/api/notifications/notificationsApi';
 import { IoNotificationsOffOutline } from 'react-icons/io5';
 import { FaHeart } from 'react-icons/fa6';
@@ -23,12 +24,17 @@ const Notifications = () => {
   });
 
   const [deleteNotification] = useHandleDeleteMutation();
+  const [marksAsRead] = useHandleMarkAsReadMutation();
   const navigate = useNavigate();
 
   let content;
 
   const handleDelete = async (_id) => {
     await deleteNotification({ _id });
+  };
+
+  const handleMarkAsRead = async ({ _id }) => {
+    await marksAsRead({ _id });
   };
 
   // Converts createdAt timestamp into a human-readable relative time format.
@@ -59,8 +65,9 @@ const Notifications = () => {
           {notifications?.response?.map((notification) => {
             return (
               <div
+                onClick={() => handleMarkAsRead({ _id: notification?._id })}
                 className={`flex items-center gap-5 p-5 rounded-lg ${
-                  notification?.read ? 'bg-slate-50' : 'bg-slate-200'
+                  notification?.read ? 'bg-slate-100' : 'bg-slate-200'
                 } mb-5`}
                 key={notification._id}
               >

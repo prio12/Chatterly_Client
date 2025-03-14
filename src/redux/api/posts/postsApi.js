@@ -23,7 +23,6 @@ const postsApi = baseApi.injectEndpoints({
     //fetching a specific post details
     getAPost: builder.query({
       query: (id) => {
-        console.log('API Request for Post ID:', id); // Debugging line
         return { url: `/posts/${id}` };
       },
       providesTags: ['postDetails'],
@@ -48,7 +47,7 @@ const postsApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ['posts', 'profile'],
+      invalidatesTags: ['profile', 'posts'],
     }),
 
     //deleting a post

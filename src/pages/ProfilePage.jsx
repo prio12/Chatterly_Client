@@ -6,14 +6,29 @@ import { FaRegCalendarAlt } from 'react-icons/fa';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 
 import { useParams } from 'react-router';
+import { useContext, useEffect } from 'react';
+import SocketContext from '../context/SocketContext';
 
 const ProfilePage = () => {
   //hooks
   const { uid } = useParams();
+  const socket = useContext(SocketContext);
 
-  const { data } = useUserInfoByUidQuery(uid);
+  const { data, refetch } = useUserInfoByUidQuery(uid, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const user = data?.user;
+
+  useEffect(() => {
+    socket.on('likeUnlikeEvent', ({ success }) => {
+      if (success) {
+        setTimeout(() => {
+          refetch();
+        }, 1000);
+      }
+    });
+  }, [socket, refetch]);
 
   if (!user) {
     return <div>Loading...</div>;
