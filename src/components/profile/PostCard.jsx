@@ -98,9 +98,11 @@ const PostCard = ({ post, id }) => {
     },
   ];
 
+  console.log(author._id);
+
   let likeIcon;
 
-  if (author._id === id) {
+  if (author.uid === currentUser) {
     likeIcon = (
       <button className="btn btn-disabled">
         <FaHeart className="text-red-500 text-2xl" />
