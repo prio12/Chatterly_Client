@@ -83,7 +83,7 @@ const postsApi = baseApi.injectEndpoints({
           body: text,
         };
       },
-      invalidatesTags: ['posts'],
+      invalidatesTags: ['posts', 'postDetails'],
     }),
 
     //delete a comment of a user to a specific post
@@ -95,6 +95,7 @@ const postsApi = baseApi.injectEndpoints({
           method: 'PATCH',
         };
       },
+      invalidatesTags: ['posts', 'postDetails'],
     }),
   }),
 });

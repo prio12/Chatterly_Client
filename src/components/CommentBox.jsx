@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import EditCommentModal from '../utilities/editCommentModal';
 import { useDeleteACommentMutation } from '../redux/api/posts/postsApi';
+import toast, { Toaster } from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
 const CommentBox = ({ comment, author, postId }) => {
@@ -24,14 +25,18 @@ const CommentBox = ({ comment, author, postId }) => {
   const handleDelete = async () => {
     try {
       const response = await deleteComment({ postId, commentId: comment?._id });
+      if (response.data.success) {
+        toast.success('Comment deleted successfully!');
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
     }
   };
 
   return (
     <div className="my-4  p-4 rounded-lg shadow-sm border bg-gray-200">
       <div className="flex items-center justify-between">
+        <Toaster />
         {/* User Info */}
         <div className="flex items-center gap-3">
           <div className="avatar">
