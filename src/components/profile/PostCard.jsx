@@ -16,8 +16,9 @@ import UpdatePostModal from '../../utilities/UpdatePostModal';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router';
 import { useHandleLikeUnlikeMutation } from '../../redux/api/posts/postsApi';
+import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 
-const PostCard = ({ post, id }) => {
+const PostCard = ({ post }) => {
   const [handleLikeUnlike] = useHandleLikeUnlikeMutation();
   //post object destructuring
   const { content, img, author, createdAt, likes, _id, video } = post;
@@ -25,6 +26,8 @@ const PostCard = ({ post, id }) => {
   //hooks
 
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { data } = useUserInfoByUidQuery(currentUser);
+
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
   const videoRef = useRef(null); // Reference for video
@@ -57,7 +60,7 @@ const PostCard = ({ post, id }) => {
 
   const handleLikeAndNotify = async ({ action }) => {
     const likePayload = {
-      userId: id,
+      userId: data?.user?._id,
       postId: _id,
       action,
       authorUid,
@@ -108,7 +111,7 @@ const PostCard = ({ post, id }) => {
         <FaHeart className="text-red-500 text-2xl" />
       </button>
     );
-  } else if (likes.some((like) => like._id === id)) {
+  } else if (likes.some((like) => like._id === data?.user?._id)) {
     likeIcon = (
       <button onClick={() => handleLikeAndNotify({ action: 'unLike' })}>
         {' '}
