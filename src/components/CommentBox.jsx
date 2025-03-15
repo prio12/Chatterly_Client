@@ -4,21 +4,29 @@ import { formatDistanceToNow } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import EditCommentModal from '../utilities/editCommentModal';
+import { useDeleteACommentMutation } from '../redux/api/posts/postsApi';
 
 /* eslint-disable react/prop-types */
 const CommentBox = ({ comment, author, postId }) => {
+  //mutation hook
+  const [deleteComment] = useDeleteACommentMutation();
   const { user, text, createdAt } = comment;
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(author);
-
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
-  console.log(currentUser === user?.uid);
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await deleteComment({ postId, commentId: comment?._id });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -63,7 +71,10 @@ const CommentBox = ({ comment, author, postId }) => {
           />
 
           {(currentUser === user?.uid || currentUser === author?.uid) && (
-            <MdDelete className="cursor-pointer hover:text-red-500 transition" />
+            <MdDelete
+              onClick={handleDelete}
+              className="cursor-pointer hover:text-red-500 transition"
+            />
           )}
         </div>
       </div>

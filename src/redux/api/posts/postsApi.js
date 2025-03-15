@@ -85,6 +85,17 @@ const postsApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['posts'],
     }),
+
+    //delete a comment of a user to a specific post
+    deleteAComment: builder.mutation({
+      query: ({ postId, commentId }) => {
+        console.log(postId, commentId);
+        return {
+          url: `/posts/comments/delete/${postId}/${commentId}`,
+          method: 'PATCH',
+        };
+      },
+    }),
   }),
 });
 
@@ -97,4 +108,5 @@ export const {
   useHandleLikeUnlikeMutation,
   useHandleAddCommentMutation,
   useUpdateCommentMutation,
+  useDeleteACommentMutation,
 } = postsApi;
