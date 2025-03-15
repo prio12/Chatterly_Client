@@ -1,19 +1,62 @@
+import { MdDelete, MdOutlineModeEdit } from 'react-icons/md';
+import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
+import { formatDistanceToNow } from 'date-fns';
+import { useSelector } from 'react-redux';
+
 /* eslint-disable react/prop-types */
-const CommentBox = ({ comment }) => {
-  const { avatar, content, author } = comment;
+const CommentBox = ({ comment, author }) => {
+  const { user, text, createdAt } = comment;
+
+  console.log(author);
+
+  //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+  console.log(currentUser === user?.uid);
+
+  // Converts createdAt timestamp into a human-readable relative time format.
+  const timeAgo = (timestamp) => {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  };
+
   return (
-    <div className="my-5 ">
-      <div className="flex items-center rounded-lg gap-3 p-2 bg-gray-100">
-        <div className="avatar">
-          <div className="w-8 mt-[-36px] rounded-full">
-            <img src={avatar} />
+    <div className="my-4  p-4 rounded-lg shadow-sm border bg-gray-200">
+      <div className="flex items-center justify-between">
+        {/* User Info */}
+        <div className="flex items-center gap-3">
+          <div className="avatar">
+            <div className="w-10 h-10 rounded-full overflow-hidden">
+              {user?.profilePicture ? (
+                <img
+                  src={user.profilePicture}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <DefaultProfilePIcture />
+              )}
+            </div>
+          </div>
+          <div>
+            <h5 className="font-semibold text-sm text-gray-900">
+              {user?.name}
+            </h5>
+            <span className="text-xs text-gray-500">{timeAgo(createdAt)}</span>
           </div>
         </div>
-        <div>
-          <h5 className="font-bold mb-1">{author}</h5>
-          <p className="text-sm">{content}</p>
+
+        {/* Action Icons */}
+        <div className="text-gray-500 flex items-center gap-3 text-lg">
+          {currentUser === user?.uid && (
+            <MdOutlineModeEdit className="cursor-pointer hover:text-blue-500 transition" />
+          )}
+
+          {(currentUser === user?.uid || currentUser === author?.uid) && (
+            <MdDelete className="cursor-pointer hover:text-red-500 transition" />
+          )}
         </div>
       </div>
+
+      {/* Comment Text */}
+      <p className="text-sm text-gray-800 mt-1 leading-relaxed">{text}</p>
     </div>
   );
 };

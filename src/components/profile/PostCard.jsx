@@ -21,7 +21,7 @@ import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 const PostCard = ({ post }) => {
   const [handleLikeUnlike] = useHandleLikeUnlikeMutation();
   //post object destructuring
-  const { content, img, author, createdAt, likes, _id, video } = post;
+  const { content, img, author, createdAt, likes, _id, video, comments } = post;
 
   //hooks
 
@@ -74,32 +74,32 @@ const PostCard = ({ post }) => {
     }
   };
   //will be removed
-  const comments = [
-    {
-      id: 1,
-      author: 'Captain Levi',
-      avatar:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
-      content:
-        'Next time, try not to sit around screaming while I clean up your mess, brat. Never forget who had to save your sorry ass again. Make it worth it, Eren!',
-    },
-    {
-      id: 2,
-      author: 'Eren Yeager',
-      avatar:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
-      content:
-        "I'll make sure it's worth it next time, Captain. I promise I won't let you down again.",
-    },
-    {
-      id: 2,
-      author: 'Eren Yeager',
-      avatar:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
-      content:
-        "I'll make sure it's worth it next time, Captain. I promise I won't let you down again.",
-    },
-  ];
+  // const comments = [
+  //   {
+  //     id: 1,
+  //     author: 'Captain Levi',
+  //     avatar:
+  //       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
+  //     content:
+  //       'Next time, try not to sit around screaming while I clean up your mess, brat. Never forget who had to save your sorry ass again. Make it worth it, Eren!',
+  //   },
+  //   {
+  //     id: 2,
+  //     author: 'Eren Yeager',
+  //     avatar:
+  //       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
+  //     content:
+  //       "I'll make sure it's worth it next time, Captain. I promise I won't let you down again.",
+  //   },
+  //   {
+  //     id: 2,
+  //     author: 'Eren Yeager',
+  //     avatar:
+  //       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpTREHn1wC6vG6w0AZVb_YtxnCyzi2Lx760VrpxrwG9ObSBSar72nFLWkWblx5t5jYJ7I&usqp=CAU',
+  //     content:
+  //       "I'll make sure it's worth it next time, Captain. I promise I won't let you down again.",
+  //   },
+  // ];
 
   let likeIcon;
 
@@ -210,7 +210,7 @@ const PostCard = ({ post }) => {
         <div className="flex text-sm items-center gap-2">
           <MdOutlineInsertComment className="text-2xl" />
           {comments?.length > 0 ? (
-            <span className="font-semibold">({comments.length})</span>
+            <span className="font-semibold">({comments?.length})</span>
           ) : (
             <span className="font-semibold">(0)</span>
           )}
@@ -228,12 +228,18 @@ const PostCard = ({ post }) => {
       )}
 
       <CommentInputField post={post} user={data?.user} />
-      {comments.length && (
-        <div className="max-h-48 overflow-y-scroll no-scrollbar">
-          {comments.length &&
-            comments.map((comment) => (
-              <CommentBox comment={comment} key={comment.id} />
-            ))}
+      {comments.length > 0 && (
+        <div className="max-h-64 overflow-y-scroll no-scrollbar">
+          {comments.length > 0 &&
+            [...comments]
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((comment) => (
+                <CommentBox
+                  comment={comment}
+                  key={comment._id}
+                  author={author}
+                />
+              ))}
         </div>
       )}
     </div>

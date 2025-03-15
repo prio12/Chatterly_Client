@@ -59,6 +59,7 @@ const postsApi = baseApi.injectEndpoints({
           body: comment,
         };
       },
+      invalidatesTags: ['posts', 'postDetails'],
     }),
 
     //deleting a post
