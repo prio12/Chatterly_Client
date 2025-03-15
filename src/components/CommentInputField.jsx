@@ -2,16 +2,19 @@
 import { FaPaperPlane } from 'react-icons/fa';
 import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
 import { useState } from 'react';
+import { useHandleAddCommentMutation } from '../redux/api/posts/postsApi';
+import toast, { Toaster } from 'react-hot-toast';
 
 const CommentInputField = ({ post, user }) => {
   //hooks
+  const [addComment] = useHandleAddCommentMutation();
   const [commentText, setCommentText] = useState('');
 
   const handleOnchange = (e) => {
     setCommentText(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const text = commentText.trim();
@@ -24,9 +27,22 @@ const CommentInputField = ({ post, user }) => {
       user: user?._id,
       text,
     };
+
+    //sending comment to the server
+    try {
+      const response = await addComment({ id: post?._id, comment }).unwrap();
+      if (response.success) {
+        setCommentText('');
+        toast.success('Comment Added!');
+      }
+    } catch (error) {
+      setCommentText('');
+      toast.error(`${error.message}`);
+    }
   };
   return (
     <div className="flex items-start gap-3">
+      <Toaster />
       {/* Avatar */}
       <div className="avatar">
         <div className="w-8 rounded-full">
@@ -43,6 +59,7 @@ const CommentInputField = ({ post, user }) => {
         {/* Textarea */}
         <textarea
           onChange={handleOnchange}
+          value={commentText}
           className="w-full h-10 p-2 pr-10 resize-none  rounded-md bg-gray-100 border border-gray-200 focus:border-blue-100 focus:ring-1 focus:ring-blue-100 overflow-y-scroll no-scrollbar"
           placeholder="Write your comment..."
           style={{

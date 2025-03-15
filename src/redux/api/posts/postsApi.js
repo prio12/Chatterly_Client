@@ -50,6 +50,17 @@ const postsApi = baseApi.injectEndpoints({
       invalidatesTags: ['profile', 'posts'],
     }),
 
+    //adding a comment to the specific post
+    handleAddComment: builder.mutation({
+      query: ({ id, comment }) => {
+        return {
+          url: `/posts/comments/${id}`,
+          method: 'PATCH',
+          body: comment,
+        };
+      },
+    }),
+
     //deleting a post
     deleteAPost: builder.mutation({
       query: ({ _id }) => ({
@@ -68,4 +79,5 @@ export const {
   useDeleteAPostMutation,
   useGetAPostQuery,
   useHandleLikeUnlikeMutation,
+  useHandleAddCommentMutation,
 } = postsApi;
