@@ -101,8 +101,6 @@ const PostCard = ({ post }) => {
     },
   ];
 
-  console.log(author._id);
-
   let likeIcon;
 
   if (author.uid === currentUser) {
@@ -229,7 +227,7 @@ const PostCard = ({ post }) => {
         </p>
       )}
 
-      <CommentInputField />
+      <CommentInputField post={post} user={data?.user} />
       {comments.length && (
         <div className="max-h-48 overflow-y-scroll no-scrollbar">
           {comments.length &&
