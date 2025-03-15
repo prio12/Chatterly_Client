@@ -70,6 +70,21 @@ const postsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['posts'],
     }),
+
+    //update a user's comment to a specific post
+    updateComment: builder.mutation({
+      query: ({ id, text }) => {
+        console.log(id);
+        console.log(text);
+
+        return {
+          url: `/posts/comments/update/${id}`,
+          method: 'PATCH',
+          body: text,
+        };
+      },
+      invalidatesTags: ['posts'],
+    }),
   }),
 });
 
@@ -81,4 +96,5 @@ export const {
   useGetAPostQuery,
   useHandleLikeUnlikeMutation,
   useHandleAddCommentMutation,
+  useUpdateCommentMutation,
 } = postsApi;

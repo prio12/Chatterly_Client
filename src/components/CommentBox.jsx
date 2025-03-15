@@ -2,10 +2,13 @@ import { MdDelete, MdOutlineModeEdit } from 'react-icons/md';
 import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import EditCommentModal from '../utilities/editCommentModal';
 
 /* eslint-disable react/prop-types */
-const CommentBox = ({ comment, author }) => {
+const CommentBox = ({ comment, author, postId }) => {
   const { user, text, createdAt } = comment;
+  const [isOpen, setIsOpen] = useState(false);
 
   console.log(author);
 
@@ -46,8 +49,18 @@ const CommentBox = ({ comment, author }) => {
         {/* Action Icons */}
         <div className="text-gray-500 flex items-center gap-3 text-lg">
           {currentUser === user?.uid && (
-            <MdOutlineModeEdit className="cursor-pointer hover:text-blue-500 transition" />
+            <MdOutlineModeEdit
+              onClick={() => setIsOpen(true)}
+              className="cursor-pointer hover:text-blue-500 transition"
+            />
           )}
+
+          <EditCommentModal
+            postId={postId}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            comment={comment}
+          />
 
           {(currentUser === user?.uid || currentUser === author?.uid) && (
             <MdDelete className="cursor-pointer hover:text-red-500 transition" />

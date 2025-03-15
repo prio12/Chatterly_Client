@@ -238,6 +238,7 @@ const PostCard = ({ post }) => {
                   comment={comment}
                   key={comment._id}
                   author={author}
+                  postId={_id}
                 />
               ))}
         </div>
