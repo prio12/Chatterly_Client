@@ -7,6 +7,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import ContentUploadModal from '../utilities/ContentUploadModal ';
 import LoadingButton from '../utilities/btn/LoadingButton';
 import VideoUploadModal from '../utilities/VideoUploadModal';
+import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
 
 const CreatePost = ({ user }) => {
   //hooks
@@ -49,10 +50,11 @@ const CreatePost = ({ user }) => {
       <div className="flex items-center gap-3">
         <div className="avatar mt-[-24px]">
           <div className="w-8 rounded-full">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwuCp7qc5mRQU5EfJHRzRdJjzWwKUM3uBHQ&s"
-              alt="Avatar"
-            />
+            {user?.profilePicture ? (
+              <img src={user?.profilePicture} alt="Avatar" />
+            ) : (
+              <DefaultProfilePIcture />
+            )}
           </div>
         </div>
         <div className="w-full">

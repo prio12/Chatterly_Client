@@ -50,7 +50,8 @@ const Header = () => {
   };
 
   useEffect(() => {
-    socket.on('likedNotification', (savedNotification) => {
+    socket.on('notification', (savedNotification) => {
+      console.log(savedNotification);
       // console.log(savedNotification); //getting the latest notification with _id
       setUnseenNotifications([...unseenNotifications, savedNotification]);
     });

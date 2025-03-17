@@ -21,7 +21,7 @@ const ProfilePage = () => {
   const user = data?.user;
 
   useEffect(() => {
-    socket.on('likeUnlikeEvent', ({ success }) => {
+    socket.on('postInteraction', ({ success }) => {
       if (success) {
         setTimeout(() => {
           refetch();

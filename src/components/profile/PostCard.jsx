@@ -227,7 +227,11 @@ const PostCard = ({ post }) => {
         </p>
       )}
 
-      <CommentInputField post={post} user={data?.user} />
+      <CommentInputField
+        post={post}
+        user={data?.user}
+        userId={data?.user?._id}
+      />
       {comments.length > 0 && (
         <div className="max-h-64 overflow-y-scroll no-scrollbar">
           {comments.length > 0 &&

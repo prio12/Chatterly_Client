@@ -40,7 +40,8 @@ const Home = () => {
   }, [socket, refetch]);
 
   useEffect(() => {
-    socket.on('likeUnlikeEvent', ({ success }) => {
+    socket.on('postInteraction', ({ success }) => {
+      console.log(success);
       if (success) {
         setTimeout(() => {
           refetch();

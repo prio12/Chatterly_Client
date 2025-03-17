@@ -74,9 +74,6 @@ const postsApi = baseApi.injectEndpoints({
     //update a user's comment to a specific post
     updateComment: builder.mutation({
       query: ({ id, text }) => {
-        console.log(id);
-        console.log(text);
-
         return {
           url: `/posts/comments/update/${id}`,
           method: 'PATCH',
@@ -89,7 +86,6 @@ const postsApi = baseApi.injectEndpoints({
     //delete a comment of a user to a specific post
     deleteAComment: builder.mutation({
       query: ({ postId, commentId }) => {
-        console.log(postId, commentId);
         return {
           url: `/posts/comments/delete/${postId}/${commentId}`,
           method: 'PATCH',

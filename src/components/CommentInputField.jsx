@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useHandleAddCommentMutation } from '../redux/api/posts/postsApi';
 import toast, { Toaster } from 'react-hot-toast';
 
-const CommentInputField = ({ post, user }) => {
+const CommentInputField = ({ post, user, userId }) => {
   //hooks
   const [addComment] = useHandleAddCommentMutation();
   const [commentText, setCommentText] = useState('');
@@ -24,7 +24,9 @@ const CommentInputField = ({ post, user }) => {
     }
 
     const comment = {
-      user: user?._id,
+      user: userId,
+      authorId: post?.author?._id,
+      authorUid: post?.author?.uid,
       text,
     };
 
@@ -36,6 +38,7 @@ const CommentInputField = ({ post, user }) => {
         toast.success('Comment Added!');
       }
     } catch (error) {
+      console.log(error);
       setCommentText('');
       toast.error(`${error.message}`);
     }

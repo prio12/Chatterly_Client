@@ -55,7 +55,7 @@ const SmallScreenHeader = ({
       setUnseenNotifications([...unseenNotifications, savedNotification]);
     });
 
-    return () => socket.off('likeUnlikeEvent');
+    return () => socket.off('postInteraction');
   }, [socket, unseenNotifications]);
 
   // Mark Notifications as Seen

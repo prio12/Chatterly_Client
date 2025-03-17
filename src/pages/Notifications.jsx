@@ -8,9 +8,10 @@ import {
 } from '../redux/api/notifications/notificationsApi';
 import { IoNotificationsOffOutline } from 'react-icons/io5';
 import { FaHeart } from 'react-icons/fa6';
-import { MdDelete, MdOutlineInsertComment } from 'react-icons/md';
+import { MdDelete } from 'react-icons/md';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
+import { FaCommentAlt } from 'react-icons/fa';
 
 const Notifications = () => {
   //hooks
@@ -95,7 +96,7 @@ const Notifications = () => {
                     {notification?.type === 'like' ? (
                       <FaHeart className="absolute bottom-[-6px] right-[-6px] text-red-500 text-xl" />
                     ) : (
-                      <MdOutlineInsertComment className="absolute bottom-[-6px] right-[-6px] text-red-500 text-xl" />
+                      <FaCommentAlt className="absolute bottom-[-6px] right-[-6px] text-red-500 text-xl" />
                     )}
                   </div>
                 </div>
