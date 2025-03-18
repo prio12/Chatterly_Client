@@ -31,7 +31,6 @@ const Home = () => {
   useEffect(() => {
     socket.on('newPost', ({ success }) => {
       if (success) {
-        console.log('printing when post create', success);
         setTimeout(() => {
           refetch();
         }, 1000);

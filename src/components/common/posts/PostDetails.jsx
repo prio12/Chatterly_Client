@@ -9,7 +9,9 @@ import { useUserInfoByUidQuery } from '../../../redux/api/users/usersApi';
 const PostDetails = () => {
   //hooks
   const { id } = useParams();
-  const { data, isLoading } = useGetAPostQuery(id);
+  const { data, isLoading } = useGetAPostQuery(id, {
+    refetchOnMountOrArgChange: true,
+  });
   const post = data?.response;
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
