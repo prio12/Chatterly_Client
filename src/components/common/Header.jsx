@@ -125,12 +125,17 @@ const Header = () => {
             )}
           </NavLink>
 
-          <Link
+          <NavLink
+            to="/connections"
             title="Friends"
-            className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+            className={({ isActive }) =>
+              `relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+                isActive ? 'after:scale-x-100 after:bg-blue-500' : ''
+              }`
+            }
           >
             <IoPeopleOutline className="text-2xl" />
-          </Link>
+          </NavLink>
         </div>
         <div className="flex items-center cursor-pointer gap-3">
           <IoSearchOutline />

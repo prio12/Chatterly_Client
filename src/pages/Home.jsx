@@ -40,7 +40,6 @@ const Home = () => {
 
   useEffect(() => {
     socket.on('postInteraction', ({ success }) => {
-      console.log(success);
       if (success) {
         setTimeout(() => {
           refetch();

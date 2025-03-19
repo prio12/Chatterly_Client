@@ -27,7 +27,6 @@ const notifications = baseApi.injectEndpoints({
     //handle mark as read
     handleMarkAsRead: builder.mutation({
       query: ({ _id }) => {
-        console.log(_id);
         return {
           url: `/notifications/${_id}/mark-as-read`,
           method: 'PATCH',
