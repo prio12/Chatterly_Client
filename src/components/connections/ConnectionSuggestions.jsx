@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import toast, { Toaster } from 'react-hot-toast';
 import { useAddConnectionRequestMutation } from '../../redux/api/connections/connectionsApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 
@@ -11,11 +12,17 @@ const ConnectionSuggestions = ({ user, currentlyLoggedInUserData }) => {
     const connectionsInfo = {
       requester: currentlyLoggedInUserData?._id,
       recipient: user?._id,
+      requesterUid: currentlyLoggedInUserData?.uid,
+      recipientUid: user?.uid,
     };
 
     //sending to server
-    const response = await connect({ data: connectionsInfo }).unwrap();
-    console.log(response);
+    try {
+      const response = await connect({ data: connectionsInfo }).unwrap();
+      console.log(response);
+    } catch (error) {
+      toast.error(error?.data?.error);
+    }
   };
   return (
     <div className="max-h-[600px] overflow-y-scroll no-scrollbar">
@@ -60,6 +67,7 @@ const ConnectionSuggestions = ({ user, currentlyLoggedInUserData }) => {
           >
             Connect
           </button>{' '}
+          <Toaster position="bottom-center" />
           <button className="btn  rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white ">
             Remove
           </button>
