@@ -24,6 +24,7 @@ const AppRoutes = () => {
         <Route path="/profile/:uid" element={<ProfilePage />}></Route>
         <Route path="/notifications/:id" element={<Notifications />}></Route>
         <Route path="/connections" element={<Connections />}></Route>
+        {/* <Route path="/connections" element={<Connections />}></Route> */}
         <Route path="/posts/:id" element={<PostDetails />}></Route>
       </Route>
       <Route path="/signUp" element={<SignUp />}></Route>

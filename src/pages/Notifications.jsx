@@ -58,7 +58,7 @@ const Notifications = () => {
     content = (
       <div>
         <div className="w-full">
-          <h3 className="text-3xl font-semibold fixed top-24 left-1/4  z-50 bg-gray-50 mb-5 p-2">
+          <h3 className="text-3xl font-semibold fixed top-24 left-1/4 border-b-2 border-blue-400 pb-2 z-50 bg-gray-50 mb-5 p-2">
             Notifications
           </h3>
         </div>

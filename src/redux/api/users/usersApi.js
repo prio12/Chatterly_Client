@@ -10,6 +10,13 @@ const usersApi = baseApi.injectEndpoints({
       }),
     }),
 
+    //getAll Users
+    getAllUsers: builder.query({
+      query: () => ({
+        url: '/users',
+      }),
+    }),
+
     //fetch user specific info by uid
     userInfoByUid: builder.query({
       query: (userUid) => ({
@@ -35,4 +42,5 @@ export const {
   useUpdateUserProfileMutation,
   useUserInfoByUidQuery,
   usePrefetch,
+  useGetAllUsersQuery,
 } = usersApi;
