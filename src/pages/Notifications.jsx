@@ -97,6 +97,9 @@ const Notifications = () => {
                     {notification?.type === 'connection_request' && (
                       <FaUserFriends className="absolute bottom-[-6px] right-[-6px] text-red-500 text-xl" />
                     )}
+                    {notification?.type === 'connection_accept' && (
+                      <FaUserFriends className="absolute bottom-[-6px] right-[-6px] text-red-500 text-xl" />
+                    )}
                   </div>
                 </div>
                 <div>
@@ -125,6 +128,13 @@ const Notifications = () => {
                       <Link to="/connections">
                         <span className="cursor-pointer">
                           Sent you a connection request!
+                        </span>
+                      </Link>
+                    )}
+                    {notification?.type === 'connection_accept' && (
+                      <Link to={`/profile/${notification?.sender?.uid}`}>
+                        <span className="cursor-pointer">
+                          Accepted your connection request!
                         </span>
                       </Link>
                     )}

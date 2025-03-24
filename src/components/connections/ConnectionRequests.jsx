@@ -5,15 +5,16 @@ import { useAcceptConnectionRequestMutation } from '../../redux/api/connections/
 import toast, { Toaster } from 'react-hot-toast';
 
 const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
-  console.log(request._id);
+  console.log(request?.requester);
 
   //hooks
   const [acceptRequest] = useAcceptConnectionRequestMutation();
 
   const handleAcceptRequest = async () => {
     const notificationInfo = {
-      requesterUid: request?.requester?.uid,
-      currentlyLoggedInUserData,
+      // notificationSender: request?.requester?.uid,
+      notificationSender: currentlyLoggedInUserData,
+      notificationRecipient: request?.requester,
     };
 
     try {
