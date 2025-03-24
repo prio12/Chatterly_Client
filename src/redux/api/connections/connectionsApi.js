@@ -2,6 +2,7 @@ import baseApi from '../baseApi';
 
 const connectionsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    //sending connection requests to the server
     addConnectionRequest: builder.mutation({
       query: ({ data }) => {
         return {
@@ -11,6 +12,8 @@ const connectionsApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    //fetching all connection requests of a specific user
   }),
 });
 

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
 import {
@@ -11,7 +11,7 @@ import { FaHeart } from 'react-icons/fa6';
 import { MdDelete } from 'react-icons/md';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
-import { FaCommentAlt } from 'react-icons/fa';
+import { FaCommentAlt, FaUserFriends } from 'react-icons/fa';
 
 const Notifications = () => {
   //hooks
@@ -72,10 +72,7 @@ const Notifications = () => {
                 } mb-5`}
                 key={notification._id}
               >
-                <div
-                  onClick={() => handleNavigate(notification?.post?._id)}
-                  className="cursor-pointer"
-                >
+                <div>
                   <div className="relative inline-block ">
                     {/* Avatar Section */}
                     <div className="w-12 h-12 rounded-full overflow-hidden">
@@ -91,27 +88,45 @@ const Notifications = () => {
                         </div>
                       )}
                     </div>
-
-                    {/* Heart Icon as Indicator */}
-                    {notification?.type === 'like' ? (
+                    {notification?.type === 'like' && (
                       <FaHeart className="absolute bottom-[-6px] right-[-6px] text-red-500 text-xl" />
-                    ) : (
+                    )}
+                    {notification?.type === 'comment' && (
                       <FaCommentAlt className="absolute bottom-[-6px] right-[-6px] text-red-500 text-xl" />
+                    )}
+                    {notification?.type === 'connection_request' && (
+                      <FaUserFriends className="absolute bottom-[-6px] right-[-6px] text-red-500 text-xl" />
                     )}
                   </div>
                 </div>
                 <div>
-                  <h5
-                    onClick={() => handleNavigate(notification?.post?._id)}
-                    className="text-sm cursor-pointer"
-                  >
-                    <span className="font-semibold">
+                  <h5 className="text-sm ">
+                    <span className="font-semibold mr-2">
                       {notification?.sender?.name}
-                    </span>{' '}
-                    {notification?.type === 'like' ? (
-                      <span> reacted to a post you shared</span>
-                    ) : (
-                      <span>commented on a post you shared</span>
+                    </span>
+                    {notification?.type === 'like' && (
+                      <span
+                        className="cursor-pointer"
+                        onClick={() => handleNavigate(notification?.post?._id)}
+                      >
+                        {' '}
+                        reacted to a post you shared!
+                      </span>
+                    )}
+                    {notification?.type === 'comment' && (
+                      <span
+                        className="cursor-pointer"
+                        onClick={() => handleNavigate(notification?.post?._id)}
+                      >
+                        commented on a post you shared!
+                      </span>
+                    )}
+                    {notification?.type === 'connection_request' && (
+                      <Link to="/connections">
+                        <span className="cursor-pointer">
+                          Sent you a connection request!
+                        </span>
+                      </Link>
                     )}
                   </h5>
                   <div>
