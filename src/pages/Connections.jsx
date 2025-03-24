@@ -1,33 +1,47 @@
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
 import ConnectionRequests from '../components/connections/ConnectionRequests';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ConnectionSuggestions from '../components/connections/ConnectionSuggestions';
-import {
-  useGetAllUsersQuery,
-  useUserInfoByUidQuery,
-} from '../redux/api/users/usersApi';
+import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
-import { useFetchConnectionRequestsQuery } from '../redux/api/connections/connectionsApi';
+import {
+  useFetchConnectionRequestsQuery,
+  useFetchConnectionSuggestionsQuery,
+} from '../redux/api/connections/connectionsApi';
 
 const Connections = () => {
   const [content, setContent] = useState('request');
-  const { data: allUsersData, isLoading } = useGetAllUsersQuery();
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
 
-  //suggested users
-  const suggestedConnections = allUsersData?.response;
   const currentlyLoggedInUserData = data?.user;
+
   //fetching all connection requests by _id
   const { data: connectionRequestsData, isLoading: isConnectionDataLoading } =
-    useFetchConnectionRequestsQuery(currentlyLoggedInUserData?._id);
+    useFetchConnectionRequestsQuery(currentlyLoggedInUserData?._id, {
+      refetchOnMountOrArgChange: true,
+    });
+
+  //fetching all suggestedConnections
+  const {
+    data: suggestedConnectionsData,
+    isLoading: isSuggestedConnectionDataLoading,
+  } = useFetchConnectionSuggestionsQuery(currentlyLoggedInUserData?._id, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  //hooks
+  const [suggestedConnections, setSuggestedConnection] = useState([]);
+
+  useEffect(() => {
+    if (suggestedConnectionsData?.suggestedConnections) {
+      setSuggestedConnection(suggestedConnectionsData?.suggestedConnections);
+    }
+  }, [suggestedConnectionsData?.suggestedConnections]);
 
   const connectionRequests = connectionRequestsData?.response;
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // const suggestedConnections = suggestedConnectionsData?.suggestedConnections;
 
   let connectionButtons;
 
@@ -101,12 +115,39 @@ const Connections = () => {
 
   if (!isConnectionDataLoading && connectionRequests?.length > 0) {
     connectionRequestsContent = connectionRequests.map((request) => (
-      <ConnectionRequests request={request} key={request._id} />
+      <ConnectionRequests
+        request={request}
+        key={request._id}
+        currentlyLoggedInUserData={currentlyLoggedInUserData}
+      />
     ));
   }
 
-  console.log(connectionRequests);
+  let suggestedConnectionsContent;
 
+  if (isSuggestedConnectionDataLoading) {
+    suggestedConnectionsContent = <div>Loading.... data</div>;
+  }
+
+  if (!isSuggestedConnectionDataLoading && suggestedConnections?.length === 0) {
+    suggestedConnectionsContent = (
+      <div> Seems like you have no connection suggestions!</div>
+    );
+  }
+
+  if (!isSuggestedConnectionDataLoading && suggestedConnections?.length > 0) {
+    suggestedConnectionsContent = suggestedConnections.map((user) => (
+      <ConnectionSuggestions
+        setSuggestedConnection={setSuggestedConnection}
+        suggestedConnections={suggestedConnections}
+        user={user}
+        key={user._id}
+        currentlyLoggedInUserData={currentlyLoggedInUserData}
+      />
+    ));
+  }
+
+  console.log(suggestedConnections);
   return (
     <div className="grid grid-cols-1 relative  md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
       {/* Left Sidebar */}
@@ -142,16 +183,7 @@ const Connections = () => {
           </div>
           <div className="my-5">
             {content === 'request' && connectionRequestsContent}
-            {content === 'suggestions' &&
-              suggestedConnections
-                ?.filter((user) => user?.uid !== currentUser)
-                .map((user) => (
-                  <ConnectionSuggestions
-                    key={user?._id}
-                    user={user}
-                    currentlyLoggedInUserData={currentlyLoggedInUserData}
-                  />
-                ))}
+            {content === 'suggestions' && suggestedConnectionsContent}
           </div>
         </div>
       </div>

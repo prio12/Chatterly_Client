@@ -11,6 +11,7 @@ const connectionsApi = baseApi.injectEndpoints({
           body: data,
         };
       },
+      invalidatesTags: ['connections'],
     }),
 
     //fetching all connection requests of a specific user
@@ -20,6 +21,29 @@ const connectionsApi = baseApi.injectEndpoints({
           url: `/connections/${id}`,
         };
       },
+      providesTags: ['connections'],
+    }),
+
+    //fetching connection Suggestions
+    fetchConnectionSuggestions: builder.query({
+      query: (id) => {
+        return {
+          url: `/connections/suggestions/${id}`,
+        };
+      },
+      providesTags: ['connections'],
+    }),
+
+    //accept connection request
+    acceptConnectionRequest: builder.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/connections/${id}`,
+          method: 'PATCH',
+          body: data,
+        };
+      },
+      invalidatesTags: ['connections'],
     }),
   }),
 });
@@ -27,4 +51,6 @@ const connectionsApi = baseApi.injectEndpoints({
 export const {
   useAddConnectionRequestMutation,
   useFetchConnectionRequestsQuery,
+  useFetchConnectionSuggestionsQuery,
+  useAcceptConnectionRequestMutation,
 } = connectionsApi;

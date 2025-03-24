@@ -2,8 +2,14 @@
 import toast, { Toaster } from 'react-hot-toast';
 import { useAddConnectionRequestMutation } from '../../redux/api/connections/connectionsApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
+import { Link } from 'react-router';
 
-const ConnectionSuggestions = ({ user, currentlyLoggedInUserData }) => {
+const ConnectionSuggestions = ({
+  user,
+  currentlyLoggedInUserData,
+  setSuggestedConnection,
+  suggestedConnections,
+}) => {
   //mutation hook
   const [connect] = useAddConnectionRequestMutation();
 
@@ -24,20 +30,32 @@ const ConnectionSuggestions = ({ user, currentlyLoggedInUserData }) => {
       toast.error(error?.data?.error);
     }
   };
+
+  const handleRemoveFromSuggestions = () => {
+    const filteredSuggestions = suggestedConnections.filter(
+      (suggestedUser) => suggestedUser._id !== user?._id
+    );
+
+    setSuggestedConnection(filteredSuggestions);
+  };
   return (
     <div className="max-h-[600px] overflow-y-scroll no-scrollbar">
       <div className="flex items-center flex-wrap gap-8 border border-gray-200 p-2 my-5">
-        <div className="avatar">
-          <div className="rounded-full w-16">
-            {user?.profilePicture ? (
-              <img src={user?.profilePicture} />
-            ) : (
-              <DefaultProfilePIcture />
-            )}
+        <Link to={`/profile/${user?.uid}`}>
+          <div className="avatar">
+            <div className="rounded-full w-16">
+              {user?.profilePicture ? (
+                <img src={user?.profilePicture} />
+              ) : (
+                <DefaultProfilePIcture />
+              )}
+            </div>
           </div>
-        </div>
+        </Link>
         <div>
-          <h6 className="font-bold text-sm">{user?.name}</h6>
+          <Link to={`/profile/${user?.uid}`}>
+            <h6 className="font-bold text-sm">{user?.name}</h6>
+          </Link>
           {/* showing mutual connections */}
           <div className="flex items-center gap-8">
             <div className="avatar-group -space-x-3">
@@ -68,7 +86,10 @@ const ConnectionSuggestions = ({ user, currentlyLoggedInUserData }) => {
             Connect
           </button>{' '}
           <Toaster position="bottom-center" />
-          <button className="btn  rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white ">
+          <button
+            onClick={handleRemoveFromSuggestions}
+            className="btn  rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white "
+          >
             Remove
           </button>
         </div>

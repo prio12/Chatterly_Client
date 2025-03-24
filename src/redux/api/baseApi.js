@@ -5,7 +5,7 @@ const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:5000',
   }),
-  tagTypes: ['profile', 'posts', 'postDetails', 'notifications'],
+  tagTypes: ['profile', 'posts', 'postDetails', 'notifications', 'connections'],
   endpoints: () => ({}),
 });
 
