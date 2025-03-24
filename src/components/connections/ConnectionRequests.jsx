@@ -1,21 +1,22 @@
 /* eslint-disable react/prop-types */
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 
-const ConnectionRequests = ({ connection }) => {
+const ConnectionRequests = ({ request }) => {
+  console.log(request);
   return (
     <div className="max-h-[600px] overflow-y-scroll no-scrollbar">
       <div className="flex items-center flex-wrap gap-8 border border-gray-200 p-2 my-5">
         <div className="avatar">
           <div className="rounded-full w-16">
-            {connection?.profilePicture ? (
-              <img src={connection?.profilePicture} />
+            {request?.requester?.profilePicture ? (
+              <img src={request?.requester?.profilePicture} />
             ) : (
               <DefaultProfilePIcture />
             )}
           </div>
         </div>
         <div>
-          <h6 className="font-bold text-sm">Eren Yeager</h6>
+          <h6 className="font-bold text-sm">{request?.requester?.name}</h6>
           {/* showing mutual connections */}
           <div className="flex items-center gap-8">
             <div className="avatar-group -space-x-3">

@@ -8,6 +8,7 @@ import {
   useUserInfoByUidQuery,
 } from '../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
+import { useFetchConnectionRequestsQuery } from '../redux/api/connections/connectionsApi';
 
 const Connections = () => {
   const [content, setContent] = useState('request');
@@ -15,13 +16,18 @@ const Connections = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
 
+  //suggested users
+  const suggestedConnections = allUsersData?.response;
+  const currentlyLoggedInUserData = data?.user;
+  //fetching all connection requests by _id
+  const { data: connectionRequestsData, isLoading: isConnectionDataLoading } =
+    useFetchConnectionRequestsQuery(currentlyLoggedInUserData?._id);
+
+  const connectionRequests = connectionRequestsData?.response;
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  //suggested users
-  const suggestedConnections = allUsersData.response;
-  const currentlyLoggedInUserData = data?.user;
 
   let connectionButtons;
 
@@ -80,6 +86,27 @@ const Connections = () => {
       </div>
     );
   }
+
+  let connectionRequestsContent;
+
+  if (isConnectionDataLoading) {
+    connectionRequestsContent = <div>Loading.... data</div>;
+  }
+
+  if (!isConnectionDataLoading && connectionRequests?.length === 0) {
+    connectionRequestsContent = (
+      <div> Seem like you have no connection requests!</div>
+    );
+  }
+
+  if (!isConnectionDataLoading && connectionRequests?.length > 0) {
+    connectionRequestsContent = connectionRequests.map((request) => (
+      <ConnectionRequests request={request} key={request._id} />
+    ));
+  }
+
+  console.log(connectionRequests);
+
   return (
     <div className="grid grid-cols-1 relative  md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
       {/* Left Sidebar */}
@@ -101,7 +128,9 @@ const Connections = () => {
             {content === 'request' && (
               <h6 className="font-bold">
                 Connection Requests{' '}
-                <span className="ms-3 text-blue-600">10</span>
+                <span className="ms-3 text-blue-600">
+                  {connectionRequests?.length}
+                </span>
               </h6>
             )}
             {content === 'suggestions' && (
@@ -112,7 +141,7 @@ const Connections = () => {
             )}
           </div>
           <div className="my-5">
-            {content === 'request' && <ConnectionRequests />}
+            {content === 'request' && connectionRequestsContent}
             {content === 'suggestions' &&
               suggestedConnections
                 ?.filter((user) => user?.uid !== currentUser)

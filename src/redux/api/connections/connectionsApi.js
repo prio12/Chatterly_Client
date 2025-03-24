@@ -14,7 +14,17 @@ const connectionsApi = baseApi.injectEndpoints({
     }),
 
     //fetching all connection requests of a specific user
+    fetchConnectionRequests: builder.query({
+      query: (id) => {
+        return {
+          url: `/connections/${id}`,
+        };
+      },
+    }),
   }),
 });
 
-export const { useAddConnectionRequestMutation } = connectionsApi;
+export const {
+  useAddConnectionRequestMutation,
+  useFetchConnectionRequestsQuery,
+} = connectionsApi;
