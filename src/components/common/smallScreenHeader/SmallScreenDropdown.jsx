@@ -1,10 +1,11 @@
 import { CiSettings, CiViewTimeline } from 'react-icons/ci';
 import { IoMdClose } from 'react-icons/io';
-import { IoNotificationsOutline, IoPeopleOutline } from 'react-icons/io5';
+import { IoPeopleOutline } from 'react-icons/io5';
 import {
   MdOutlineOndemandVideo,
   MdOutlinePhotoSizeSelectActual,
 } from 'react-icons/md';
+import { NavLink } from 'react-router';
 
 const SmallScreenDropdown = () => {
   return (
@@ -38,23 +39,28 @@ const SmallScreenDropdown = () => {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
-                  <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
-                    <IoPeopleOutline />
+                <NavLink
+                  to="/connections"
+                  className={({ isActive }) => `${isActive && 'text-blue-500'}`}
+                >
+                  <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+                    <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
+                      <IoPeopleOutline />
+                    </div>
+                    <span className="text-sm font-semibold hover:text-blue-500 transition-all">
+                      Connections
+                    </span>
                   </div>
-                  <span className="text-sm font-semibold hover:text-blue-500 transition-all">
-                    Connections
-                  </span>
-                </div>
+                </NavLink>
 
-                <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+                {/* <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
                   <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
                     <IoNotificationsOutline />
                   </div>
                   <span className="text-sm font-semibold hover:text-blue-500 transition-all">
                     Notifications
                   </span>
-                </div>
+                </div> */}
 
                 <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
                   <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">

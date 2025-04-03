@@ -109,7 +109,7 @@ const Connections = () => {
 
   if (!isConnectionDataLoading && connectionRequests?.length === 0) {
     connectionRequestsContent = (
-      <div> Seem like you have no connection requests!</div>
+      <div> Seems like you have no connection requests!</div>
     );
   }
 
