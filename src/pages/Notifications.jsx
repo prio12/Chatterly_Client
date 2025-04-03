@@ -56,9 +56,9 @@ const Notifications = () => {
 
   if (!isLoading && !isError && notifications?.response?.length > 0) {
     content = (
-      <div>
+      <div className="sticky top-24">
         <div className="w-full">
-          <h3 className="text-3xl font-semibold fixed top-24 left-1/4 border-b-2 border-blue-400 pb-2 z-50 bg-gray-50 mb-5 p-2">
+          <h3 className="text-3xl font-semibold  border-b-2 border-blue-400 pb-2 z-50 bg-gray-50 mb-5 p-2">
             Notifications
           </h3>
         </div>
@@ -158,7 +158,7 @@ const Notifications = () => {
   }
   if (!isLoading && !isError && notifications?.response?.length < 1) {
     content = (
-      <div className=" py-10 ">
+      <div className=" py-10 sticky top-24">
         <IoNotificationsOffOutline className="text-5xl text-gray-400 mb-4" />
         <h2 className="text-xl text-gray-500 font-semibold">
           No notifications yet!
@@ -177,7 +177,7 @@ const Notifications = () => {
         <LeftSideBar />
       </div>
 
-      <div className="col-span-1  md:col-span-7 bg-white p-2 md:py-2 md:px-5">
+      <div className="col-span-1  md:col-span-7 bg-white p-2 md:py-2 md:px-5 relative">
         {content}
       </div>
 
