@@ -25,7 +25,9 @@ const ConnectionSuggestions = ({
     //sending to server
     try {
       const response = await connect({ data: connectionsInfo }).unwrap();
-      console.log(response);
+      if (response.success) {
+        toast.success('Connection Request Sent!');
+      }
     } catch (error) {
       toast.error(error?.data?.error);
     }

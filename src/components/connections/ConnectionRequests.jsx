@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
-import { useAcceptConnectionRequestMutation } from '../../redux/api/connections/connectionsApi';
+import {
+  useAcceptConnectionRequestMutation,
+  useIgnoreAConnectionRequestMutation,
+} from '../../redux/api/connections/connectionsApi';
 import toast, { Toaster } from 'react-hot-toast';
 
 const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
-  console.log(request?.requester);
-
   //hooks
   const [acceptRequest] = useAcceptConnectionRequestMutation();
+  const [ignoreRequest] = useIgnoreAConnectionRequestMutation();
 
   const handleAcceptRequest = async () => {
     const notificationInfo = {
@@ -27,6 +29,11 @@ const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
     } catch (error) {
       toast.error(error.message);
     }
+  };
+
+  //handle ignore/delete a connection request
+  const handleIgnoreARequest = async () => {
+    await ignoreRequest(request._id);
   };
   return (
     <div className="max-h-[600px] overflow-y-scroll no-scrollbar">
@@ -77,7 +84,10 @@ const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
             Accept Connection
           </button>{' '}
           <Toaster position="bottom-center" />
-          <button className="btn  rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white ">
+          <button
+            onClick={handleIgnoreARequest}
+            className="btn  rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white "
+          >
             Ignore Request
           </button>
         </div>

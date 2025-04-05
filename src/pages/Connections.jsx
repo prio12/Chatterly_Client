@@ -147,7 +147,6 @@ const Connections = () => {
     ));
   }
 
-  console.log(suggestedConnections);
   return (
     <div className="grid grid-cols-1 relative  md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
       {/* Left Sidebar */}
@@ -155,35 +154,37 @@ const Connections = () => {
         <LeftSideBar />
       </div>
 
-      <div className="col-span-1  relative md:col-span-7 bg-white p-2 md:py-2 md:px-5">
+      <div className="col-span-1 relative  md:col-span-7 bg-white p-2 md:py-2 md:px-5">
         {/* {content} */}
-        <div className="sticky top-28">
+        <div className="sticky top-24">
           <div>
-            <h4 className="text-2xl font-semibold relative inline-block after:content-[''] after:block after:w-full after:h-[3px] after:bg-blue-400 after:mt-1">
-              Connections
-            </h4>
-            {connectionButtons}
-          </div>
-          <div className="divider my-5 "></div>
-          <div>
-            {content === 'request' && (
-              <h6 className="font-bold">
-                Connection Requests{' '}
-                <span className="ms-3 text-blue-600">
-                  {connectionRequests?.length}
-                </span>
-              </h6>
-            )}
-            {content === 'suggestions' && (
-              <h6 className="font-bold">Connection Suggestions</h6>
-            )}
-            {content === 'myConnections' && (
-              <h6 className="font-bold ">My Connections</h6>
-            )}
-          </div>
-          <div className="my-5">
-            {content === 'request' && connectionRequestsContent}
-            {content === 'suggestions' && suggestedConnectionsContent}
+            <div>
+              <h4 className="text-2xl font-semibold relative inline-block after:content-[''] after:block after:w-full after:h-[3px] after:bg-blue-400 after:mt-1">
+                Connections
+              </h4>
+              {connectionButtons}
+            </div>
+            <div className="divider my-5 "></div>
+            <div>
+              {content === 'request' && (
+                <h6 className="font-bold">
+                  Connection Requests{' '}
+                  <span className="ms-3 text-blue-600">
+                    {connectionRequests?.length}
+                  </span>
+                </h6>
+              )}
+              {content === 'suggestions' && (
+                <h6 className="font-bold">Connection Suggestions</h6>
+              )}
+              {content === 'myConnections' && (
+                <h6 className="font-bold ">My Connections</h6>
+              )}
+            </div>
+            <div className="my-5">
+              {content === 'request' && connectionRequestsContent}
+              {content === 'suggestions' && suggestedConnectionsContent}
+            </div>
           </div>
         </div>
       </div>

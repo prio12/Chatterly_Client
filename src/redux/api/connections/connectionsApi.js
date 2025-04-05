@@ -45,6 +45,17 @@ const connectionsApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['connections'],
     }),
+
+    //ignore/decline a connection request
+    ignoreAConnectionRequest: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/connections/${id}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['connections'],
+    }),
   }),
 });
 
@@ -53,4 +64,5 @@ export const {
   useFetchConnectionRequestsQuery,
   useFetchConnectionSuggestionsQuery,
   useAcceptConnectionRequestMutation,
+  useIgnoreAConnectionRequestMutation,
 } = connectionsApi;
