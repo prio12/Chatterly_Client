@@ -4,8 +4,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { signInUserWithEmail } from '../../redux/features/loggedInUser/userSlice';
-import toast, { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const SignIn = () => {
   //hooks
@@ -50,8 +50,6 @@ const SignIn = () => {
   };
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      <Toaster />
-
       {/* Left Div */}
       <div className="w-full md:w-1/2 flex flex-col md:pt-12 pt-5 items-center">
         <h2 className="text-2xl font-semibold">Get Started Now</h2>

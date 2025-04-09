@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { IoVideocamOffOutline } from 'react-icons/io5';
 import { MdEventAvailable, MdOutlineInsertPhoto } from 'react-icons/md';
 import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
-import toast, { Toaster } from 'react-hot-toast';
 import ContentUploadModal from '../utilities/ContentUploadModal ';
 import LoadingButton from '../utilities/btn/LoadingButton';
 import VideoUploadModal from '../utilities/VideoUploadModal';
 import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
+import toast from 'react-hot-toast';
 
 const CreatePost = ({ user }) => {
   //hooks
@@ -46,7 +46,6 @@ const CreatePost = ({ user }) => {
   return (
     <div className="my-5 border p-5 ">
       {/* Avatar and Textarea */}
-      <Toaster />
       <div className="flex items-center gap-3">
         <div className="avatar mt-[-24px]">
           <div className="w-8 rounded-full">

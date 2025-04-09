@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import EditCommentModal from '../utilities/editCommentModal';
 import { useDeleteACommentMutation } from '../redux/api/posts/postsApi';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
 const CommentBox = ({ comment, author, postId }) => {
@@ -36,7 +36,6 @@ const CommentBox = ({ comment, author, postId }) => {
   return (
     <div className="my-4  p-4 rounded-lg shadow-sm border bg-gray-200">
       <div className="flex items-center justify-between">
-        <Toaster />
         {/* User Info */}
         <div className="flex items-center gap-3">
           <div className="avatar">

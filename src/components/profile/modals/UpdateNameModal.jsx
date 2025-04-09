@@ -4,7 +4,7 @@ import Modal from '../../../utilities/Modal';
 import { useUpdateUserProfileMutation } from '../../../redux/api/users/usersApi';
 import { useEffect, useState } from 'react';
 import LoadingButton from '../../../utilities/btn/LoadingButton';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
   // user object destructure
@@ -75,7 +75,6 @@ const UpdateNameModal = ({ user, isUpdateNameOpen, setIsUpdateNameOpen }) => {
   return (
     <Modal isOpen={isUpdateNameOpen} setIsOpen={setIsUpdateNameOpen}>
       <div className="w-full md:w-1/2 mx-0 md:mx-auto shadow-xl p-2 md:p-5">
-        <Toaster />
         <h3 className="text-center text-xl font-semibold">Update Your Name</h3>
         <form onSubmit={handleSubmit(onSubmit)} className=" w-full   my-5 ">
           <div>

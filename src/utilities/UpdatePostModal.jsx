@@ -7,7 +7,7 @@ import {
 } from '../redux/api/posts/postsApi';
 import { useEffect, useState } from 'react';
 import LoadingButton from './btn/LoadingButton';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const UpdatePostModal = ({ isOpen, setIsOpen, img, video, content, id }) => {
   // hooks
@@ -99,7 +99,6 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, video, content, id }) => {
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="md:w-1/2 md:mx-auto mt-5 p-4 md:p-6 bg-white shadow-lg rounded-lg">
-        <Toaster />
         <h1 className="text-center text-lg font-semibold my-5 text-gray-700">
           Manage Your Post
         </h1>

@@ -3,7 +3,7 @@ import { FaPaperPlane } from 'react-icons/fa';
 import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
 import { useState } from 'react';
 import { useHandleAddCommentMutation } from '../redux/api/posts/postsApi';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const CommentInputField = ({ post, user, userId }) => {
   //hooks
@@ -45,7 +45,6 @@ const CommentInputField = ({ post, user, userId }) => {
   };
   return (
     <div className="flex items-start gap-3">
-      <Toaster />
       {/* Avatar */}
       <div className="avatar">
         <div className="w-8 rounded-full">

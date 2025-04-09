@@ -56,6 +56,27 @@ const connectionsApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['connections'],
     }),
+
+    //get myConnections (A user's all friends/connections)
+    getMyConnections: builder.query({
+      query: (id) => {
+        return {
+          url: `/connections/myConnections/${id}`,
+        };
+      },
+      providesTags: ['connections'],
+    }),
+
+    //get all sent Requests of a individual user
+    getSentRequests: builder.query({
+      query: (id) => {
+        console.log(id);
+        return {
+          url: `/connections/sentRequests/${id}`,
+        };
+      },
+      providesTags: ['connections'],
+    }),
   }),
 });
 
@@ -65,4 +86,6 @@ export const {
   useFetchConnectionSuggestionsQuery,
   useAcceptConnectionRequestMutation,
   useIgnoreAConnectionRequestMutation,
+  useGetMyConnectionsQuery,
+  useGetSentRequestsQuery,
 } = connectionsApi;

@@ -5,7 +5,7 @@ import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { FaPaperPlane } from 'react-icons/fa6';
 import { useState } from 'react';
 import { useUpdateCommentMutation } from '../redux/api/posts/postsApi';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const EditCommentModal = ({ isOpen, setIsOpen, comment, postId }) => {
   //hooks
@@ -58,7 +58,6 @@ const EditCommentModal = ({ isOpen, setIsOpen, comment, postId }) => {
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="md:w-1/2 md:mx-auto mt-5 p-4 md:p-6 bg-white shadow-lg rounded-lg">
-        <Toaster />
         <h5 className="font-semibold text-xl text-center mb-5">
           Edit Your Comment!
         </h5>

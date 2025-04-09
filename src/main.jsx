@@ -6,13 +6,18 @@ import { BrowserRouter } from 'react-router';
 import { Provider } from 'react-redux';
 import store from './redux/app/store.js';
 import { SocketProvider } from './context/SocketContext.jsx';
+import { Toaster } from 'react-hot-toast'; // ✅ import this here
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <SocketProvider>
-          <App />
+          <>
+            <App />
+            <Toaster position="top-right" reverseOrder={false} />{' '}
+            {/* ✅ Global Toaster */}
+          </>
         </SocketProvider>
       </Provider>
     </BrowserRouter>
