@@ -6,9 +6,11 @@ import { useDispatch } from 'react-redux';
 import { signInUserWithEmail } from '../../redux/features/loggedInUser/userSlice';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useGenerateJwtMutation } from '../../redux/api/users/usersApi';
 
 const SignIn = () => {
   //hooks
+  const [generateJwt] = useGenerateJwtMutation();
   const {
     register,
     handleSubmit,
@@ -26,25 +28,36 @@ const SignIn = () => {
       ).unwrap();
 
       if (payload.currentUser) {
-        toast.success('Welcome back! 🎉', {
-          duration: 5000, // Toast stays visible for 5 seconds
-          style: {
-            border: '1px solid #4caf50',
-            padding: '16px',
-            color: '#4caf50',
-          },
-          iconTheme: {
-            primary: '#4caf50',
-            secondary: '#fff',
-          },
-        });
+        try {
+          console.log('before jwt');
+          //send user uid to the server to create jwt token
+          const response = await generateJwt(payload).unwrap();
 
-        setTimeout(() => {
-          navigate('/');
-        }, 1000);
+          if (response.success && response.token) {
+            //saving jwt token in local storage
+            localStorage.setItem('token', response.token);
+            toast.success('Welcome back! 🎉', {
+              duration: 5000, // Toast stays visible for 5 seconds
+              style: {
+                border: '1px solid #4caf50',
+                padding: '16px',
+                color: '#4caf50',
+              },
+              iconTheme: {
+                primary: '#4caf50',
+                secondary: '#fff',
+              },
+            });
+
+            setTimeout(() => {
+              navigate('/');
+            }, 1000);
+          }
+        } catch (error) {
+          setError(error.message);
+        }
       }
     } catch (error) {
-      console.log(error);
       setError(error.message);
     }
   };

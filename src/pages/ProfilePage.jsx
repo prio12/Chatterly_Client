@@ -8,11 +8,20 @@ import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useParams } from 'react-router';
 import { useContext, useEffect } from 'react';
 import SocketContext from '../context/SocketContext';
+import { useSelector } from 'react-redux';
 
 const ProfilePage = () => {
   //hooks
   const { uid } = useParams();
   const socket = useContext(SocketContext);
+
+  //getting currently loggedInUser Uid
+  const { currentUser: currentUserUid } = useSelector(
+    (state) => state.loggedInUser
+  );
+
+  //getting currentlyLoggedInUser data using uid
+  const { data: currentUser } = useUserInfoByUidQuery(currentUserUid);
 
   const { data, refetch } = useUserInfoByUidQuery(uid, {
     refetchOnMountOrArgChange: true,
@@ -39,7 +48,11 @@ const ProfilePage = () => {
   return (
     <div className="grid  md:grid-cols-3   bg-gray-100 gap-8 ">
       <div className="col-span-2 ">
-        <Profile user={user} />
+        <Profile
+          user={user}
+          currentUserId={currentUser?.user?._id}
+          currentUserData={currentUser?.user}
+        />
         <ProfileContent user={user} />
       </div>
       <div className="col-span-1 hidden md:block relative bg-white">

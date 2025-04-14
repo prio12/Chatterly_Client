@@ -10,11 +10,30 @@ import UpdateNameModal from './modals/UpdateNameModal';
 import ProfileMediaModal from './modals/ProfileMediaModal';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import {
+  useAcceptConnectionRequestMutation,
+  useAddConnectionRequestMutation,
+  useGetConnectionStatusQuery,
+  useIgnoreAConnectionRequestMutation,
+} from '../../redux/api/connections/connectionsApi';
+import toast from 'react-hot-toast';
 
-const Profile = ({ user }) => {
+const Profile = ({ user, currentUserId, currentUserData }) => {
   const { name, profilePicture, coverPhoto } = user;
 
   //hooks
+  const [acceptRequest] = useAcceptConnectionRequestMutation();
+  const [ignoreRequest] = useIgnoreAConnectionRequestMutation();
+  const [connect] = useAddConnectionRequestMutation();
+
+  //using rtk to get connection status between two users
+  const { data, isLoading } = useGetConnectionStatusQuery(
+    {
+      userId: currentUserId,
+      targetId: user?._id,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { uid } = useParams();
 
@@ -23,6 +42,105 @@ const Profile = ({ user }) => {
   const [error, setError] = useState(null);
   const [isUpdateNameOpen, setIsUpdateNameOpen] = useState(false);
 
+  //handle ignore/delete a connection request
+  const handleIgnoreARequest = async () => {
+    await ignoreRequest(data?.connectionId);
+  };
+
+  //handle connection request
+  const handleConnect = async () => {
+    const connectionsInfo = {
+      requester: currentUserId,
+      recipient: user?._id,
+      requesterUid: currentUser,
+      recipientUid: user?.uid,
+    };
+
+    //sending to server
+    try {
+      const response = await connect({ data: connectionsInfo }).unwrap();
+      if (response.success) {
+        toast.success('Connection Request Sent!');
+      }
+    } catch (error) {
+      toast.error(error?.data?.error);
+    }
+  };
+
+  const handleAcceptRequest = async () => {
+    const notificationInfo = {
+      // notificationSender: request?.requester?.uid,
+      notificationSender: currentUserData,
+      notificationRecipient: user,
+    };
+
+    try {
+      await acceptRequest({
+        id: data?.connectionId,
+        data: notificationInfo,
+      });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  console.log(currentUserData);
+
+  let connectionLabel;
+
+  if (isLoading) {
+    connectionLabel = <div>Loading...</div>;
+  } else if (!isLoading && !data?.connection) {
+    connectionLabel = (
+      <button
+        onClick={handleConnect}
+        className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
+      >
+        Connect
+      </button>
+    );
+  } else if (
+    !isLoading &&
+    data?.connection &&
+    data?.status === 'pending' &&
+    data?.action === 'accept'
+  ) {
+    connectionLabel = (
+      <button
+        onClick={handleAcceptRequest}
+        className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
+      >
+        Accept
+      </button>
+    );
+  } else if (
+    !isLoading &&
+    data?.connection &&
+    data?.status === 'pending' &&
+    data?.action === 'cancel'
+  ) {
+    connectionLabel = (
+      <button
+        onClick={handleIgnoreARequest}
+        className="btn  rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white "
+      >
+        Cancel
+      </button>
+    );
+  } else if (
+    !isLoading &&
+    data?.connection &&
+    data?.status === 'accepted' &&
+    data?.action === 'disconnect'
+  ) {
+    connectionLabel = (
+      <button
+        onClick={handleIgnoreARequest}
+        className="btn  rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white "
+      >
+        Disconnect
+      </button>
+    );
+  }
   return (
     <div className="bg-white border">
       <div
@@ -89,6 +207,8 @@ const Profile = ({ user }) => {
             </button>
           </div>
         )}
+        {user?._id !== currentUserId && connectionLabel}
+
         {currentUser === uid && (
           <div
             onClick={() => setIsUpdateNameOpen(true)}

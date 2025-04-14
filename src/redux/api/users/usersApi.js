@@ -34,6 +34,18 @@ const usersApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['profile'],
     }),
+
+    //generate jwt token to secure url , sending user data to the server after successful signed up or login
+    generateJwt: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: '/jwt',
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -43,4 +55,5 @@ export const {
   useUserInfoByUidQuery,
   usePrefetch,
   useGetAllUsersQuery,
+  useGenerateJwtMutation,
 } = usersApi;

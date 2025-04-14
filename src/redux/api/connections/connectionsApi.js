@@ -77,6 +77,16 @@ const connectionsApi = baseApi.injectEndpoints({
       },
       providesTags: ['connections'],
     }),
+
+    //get connection status between two users for the profile section to show disconnect,connect,cancel,accept
+    getConnectionStatus: builder.query({
+      query: ({ userId, targetId }) => {
+        return {
+          url: `/connections/status/${userId}/${targetId}`,
+        };
+      },
+      providesTags: ['connections'],
+    }),
   }),
 });
 
@@ -88,4 +98,5 @@ export const {
   useIgnoreAConnectionRequestMutation,
   useGetMyConnectionsQuery,
   useGetSentRequestsQuery,
+  useGetConnectionStatusQuery,
 } = connectionsApi;
