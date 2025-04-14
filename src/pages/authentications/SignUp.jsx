@@ -8,7 +8,10 @@ import {
   createUserWithGoogle,
 } from '../../redux/features/loggedInUser/userSlice';
 import { useState } from 'react';
-import { useAddNewUserMutation } from '../../redux/api/users/usersApi';
+import {
+  useAddNewUserMutation,
+  useGenerateJwtMutation,
+} from '../../redux/api/users/usersApi';
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
@@ -17,6 +20,8 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [addNewUser] = useAddNewUserMutation();
+  const [generateJwt] = useGenerateJwtMutation();
+
   const {
     register,
     handleSubmit,
@@ -38,29 +43,46 @@ const SignUp = () => {
 
       if (payload.currentUser) {
         //gathering data of user to save in db
+        console.log(payload);
         const userInfo = {
           name: `${data.fname} ${data.lname}`,
           email: data.email,
           uid: payload.currentUser,
         };
-        const response = await addNewUser(userInfo);
-        if (response) {
-          toast.success('Account created successfully! 🎉', {
-            duration: 5000, // Toast stays visible for 5 seconds
-            style: {
-              border: '1px solid #4caf50',
-              padding: '16px',
-              color: '#4caf50',
-            },
-            iconTheme: {
-              primary: '#4caf50',
-              secondary: '#fff',
-            },
-          });
+        //sending uid to the server to generate jwt token
+        try {
+          const response = await generateJwt(payload).unwrap();
 
-          setTimeout(() => {
-            navigate('/');
-          }, 1000);
+          if (response.success && response.token) {
+            //saving jwt token in local storage
+            localStorage.setItem('token', response.token);
+
+            try {
+              const response = await addNewUser(userInfo);
+              if (response) {
+                toast.success('Account created successfully! 🎉', {
+                  duration: 5000, // Toast stays visible for 5 seconds
+                  style: {
+                    border: '1px solid #4caf50',
+                    padding: '16px',
+                    color: '#4caf50',
+                  },
+                  iconTheme: {
+                    primary: '#4caf50',
+                    secondary: '#fff',
+                  },
+                });
+
+                setTimeout(() => {
+                  navigate('/');
+                }, 1000);
+              }
+            } catch (error) {
+              setError(error.message);
+            }
+          }
+        } catch (error) {
+          setError(error.message);
         }
       }
     } catch (error) {

@@ -29,7 +29,6 @@ const SignIn = () => {
 
       if (payload.currentUser) {
         try {
-          console.log('before jwt');
           //send user uid to the server to create jwt token
           const response = await generateJwt(payload).unwrap();
 
