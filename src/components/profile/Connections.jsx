@@ -1,7 +1,8 @@
-const Connections = () => {
+/* eslint-disable react/prop-types */
+const Connections = ({ connection }) => {
+  console.log(connection);
   return (
     <div className="p-5 bg-white border my-5">
-      <h4 className="font-bold text-xl mb-8">Connections</h4>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-5">
           <div className="avatar cursor-pointer">

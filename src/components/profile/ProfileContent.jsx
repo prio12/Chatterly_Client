@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import Feed from './Feed';
 import About from './About';
-import Connections from './Connections';
 import Media from './Media';
 import Videos from './Videos';
 import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
+import MyConnections from '../connections/MyConnections';
 
 const ProfileContent = ({ user, currentUserData }) => {
   //hooks
@@ -16,8 +16,44 @@ const ProfileContent = ({ user, currentUserData }) => {
 
   const myConnections = data?.myConnections;
 
+  let connectionsContent;
+
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (!isLoading && myConnections?.length === 0) {
+    connectionsContent = (
+      <div>
+        <div>
+          <h4 className="font-bold text-xl mb-4">
+            Connections <span className="text-green-600  font-bold">0</span>
+          </h4>
+          <p className="text-gray-500 italic">
+            Oops! Seems like you have no connections yet!
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isLoading && myConnections?.length > 0) {
+    connectionsContent = (
+      <div className="mb-12">
+        <h4 className="font-bold text-xl mb-4">
+          Connections{' '}
+          <span className="text-green-600  font-bold">
+            {myConnections?.length}
+          </span>
+        </h4>
+        {myConnections?.map((connection) => (
+          <MyConnections
+            connection={connection}
+            key={connection?.connectionId}
+          />
+        ))}
+      </div>
+    );
   }
 
   return (
@@ -93,7 +129,7 @@ const ProfileContent = ({ user, currentUserData }) => {
       <div>
         {activeTab === 'feed' && <Feed user={user} />}
         {activeTab === 'about' && <About user={user} />}
-        {activeTab === 'connections' && <Connections />}
+        {activeTab === 'connections' && connectionsContent}
         {activeTab === 'media' && <Media />}
         {activeTab === 'videos' && <Videos />}
       </div>
