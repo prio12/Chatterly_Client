@@ -83,7 +83,6 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
       toast.error(error.message);
     }
   };
-  console.log(currentUserData);
 
   let connectionLabel;
 

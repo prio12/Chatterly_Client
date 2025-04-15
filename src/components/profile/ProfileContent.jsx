@@ -5,10 +5,20 @@ import About from './About';
 import Connections from './Connections';
 import Media from './Media';
 import Videos from './Videos';
+import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 
-const ProfileContent = ({ user }) => {
+const ProfileContent = ({ user, currentUserData }) => {
   //hooks
   const [activeTab, setActiveTab] = useState('feed');
+
+  //fetching all connections of a specific user
+  const { data, isLoading } = useGetMyConnectionsQuery(currentUserData?._id);
+
+  const myConnections = data?.myConnections;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-white">
@@ -51,7 +61,9 @@ const ProfileContent = ({ user }) => {
           >
             Connections
           </h4>
-          <span className="text-green-400 text-xs bg-green-50 p-2">300</span>
+          <span className="text-green-600 text-xs font-bold bg-green-50 p-2">
+            {myConnections?.length}
+          </span>
         </div>
 
         {/* Media Tab */}
