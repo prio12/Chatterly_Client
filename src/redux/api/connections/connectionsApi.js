@@ -70,7 +70,6 @@ const connectionsApi = baseApi.injectEndpoints({
     //get all sent Requests of a individual user
     getSentRequests: builder.query({
       query: (id) => {
-        console.log(id);
         return {
           url: `/connections/sentRequests/${id}`,
         };

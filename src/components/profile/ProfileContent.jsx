@@ -7,12 +7,14 @@ import Videos from './Videos';
 import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 import MyConnections from '../connections/MyConnections';
 
-const ProfileContent = ({ user, currentUserData }) => {
+const ProfileContent = ({ user }) => {
   //hooks
   const [activeTab, setActiveTab] = useState('feed');
 
   //fetching all connections of a specific user
-  const { data, isLoading } = useGetMyConnectionsQuery(currentUserData?._id);
+  const { data, isLoading } = useGetMyConnectionsQuery(user?._id, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const myConnections = data?.myConnections;
 

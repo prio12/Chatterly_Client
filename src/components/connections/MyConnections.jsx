@@ -2,12 +2,16 @@ import { SiImessage } from 'react-icons/si';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { useIgnoreAConnectionRequestMutation } from '../../redux/api/connections/connectionsApi';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 
 /* eslint-disable react/prop-types */
 const MyConnections = ({ connection }) => {
   //hooks
   const [removeAConnection] = useIgnoreAConnectionRequestMutation();
+  const { pathname } = useLocation();
+  const { uid } = useParams();
+  const { currentUser } = useSelector((state) => state.loggedInUser);
 
   //delete A fried or connection from myConnections
   const handleRemoveConnection = async () => {
@@ -33,6 +37,40 @@ const MyConnections = ({ connection }) => {
       toast.error(`${error?.message}`);
     }
   };
+
+  console.log(pathname);
+  console.log(uid);
+  console.log(currentUser);
+
+  let buttons;
+
+  if (currentUser === connection?.myConnection?.uid) {
+    buttons = null;
+  } else if (pathname === '/connections' || uid === currentUser) {
+    buttons = (
+      <div className="flex items-center gap-5">
+        <button
+          className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
+     hover:text-white"
+        >
+          <SiImessage className="text-xl font-semibold text-blue-600" />
+        </button>
+        <button
+          onClick={handleRemoveConnection}
+          className="btn  btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
+        >
+          Disconnect
+        </button>
+      </div>
+    );
+  } else {
+    buttons = (
+      <button className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white ">
+        Connect
+      </button>
+    );
+  }
+
   return (
     <div className="max-h-[600px] overflow-y-scroll border-b-2  p-2 no-scrollbar">
       <div className="flex items-center justify-between ">
@@ -50,20 +88,7 @@ const MyConnections = ({ connection }) => {
             <h5 className="font-semibold">{connection?.myConnection?.name}</h5>
           </div>
         </Link>
-        <div className="flex items-center gap-5">
-          <button
-            className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
-           hover:text-white"
-          >
-            <SiImessage className="text-xl font-semibold text-blue-600" />
-          </button>
-          <button
-            onClick={handleRemoveConnection}
-            className="btn  btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
-          >
-            Disconnect
-          </button>
-        </div>
+        {buttons}
       </div>
     </div>
   );

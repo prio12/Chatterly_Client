@@ -190,7 +190,9 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
           />
           <div>
             <h5 className="text-xl font-bold">{name}</h5>
-            <p>250 Connections</p>
+            {user?._id !== currentUserId && (
+              <div className="block md:hidden mt-3">{connectionLabel}</div>
+            )}
           </div>
         </div>
         {currentUser === uid && (
@@ -206,7 +208,9 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
             </button>
           </div>
         )}
-        {user?._id !== currentUserId && connectionLabel}
+        {user?._id !== currentUserId && (
+          <div className="hidden md:block">{connectionLabel}</div>
+        )}
 
         {currentUser === uid && (
           <div
