@@ -53,7 +53,11 @@ const ProfilePage = () => {
           currentUserId={currentUser?.user?._id}
           currentUserData={currentUser?.user}
         />
-        <ProfileContent currentUserData={currentUser?.user} user={user} />
+        <ProfileContent
+          currentUserId={currentUser?.user?._id}
+          currentUserData={currentUser?.user}
+          user={user}
+        />
       </div>
       <div className="col-span-1 hidden md:block relative bg-white">
         <div className="p-5 border sticky top-[6.5rem]  ">

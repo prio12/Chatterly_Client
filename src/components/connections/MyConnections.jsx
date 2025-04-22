@@ -6,12 +6,20 @@ import { Link, useLocation, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 
 /* eslint-disable react/prop-types */
-const MyConnections = ({ connection }) => {
+const MyConnections = ({ connection, loggedInUserConnections }) => {
   //hooks
   const [removeAConnection] = useIgnoreAConnectionRequestMutation();
   const { pathname } = useLocation();
   const { uid } = useParams();
   const { currentUser } = useSelector((state) => state.loggedInUser);
+
+  //checking if own profile
+  const ownProfile = currentUser === connection?.myConnection?.uid;
+
+  //checking mutual connections
+  const isInConnectionsList = loggedInUserConnections?.some(
+    (conn) => conn?.myConnection?.uid === connection?.myConnection?.uid
+  );
 
   //delete A fried or connection from myConnections
   const handleRemoveConnection = async () => {
@@ -38,20 +46,41 @@ const MyConnections = ({ connection }) => {
     }
   };
 
-  console.log(pathname);
-  console.log(uid);
-  console.log(currentUser);
-
   let buttons;
 
-  if (currentUser === connection?.myConnection?.uid) {
-    buttons = null;
-  } else if (pathname === '/connections' || uid === currentUser) {
+  // if (currentUser === connection?.myConnection?.uid) {
+  //   buttons = null;
+  // } else if (pathname === '/connections' || uid === currentUser) {
+  //   buttons = (
+  //     <div className="flex items-center gap-5">
+  //       <button
+  //         className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
+  //    hover:text-white"
+  //       >
+  //         <SiImessage className="text-xl font-semibold text-blue-600" />
+  //       </button>
+  //       <button
+  //         onClick={handleRemoveConnection}
+  //         className="btn  btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
+  //       >
+  //         Disconnect
+  //       </button>
+  //     </div>
+  //   );
+  // } else {
+  //   buttons = (
+  //     <button className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white ">
+  //       Connect
+  //     </button>
+  //   );
+  // }
+
+  if (pathname === '/connections' || uid === currentUser) {
     buttons = (
       <div className="flex items-center gap-5">
         <button
           className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
-     hover:text-white"
+         hover:text-white"
         >
           <SiImessage className="text-xl font-semibold text-blue-600" />
         </button>
@@ -64,11 +93,13 @@ const MyConnections = ({ connection }) => {
       </div>
     );
   } else {
-    buttons = (
-      <button className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white ">
-        Connect
-      </button>
-    );
+    if (ownProfile) {
+      buttons = <div>ami nije</div>;
+    } else if (!isInConnectionsList) {
+      buttons = <div>Connect</div>;
+    } else if (isInConnectionsList) {
+      buttons = <div>Disconnect</div>;
+    }
   }
 
   return (
