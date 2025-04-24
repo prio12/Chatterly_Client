@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
 
 const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
+  console.log('printing request', request);
   //hooks
   const [acceptRequest] = useAcceptConnectionRequestMutation();
   const [ignoreRequest] = useIgnoreAConnectionRequestMutation();

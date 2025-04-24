@@ -1,6 +1,7 @@
 import { SiImessage } from 'react-icons/si';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import {
+  useAcceptConnectionRequestMutation,
   useAddConnectionRequestMutation,
   useGetConnectionStatusQuery,
   useIgnoreAConnectionRequestMutation,
@@ -10,14 +11,11 @@ import { Link, useLocation, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 
 /* eslint-disable react/prop-types */
-const MyConnections = ({
-  connection,
-  loggedInUserConnections,
-  currentUserData,
-}) => {
+const MyConnections = ({ connection, currentUserData }) => {
   //hooks
   const [removeAConnection] = useIgnoreAConnectionRequestMutation();
   const [connect] = useAddConnectionRequestMutation();
+  const [acceptRequest] = useAcceptConnectionRequestMutation();
   const { pathname } = useLocation();
   const { uid } = useParams();
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -31,15 +29,8 @@ const MyConnections = ({
     { refetchOnMountOrArgChange: true }
   );
 
-  console.log('connectionsStatusData', data);
-
   //checking if own profile
   const ownProfile = currentUser === connection?.myConnection?.uid;
-
-  //checking mutual connections
-  // const isInConnectionsList = loggedInUserConnections?.some(
-  //   (conn) => conn?.myConnection?.uid === connection?.myConnection?.uid
-  // );
 
   //handle connection request
   const handleConnect = async (recipient) => {
@@ -59,6 +50,23 @@ const MyConnections = ({
     } catch (error) {
       // console.log(error?.data?.error);
       toast.error(error?.data?.error);
+    }
+  };
+
+  //handleAccept connections Requests
+  const handleAcceptRequest = async (recipient) => {
+    const notificationInfo = {
+      notificationSender: currentUserData,
+      notificationRecipient: recipient,
+    };
+
+    try {
+      await acceptRequest({
+        id: data?.connectionId.toString(),
+        data: notificationInfo,
+      });
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -118,7 +126,7 @@ const MyConnections = ({
     ) {
       buttons = (
         <button
-          // onClick={handleAcceptRequest}
+          onClick={() => handleAcceptRequest(connection?.myConnection)}
           className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
         >
           Accept

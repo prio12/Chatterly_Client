@@ -7,7 +7,7 @@ import Videos from './Videos';
 import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 import MyConnections from '../connections/MyConnections';
 
-const ProfileContent = ({ user, currentUserId, currentUserData }) => {
+const ProfileContent = ({ user, currentUserData }) => {
   //hooks
   const [activeTab, setActiveTab] = useState('feed');
 
@@ -16,16 +16,7 @@ const ProfileContent = ({ user, currentUserId, currentUserData }) => {
     refetchOnMountOrArgChange: true,
   });
 
-  //fetching all connections of loggedInUser
-  const { data: loggedInUserConnectionsData } = useGetMyConnectionsQuery(
-    currentUserId,
-    {
-      refetchOnMountOrArgChange: true,
-    }
-  );
-
   const myConnections = data?.myConnections;
-  const loggedInUserConnections = loggedInUserConnectionsData?.myConnections;
 
   let connectionsContent;
 
@@ -60,7 +51,6 @@ const ProfileContent = ({ user, currentUserId, currentUserData }) => {
         {myConnections?.map((connection) => (
           <MyConnections
             currentUserData={currentUserData}
-            loggedInUserConnections={loggedInUserConnections}
             connection={connection}
             key={connection?.connectionId}
           />

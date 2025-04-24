@@ -5,10 +5,16 @@ import { CiHeart } from 'react-icons/ci';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { useContext, useEffect } from 'react';
 import SocketContext from '../context/SocketContext';
 import { useSelector } from 'react-redux';
+import {
+  useAddConnectionRequestMutation,
+  useFetchConnectionSuggestionsQuery,
+} from '../redux/api/connections/connectionsApi';
+import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
+import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
   //hooks
@@ -20,14 +26,44 @@ const ProfilePage = () => {
     (state) => state.loggedInUser
   );
 
-  //getting currentlyLoggedInUser data using uid
+  //rtk hooks
   const { data: currentUser } = useUserInfoByUidQuery(currentUserUid);
+
+  const [connect] = useAddConnectionRequestMutation();
+
+  const { data: suggestedConnectionsData, isLoading } =
+    useFetchConnectionSuggestionsQuery(currentUser?.user?._id);
 
   const { data, refetch } = useUserInfoByUidQuery(uid, {
     refetchOnMountOrArgChange: true,
   });
 
   const user = data?.user;
+
+  //handle connection request
+  const handleConnect = async (recipient) => {
+    const connectionsInfo = {
+      requester: currentUser?.user?._id,
+      recipient: recipient?._id,
+      requesterUid: currentUser?.user?.uid,
+      recipientUid: recipient?.uid,
+    };
+
+    //sending to server
+    try {
+      const response = await connect({ data: connectionsInfo }).unwrap();
+      if (response.success) {
+        toast.success('Connection Request Sent!');
+      }
+    } catch (error) {
+      toast.error(error?.data?.error);
+    }
+  };
+
+  const limitedSuggestions =
+    suggestedConnectionsData?.suggestedConnections.slice(0, 3);
+
+  console.log('limit', limitedSuggestions);
 
   useEffect(() => {
     socket.on('postInteraction', ({ success }) => {
@@ -38,6 +74,55 @@ const ProfilePage = () => {
       }
     });
   }, [socket, refetch]);
+
+  let suggestedConnections;
+
+  if (isLoading) {
+    suggestedConnections = <div>Loading...</div>;
+  }
+
+  if (!isLoading && limitedSuggestions?.length === 0) {
+    suggestedConnections = (
+      <div>
+        <p>Oops! Seems like you have no suggested connections!!</p>
+      </div>
+    );
+  }
+
+  if (!isLoading && limitedSuggestions?.length > 0) {
+    suggestedConnections = limitedSuggestions?.map((connection) => (
+      <Link to={`/profile/${connection?.uid}`} key={connection?._id}>
+        {' '}
+        <div className="flex justify-between my-5 items-center">
+          <div className="flex items-center gap-5">
+            <div className="avatar cursor-pointer">
+              <div className="w-8 rounded-full">
+                {connection?.profilePicture ? (
+                  <img src={connection?.profilePicture} />
+                ) : (
+                  <DefaultProfilePIcture />
+                )}
+              </div>
+            </div>
+            <div className="cursor-pointer">
+              <h5 className="font-bold">{connection?.name}</h5>
+              {connection?.bio && (
+                <p className="text-sm ">
+                  {connection?.bio.slice(0, 20) + '...'}
+                </p>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={() => handleConnect(connection)}
+            className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
+          >
+            Connect
+          </button>
+        </div>
+      </Link>
+    ));
+  }
 
   if (!user) {
     return <div>Loading...</div>;
@@ -99,38 +184,10 @@ const ProfilePage = () => {
           </div>
         </div>
         <div className="p-5 border my-5 sticky top-[19.85rem]">
-          <h4 className="font-bold my-5">Who to follow</h4>
-          <div className="flex justify-between my-5 items-center">
-            <div className="flex items-center gap-5">
-              <div className="avatar cursor-pointer">
-                <div className="w-8 rounded-full">
-                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                </div>
-              </div>
-              <div className="cursor-pointer">
-                <h5 className="font-bold">Captain Levi</h5>
-                <p className="text-sm ">Team Lead of Levi Team</p>
-              </div>
-            </div>
-            <button className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white">
-              Follow
-            </button>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-5">
-              <div className="avatar cursor-pointer">
-                <div className="w-8 rounded-full">
-                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                </div>
-              </div>
-              <div className="cursor-pointer">
-                <h5 className="font-bold">Captain Levi</h5>
-                <p className="text-sm ">Team Lead of Levi Team</p>
-              </div>
-            </div>
-            <button className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white">
-              Follow
-            </button>
+          <h4 className="font-bold my-5">Suggested Connections</h4>
+          {suggestedConnections}
+          <div className="text-sm font-semibold text-blue-600 mt-5">
+            <Link to="/connections">See more</Link>
           </div>
         </div>
       </div>
