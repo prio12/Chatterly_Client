@@ -2,6 +2,7 @@ import { SiImessage } from 'react-icons/si';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import {
   useAddConnectionRequestMutation,
+  useGetConnectionStatusQuery,
   useIgnoreAConnectionRequestMutation,
 } from '../../redux/api/connections/connectionsApi';
 import toast from 'react-hot-toast';
@@ -21,13 +22,24 @@ const MyConnections = ({
   const { uid } = useParams();
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
+  //using rtk to get connection status between two users
+  const { data, isLoading } = useGetConnectionStatusQuery(
+    {
+      userId: currentUserData?._id,
+      targetId: connection?.myConnection?._id,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  console.log('connectionsStatusData', data);
+
   //checking if own profile
   const ownProfile = currentUser === connection?.myConnection?.uid;
 
   //checking mutual connections
-  const isInConnectionsList = loggedInUserConnections?.some(
-    (conn) => conn?.myConnection?.uid === connection?.myConnection?.uid
-  );
+  // const isInConnectionsList = loggedInUserConnections?.some(
+  //   (conn) => conn?.myConnection?.uid === connection?.myConnection?.uid
+  // );
 
   //handle connection request
   const handleConnect = async (recipient) => {
@@ -45,24 +57,26 @@ const MyConnections = ({
         toast.success('Connection Request Sent!');
       }
     } catch (error) {
+      // console.log(error?.data?.error);
       toast.error(error?.data?.error);
     }
   };
 
   //delete A fried or connection from myConnections
-  const handleRemoveConnection = async () => {
+  const handleRemoveConnection = async (ownConnections) => {
+    const connectionId = ownConnections
+      ? connection?.connectionId.toString()
+      : data?.connectionId.toString();
+
     try {
       //getting confirmation from the user
       const confirmation = window.confirm(
-        `Are you sure to remove ${connection?.myConnection?.name} from your connections?`
+        `Are you sure to remove ${connection?.myConnection?.name} ?`
       );
       if (!confirmation) {
         return;
       }
-      const response = await removeAConnection(
-        connection?.connectionId.toString()
-      ).unwrap();
-
+      const response = await removeAConnection(connectionId).unwrap();
       if (response?.success) {
         console.log(response?.success);
         toast.success(
@@ -86,7 +100,7 @@ const MyConnections = ({
           <SiImessage className="text-xl font-semibold text-blue-600" />
         </button>
         <button
-          onClick={handleRemoveConnection}
+          onClick={() => handleRemoveConnection(true)}
           className="btn  btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
         >
           Disconnect
@@ -96,7 +110,58 @@ const MyConnections = ({
   } else {
     if (ownProfile) {
       buttons = null;
-    } else if (!isInConnectionsList) {
+    } else if (
+      !isLoading &&
+      data?.connection &&
+      data?.status === 'pending' &&
+      data?.action === 'accept'
+    ) {
+      buttons = (
+        <button
+          // onClick={handleAcceptRequest}
+          className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
+        >
+          Accept
+        </button>
+      );
+    } else if (
+      !isLoading &&
+      data?.connection &&
+      data?.status === 'pending' &&
+      data?.action === 'cancel'
+    ) {
+      buttons = (
+        <button
+          //here to check the connectioId to remove
+          onClick={() => handleRemoveConnection(false)}
+          className="btn  rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white "
+        >
+          Cancel
+        </button>
+      );
+    } else if (
+      !isLoading &&
+      data?.connection &&
+      data?.status === 'accepted' &&
+      data?.action === 'disconnect'
+    ) {
+      buttons = (
+        <div className="flex items-center gap-5">
+          <button
+            className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
+         hover:text-white"
+          >
+            <SiImessage className="text-xl font-semibold text-blue-600" />
+          </button>
+          <button
+            onClick={() => handleRemoveConnection(false)}
+            className="btn  btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
+          >
+            Disconnect
+          </button>
+        </div>
+      );
+    } else {
       buttons = (
         <button
           onClick={() => handleConnect(connection?.myConnection)}
@@ -104,23 +169,6 @@ const MyConnections = ({
         >
           Connect
         </button>
-      );
-    } else if (isInConnectionsList) {
-      buttons = (
-        <div className="flex items-center gap-5">
-          <button
-            className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
-       hover:text-white"
-          >
-            <SiImessage className="text-xl font-semibold text-blue-600" />
-          </button>
-          <button
-            onClick={handleRemoveConnection}
-            className="btn  btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
-          >
-            Disconnect
-          </button>
-        </div>
       );
     }
   }
