@@ -7,7 +7,7 @@ import Videos from './Videos';
 import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 import MyConnections from '../connections/MyConnections';
 
-const ProfileContent = ({ user, currentUserId }) => {
+const ProfileContent = ({ user, currentUserId, currentUserData }) => {
   //hooks
   const [activeTab, setActiveTab] = useState('feed');
 
@@ -59,6 +59,7 @@ const ProfileContent = ({ user, currentUserId }) => {
         </h4>
         {myConnections?.map((connection) => (
           <MyConnections
+            currentUserData={currentUserData}
             loggedInUserConnections={loggedInUserConnections}
             connection={connection}
             key={connection?.connectionId}

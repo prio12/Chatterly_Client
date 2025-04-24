@@ -1,14 +1,22 @@
 import { SiImessage } from 'react-icons/si';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
-import { useIgnoreAConnectionRequestMutation } from '../../redux/api/connections/connectionsApi';
+import {
+  useAddConnectionRequestMutation,
+  useIgnoreAConnectionRequestMutation,
+} from '../../redux/api/connections/connectionsApi';
 import toast from 'react-hot-toast';
 import { Link, useLocation, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 
 /* eslint-disable react/prop-types */
-const MyConnections = ({ connection, loggedInUserConnections }) => {
+const MyConnections = ({
+  connection,
+  loggedInUserConnections,
+  currentUserData,
+}) => {
   //hooks
   const [removeAConnection] = useIgnoreAConnectionRequestMutation();
+  const [connect] = useAddConnectionRequestMutation();
   const { pathname } = useLocation();
   const { uid } = useParams();
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -20,6 +28,26 @@ const MyConnections = ({ connection, loggedInUserConnections }) => {
   const isInConnectionsList = loggedInUserConnections?.some(
     (conn) => conn?.myConnection?.uid === connection?.myConnection?.uid
   );
+
+  //handle connection request
+  const handleConnect = async (recipient) => {
+    const connectionsInfo = {
+      requester: currentUserData?._id,
+      recipient: recipient?._id,
+      requesterUid: currentUserData?.uid,
+      recipientUid: recipient?.uid,
+    };
+
+    // sending to server
+    try {
+      const response = await connect({ data: connectionsInfo }).unwrap();
+      if (response.success) {
+        toast.success('Connection Request Sent!');
+      }
+    } catch (error) {
+      toast.error(error?.data?.error);
+    }
+  };
 
   //delete A fried or connection from myConnections
   const handleRemoveConnection = async () => {
@@ -71,7 +99,7 @@ const MyConnections = ({ connection, loggedInUserConnections }) => {
     } else if (!isInConnectionsList) {
       buttons = (
         <button
-          // onClick={handleConnect}
+          onClick={() => handleConnect(connection?.myConnection)}
           className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
         >
           Connect
