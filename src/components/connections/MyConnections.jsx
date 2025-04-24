@@ -48,33 +48,6 @@ const MyConnections = ({ connection, loggedInUserConnections }) => {
 
   let buttons;
 
-  // if (currentUser === connection?.myConnection?.uid) {
-  //   buttons = null;
-  // } else if (pathname === '/connections' || uid === currentUser) {
-  //   buttons = (
-  //     <div className="flex items-center gap-5">
-  //       <button
-  //         className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
-  //    hover:text-white"
-  //       >
-  //         <SiImessage className="text-xl font-semibold text-blue-600" />
-  //       </button>
-  //       <button
-  //         onClick={handleRemoveConnection}
-  //         className="btn  btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
-  //       >
-  //         Disconnect
-  //       </button>
-  //     </div>
-  //   );
-  // } else {
-  //   buttons = (
-  //     <button className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white ">
-  //       Connect
-  //     </button>
-  //   );
-  // }
-
   if (pathname === '/connections' || uid === currentUser) {
     buttons = (
       <div className="flex items-center gap-5">
@@ -94,11 +67,33 @@ const MyConnections = ({ connection, loggedInUserConnections }) => {
     );
   } else {
     if (ownProfile) {
-      buttons = <div>ami nije</div>;
+      buttons = null;
     } else if (!isInConnectionsList) {
-      buttons = <div>Connect</div>;
+      buttons = (
+        <button
+          // onClick={handleConnect}
+          className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
+        >
+          Connect
+        </button>
+      );
     } else if (isInConnectionsList) {
-      buttons = <div>Disconnect</div>;
+      buttons = (
+        <div className="flex items-center gap-5">
+          <button
+            className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
+       hover:text-white"
+          >
+            <SiImessage className="text-xl font-semibold text-blue-600" />
+          </button>
+          <button
+            onClick={handleRemoveConnection}
+            className="btn  btn-md rounded bg-red-100 text-red-500 hover:bg-red-500 hover:text-white"
+          >
+            Disconnect
+          </button>
+        </div>
+      );
     }
   }
 
