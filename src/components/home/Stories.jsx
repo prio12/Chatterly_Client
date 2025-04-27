@@ -1,6 +1,11 @@
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
+import ContentUploadModal from '../../utilities/ContentUploadModal ';
 
-const Stories = () => {
+const Stories = ({ user }) => {
+  //hooks
+  const [isOpen, setIsOpen] = useState(false);
   const users = [
     {
       id: 1,
@@ -116,7 +121,10 @@ const Stories = () => {
     <div className="flex items-center gap-5">
       {/* Fixed Div */}
       <div className="fixed_div mb-4 md:mb-0">
-        <div className="avatar placeholder">
+        <div
+          onClick={() => setIsOpen(true)}
+          className="avatar placeholder cursor-pointer"
+        >
           <div className="bg-neutral text-neutral-content w-[55px] md:w-[80px] rounded-full">
             <FaPlus className="font-bold text-xl" />
           </div>
@@ -125,6 +133,12 @@ const Stories = () => {
           Post A Story
         </p>
       </div>
+      <ContentUploadModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        user={user}
+        type="stories"
+      />
 
       {/* Scrollable Map Part */}
       <div className="flex gap-3 md:gap-5 overflow-x-auto md:pt-1 pt-2 ps-1  md:ps-1 no-scrollbar">

@@ -86,6 +86,7 @@ const CreatePost = ({ user }) => {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             user={user}
+            type="posts"
           />
           {/* <UploadImageModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
           <div

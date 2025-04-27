@@ -63,8 +63,6 @@ const ProfilePage = () => {
   const limitedSuggestions =
     suggestedConnectionsData?.suggestedConnections.slice(0, 3);
 
-  console.log('limit', limitedSuggestions);
-
   useEffect(() => {
     socket.on('postInteraction', ({ success }) => {
       if (success) {

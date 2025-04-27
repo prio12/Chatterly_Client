@@ -4,8 +4,9 @@ import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import Modal from './Modal';
 import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 import LoadingButton from './btn/LoadingButton';
+import { useCreateAStoryMutation } from '../redux/api/stories/storiesApi';
 
-const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
+const ContentUploadModal = ({ isOpen, setIsOpen, user, type }) => {
   //destructuring
   const { profilePicture, name } = user;
 
@@ -22,6 +23,7 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
   }, [isOpen, setError]);
 
   const [createPost] = useCreateAPostMutation();
+  const [createStory] = useCreateAStoryMutation();
 
   const handleFileOnChange = (e) => {
     const file = e.target.files[0];
@@ -29,19 +31,20 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
   };
 
   const handleCaptionOnChange = (e) => {
-    const trimmedCaption = e.target.value.trim();
-    if (trimmedCaption.length < 1) {
-      alert("Caption can't be empty");
-      return;
-    }
-    setCaption(trimmedCaption);
+    const value = e.target.value;
+    setCaption(value); // Don't trim here
   };
 
   const handleSubmit = async () => {
-    if (!imageFile || !caption) {
+    const trimmedCaption = caption.trim(); // 👈 Trim it here at the very start!
+
+    if (type === 'posts' && (!imageFile || !trimmedCaption)) {
       alert('Please provide both an image and a caption before submitting!');
-      setCaption('');
-      setImageFile(null);
+      return;
+    }
+
+    if (type === 'stories' && !imageFile) {
+      alert('Please provide an image for your story!');
       return;
     }
 
@@ -65,17 +68,29 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
         //preparing post details
         let post = {
           author: user?._id,
-          content: caption,
-          // Apply transformation only for cover photo
+          content: trimmedCaption, // 👈 Use trimmedCaption here
           img: result.secure_url.replace(
             '/upload/',
             '/upload/w_1000,h_500,c_pad,b_auto/'
           ),
         };
 
+        //preparing story
+        let story = {
+          author: user?._id,
+          mediaUrl: result.secure_url.replace(
+            '/upload/',
+            '/upload/w_1000,h_500,c_pad,b_auto/'
+          ),
+        };
+
         //sending to server
-        const uploadResult = await createPost(post).unwrap();
-        if (uploadResult.result.author) {
+        const uploadResult =
+          type === 'posts'
+            ? await createPost(post).unwrap()
+            : await createStory(story).unwrap();
+
+        if (uploadResult.success) {
           setIsLoading(false);
           setImageFile('');
           setCaption('');
@@ -112,21 +127,24 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user }) => {
           </div>
           <div>
             <h5 className="text-sm font-semibold">{name}</h5>
+            {type === 'stories' && <p className="text-xs ">Add A Story!</p>}
           </div>
         </div>
         <div className="divider "></div>
-        <div className="w-full">
-          <textarea
-            // value={text}
-            onChange={handleCaptionOnChange}
-            className="w-full p-2 resize-none overflow-y-scroll no-scrollbar focus:outline-none"
-            placeholder="Share your thoughts..."
-            style={{
-              scrollbarWidth: 'none', // For Firefox
-              msOverflowStyle: 'none', // For IE and Edge
-            }}
-          ></textarea>
-        </div>
+        {type === 'posts' && (
+          <div className="w-full">
+            <textarea
+              // value={text}
+              onChange={handleCaptionOnChange}
+              className="w-full p-2 resize-none overflow-y-scroll no-scrollbar focus:outline-none"
+              placeholder="Share your thoughts..."
+              style={{
+                scrollbarWidth: 'none', // For Firefox
+                msOverflowStyle: 'none', // For IE and Edge
+              }}
+            ></textarea>
+          </div>
+        )}
         <div className="my-5">
           <input
             type="file"

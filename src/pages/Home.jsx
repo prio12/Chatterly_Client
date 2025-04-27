@@ -84,7 +84,7 @@ const Home = () => {
 
       <div className="col-span-1 md:col-span-7 bg-white flex justify-center md:py-2 md:px-5 ">
         <div className="w-full max-w-5xl md:px-5 px-0 py-2">
-          <Stories />
+          <Stories user={user} />
           <CreatePost user={user} />
           {content}
         </div>
