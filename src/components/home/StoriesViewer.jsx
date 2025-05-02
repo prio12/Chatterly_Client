@@ -4,6 +4,7 @@ import { FaPlus } from 'react-icons/fa6';
 import ContentUploadModal from '../../utilities/ContentUploadModal ';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import StoriesModal from '../profile/modals/StoriesModal';
+import { formatDistanceToNow } from 'date-fns';
 
 const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   //hooks
@@ -11,6 +12,11 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   const [storyViewOpen, setStoryViewOpen] = useState(false);
   const [currentUserIndex, setCurrentUserIndex] = useState(null);
   const [currentStories, setCurrentStories] = useState([]);
+
+  // Converts createdAt timestamp into a human-readable relative time format.
+  const timeAgo = (timestamp) => {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  };
 
   const openStoryViewer = (currentUserIndex) => {
     setCurrentUserIndex(currentUserIndex);
@@ -21,6 +27,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
             url: story.mediaUrl,
             header: {
               heading: activeStories[currentUserIndex].author.name,
+              subheading: timeAgo(story?.createdAt),
               profileImage:
                 activeStories[currentUserIndex].author.profilePicture,
             },
@@ -40,6 +47,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
               url: story.mediaUrl,
               header: {
                 heading: activeStories[nextUserIndex].author.name,
+                subheading: timeAgo(story?.createdAt),
                 profileImage:
                   activeStories[nextUserIndex].author.profilePicture,
               },
