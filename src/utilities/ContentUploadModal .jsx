@@ -8,7 +8,7 @@ import { useCreateAStoryMutation } from '../redux/api/stories/storiesApi';
 
 const ContentUploadModal = ({ isOpen, setIsOpen, user, type }) => {
   //destructuring
-  const { profilePicture, name } = user;
+  // const { profilePicture, name } = user;
 
   //hooks
   const [imageFile, setImageFile] = useState(null);
@@ -113,10 +113,10 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user, type }) => {
       <div className="md:w-1/2 md:mx-auto mt-5 p-2 md:p-5 shadow-md">
         <div className="flex items-center gap-5">
           <div>
-            {profilePicture ? (
+            {user?.profilePicture ? (
               <div className="avatar">
                 <div className="w-12 rounded-full">
-                  <img src={profilePicture} />
+                  <img src={user?.profilePicture} />
                 </div>
               </div>
             ) : (
@@ -126,7 +126,7 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user, type }) => {
             )}
           </div>
           <div>
-            <h5 className="text-sm font-semibold">{name}</h5>
+            <h5 className="text-sm font-semibold">{user?.name}</h5>
             {type === 'stories' && <p className="text-xs ">Add A Story!</p>}
           </div>
         </div>

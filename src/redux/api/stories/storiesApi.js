@@ -11,8 +11,20 @@ const stories = baseApi.injectEndpoints({
           body: data,
         };
       },
+      invalidatesTags: ['stories'],
+    }),
+
+    //get stories
+    fetchStories: builder.query({
+      query: (id) => {
+        console.log(id);
+        return {
+          url: `/stories/${id}`,
+        };
+      },
+      providesTags: ['stories'],
     }),
   }),
 });
 
-export const { useCreateAStoryMutation } = stories;
+export const { useCreateAStoryMutation, useFetchStoriesQuery } = stories;
