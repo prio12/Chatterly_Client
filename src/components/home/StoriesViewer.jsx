@@ -25,11 +25,14 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
       currentUserIndex !== null
         ? activeStories[currentUserIndex].stories.map((story) => ({
             url: story.mediaUrl,
+            id: story._id, // Add story ID for delete functionality
+            userId: activeStories[currentUserIndex].author._id, // Add user ID to check ownership
             header: {
               heading: activeStories[currentUserIndex].author.name,
               subheading: timeAgo(story?.createdAt),
               profileImage:
                 activeStories[currentUserIndex].author.profilePicture,
+              userId: activeStories[currentUserIndex].author._id, // Add user ID here too
             },
           }))
         : [];
@@ -45,11 +48,14 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
         nextUserIndex !== null
           ? activeStories[nextUserIndex].stories.map((story) => ({
               url: story.mediaUrl,
+              id: story._id, // Add story ID for delete functionality
+              userId: activeStories[nextUserIndex].author._id, // Add user ID
               header: {
                 heading: activeStories[nextUserIndex].author.name,
                 subheading: timeAgo(story?.createdAt),
                 profileImage:
                   activeStories[nextUserIndex].author.profilePicture,
+                userId: activeStories[nextUserIndex].author._id, // Add user ID here too
               },
             }))
           : [];
@@ -119,6 +125,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
         setStoryViewOpen={setStoryViewOpen}
         currentStories={currentStories}
         currentUserIndex={currentUserIndex}
+        loggedInUserId={user?._id} // Pass the logged-in user ID
       />
     </div>
   );

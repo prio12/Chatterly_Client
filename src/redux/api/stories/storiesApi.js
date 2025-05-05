@@ -17,7 +17,6 @@ const stories = baseApi.injectEndpoints({
     //get stories
     fetchStories: builder.query({
       query: (id) => {
-        console.log(id);
         return {
           url: `/stories/${id}`,
         };

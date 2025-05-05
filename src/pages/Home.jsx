@@ -28,6 +28,7 @@ const Home = () => {
   const socket = useContext(SocketContext);
 
   const user = data?.user;
+
   const posts = postData?.result;
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const Home = () => {
     user?._id,
     {
       refetchOnMountOrArgChange: true,
+      skip: !user?._id,
     }
   );
 
