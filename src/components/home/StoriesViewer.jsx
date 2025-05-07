@@ -5,6 +5,7 @@ import ContentUploadModal from '../../utilities/ContentUploadModal ';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import StoriesModal from '../profile/modals/StoriesModal';
 import { formatDistanceToNow } from 'date-fns';
+import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 
 const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   //hooks
@@ -12,6 +13,15 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   const [storyViewOpen, setStoryViewOpen] = useState(false);
   const [currentUserIndex, setCurrentUserIndex] = useState(null);
   const [currentStories, setCurrentStories] = useState([]);
+
+  const { isLoading, data: connectionsData } = useGetMyConnectionsQuery(
+    user?._id,
+    {
+      skip: !user?._id,
+    }
+  );
+
+  const myConnections = connectionsData?.myConnections;
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
@@ -67,6 +77,52 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
     }
   };
 
+  let content;
+
+  if (isLoading) {
+    content = <div>Loading...</div>;
+  }
+
+  if (activeStories?.length === 0) {
+    content =
+      myConnections?.length &&
+      myConnections?.map((connection) => (
+        <div key={connection?._id} className="flex-shrink-0 cursor-pointer">
+          <div className="avatar">
+            <div className=" w-12 md:w-[70px] rounded-full ">
+              {connection?.myConnection?.profilePicture ? (
+                <img src={connection?.myConnection?.profilePicture} />
+              ) : (
+                <DefaultProfilePIcture />
+              )}
+            </div>
+          </div>
+          <p className="text-sm font-semibold mt-2">
+            {connection?.myConnection?.name}
+          </p>
+        </div>
+      ));
+  } else {
+    content = activeStories?.map((story, index) => (
+      <div
+        onClick={() => openStoryViewer(index)}
+        key={story._id}
+        className="flex-shrink-0 cursor-pointer"
+      >
+        <div className="avatar">
+          <div className="ring-blue-500 ring-offset-base-100 w-12 md:w-[70px] rounded-full ring ring-offset-2">
+            {story?.author?.profilePicture ? (
+              <img src={story?.author?.profilePicture} />
+            ) : (
+              <DefaultProfilePIcture />
+            )}
+          </div>
+        </div>
+        <p className="text-sm font-semibold mt-2">{story?.author?.name}</p>
+      </div>
+    ));
+  }
+
   if (isStoryLoading) {
     return <div>Loading...</div>;
   }
@@ -96,28 +152,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
 
       {/* Scrollable Map Part */}
       <div className="flex gap-3 md:gap-5 overflow-x-auto md:pt-1 pt-2 ps-1 w-full  md:ps-1 no-scrollbar">
-        {activeStories &&
-          activeStories.length > 0 &&
-          activeStories.map((story, index) => (
-            <div
-              onClick={() => openStoryViewer(index)}
-              key={story._id}
-              className="flex-shrink-0 cursor-pointer"
-            >
-              <div className="avatar">
-                <div className="ring-blue-500 ring-offset-base-100 w-12 md:w-[70px] rounded-full ring ring-offset-2">
-                  {story?.author?.profilePicture ? (
-                    <img src={story?.author?.profilePicture} />
-                  ) : (
-                    <DefaultProfilePIcture />
-                  )}
-                </div>
-              </div>
-              <p className="text-sm font-semibold mt-2">
-                {story?.author?.name}
-              </p>
-            </div>
-          ))}
+        {content}
       </div>
       <StoriesModal
         handleOnAllStoriesEnd={handleOnAllStoriesEnd}
