@@ -23,7 +23,23 @@ const stories = baseApi.injectEndpoints({
       },
       providesTags: ['stories'],
     }),
+
+    //delete a user specific story
+    deleteAStory: builder.mutation({
+      query: (id) => {
+        console.log(id);
+        return {
+          url: `/stories/${id}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['stories'],
+    }),
   }),
 });
 
-export const { useCreateAStoryMutation, useFetchStoriesQuery } = stories;
+export const {
+  useCreateAStoryMutation,
+  useFetchStoriesQuery,
+  useDeleteAStoryMutation,
+} = stories;

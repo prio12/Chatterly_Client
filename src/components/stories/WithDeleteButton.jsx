@@ -1,28 +1,40 @@
 import { FaTrash } from 'react-icons/fa6';
+import { useDeleteAStoryMutation } from '../../redux/api/stories/storiesApi';
+import toast from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
 const WithDeleteButton = (props) => {
-  const { story, action, loggedInUserId } = props;
+  const { story, loggedInUserId, setStoryViewOpen, storyViewOpen } = props;
+
+  console.log(storyViewOpen);
+
+  //rtk mutation hooks
+  const [deleteAStory] = useDeleteAStoryMutation();
 
   // Check if the current story belongs to the logged-in user
   const isOwnStory = story.header && story.userId === loggedInUserId;
 
-  const handleDeleteClick = (e) => {
+  const handleDeleteClick = async (e) => {
     e.stopPropagation(); // Prevent the story from navigating
     if (confirm('Are you sure you want to delete this story?')) {
-      // Call your delete API here
-      // Example: deleteStory(story.storyId)
-      console.log('Deleting story:', story.storyId);
+      try {
+        const response = await deleteAStory(story?.id).unwrap();
 
-      // After successful deletion, you might want to:
+        if (response.success) {
+          toast.success('Story Deleted Successfully!');
+          setStoryViewOpen(false);
+        }
+      } catch (error) {
+        toast.error(`${error?.message}`);
+      }
+
+      //** probably will update to the next story in future */
       // 1. Go to next story
-      action('next');
+      //   action('next');
       // 2. Or close the modal if this was the only story
       // setStoryViewOpen(false);
     }
   };
-
-  console.log(story.content);
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -63,7 +75,7 @@ const WithDeleteButton = (props) => {
       {isOwnStory && (
         <button
           onClick={handleDeleteClick}
-          className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-red-600 text-white p-3 rounded-full hover:bg-red-700"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-red-600 text-white p-3 rounded-full hover:bg-red-700"
           style={{ zIndex: 9999 }}
         >
           <FaTrash />

@@ -29,12 +29,14 @@ const StoriesModal = ({
             isPaused={isPaused}
             config={config}
             loggedInUserId={loggedInUserId}
+            storyViewOpen={storyViewOpen}
+            setStoryViewOpen={setStoryViewOpen}
           />
         ),
       }));
       setStoriesToShow(enhanced);
     }
-  }, [currentStories, storyViewOpen, loggedInUserId]);
+  }, [currentStories, storyViewOpen, loggedInUserId, setStoryViewOpen]);
 
   // Use storiesToShow instead of directly mapping in render
 
