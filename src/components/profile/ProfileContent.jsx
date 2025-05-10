@@ -133,7 +133,7 @@ const ProfileContent = ({ user, currentUserData }) => {
         {activeTab === 'feed' && <Feed user={user} />}
         {activeTab === 'about' && <About user={user} />}
         {activeTab === 'connections' && connectionsContent}
-        {activeTab === 'media' && <Media />}
+        {activeTab === 'media' && <Media user={user} />}
         {activeTab === 'videos' && <Videos />}
       </div>
     </div>
