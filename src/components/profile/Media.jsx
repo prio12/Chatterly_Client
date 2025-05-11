@@ -3,11 +3,15 @@ import { FiPlus } from 'react-icons/fi';
 import ImageGallery from './ImageGallery';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import { useState } from 'react';
+import ContentUploadModal from '../../utilities/ContentUploadModal ';
 
-const Media = ({ user }) => {
+const Media = ({ user, currentUserData }) => {
   const posts = user?.posts;
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { uid } = useParams();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const postsWithImages = posts?.filter(
     (post) => typeof post?.img === 'string' && post?.img.trim() !== ''
@@ -33,10 +37,19 @@ const Media = ({ user }) => {
       <div className="flex items-center mb-5 justify-between">
         <h5 className="font-bold text-xl">Photos</h5>
         {currentUser === uid && (
-          <button className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
+          >
             <FiPlus className="text-xl" /> Add a Photo
           </button>
         )}
+        <ContentUploadModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          user={currentUserData}
+          type="posts"
+        />
       </div>
       {content}
     </div>

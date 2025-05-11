@@ -7,9 +7,6 @@ import LoadingButton from './btn/LoadingButton';
 import { useCreateAStoryMutation } from '../redux/api/stories/storiesApi';
 
 const ContentUploadModal = ({ isOpen, setIsOpen, user, type }) => {
-  //destructuring
-  // const { profilePicture, name } = user;
-
   //hooks
   const [imageFile, setImageFile] = useState(null);
   const [caption, setCaption] = useState('');

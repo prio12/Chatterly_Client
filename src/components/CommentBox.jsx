@@ -6,6 +6,7 @@ import { useState } from 'react';
 import EditCommentModal from '../utilities/editCommentModal';
 import { useDeleteACommentMutation } from '../redux/api/posts/postsApi';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router';
 
 /* eslint-disable react/prop-types */
 const CommentBox = ({ comment, author, postId }) => {
@@ -38,18 +39,20 @@ const CommentBox = ({ comment, author, postId }) => {
       <div className="flex items-center justify-between">
         {/* User Info */}
         <div className="flex items-center gap-3">
-          <div className="avatar">
-            <div className="w-10 h-10 rounded-full overflow-hidden">
-              {user?.profilePicture ? (
-                <img
-                  src={user.profilePicture}
-                  className="object-cover w-full h-full"
-                />
-              ) : (
-                <DefaultProfilePIcture />
-              )}
+          <Link to={`/profile/${user?.uid}`}>
+            <div className="avatar">
+              <div className="w-10 h-10 rounded-full overflow-hidden">
+                {user?.profilePicture ? (
+                  <img
+                    src={user.profilePicture}
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <DefaultProfilePIcture />
+                )}
+              </div>
             </div>
-          </div>
+          </Link>
           <div>
             <h5 className="font-semibold text-sm text-gray-900">
               {user?.name}
