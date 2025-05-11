@@ -58,7 +58,7 @@ const PostDetails = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-5  bg-gray-100 min-h-screen">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-5  bg-gray-100 ">
       {/* Left Sidebar */}
       <div className="hidden md:block col-span-3 bg-white">
         <LeftSideBar />
@@ -69,7 +69,7 @@ const PostDetails = () => {
           {/* <Stories />
           <CreatePost user={user} />
           {content} */}
-          <div className="sticky top-24">
+          <div className="sticky top-24 ">
             <PostCard post={post} id={_id} />
           </div>
         </div>

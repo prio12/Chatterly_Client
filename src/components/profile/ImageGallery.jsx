@@ -1,22 +1,22 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
 import { FaHeart } from 'react-icons/fa6';
 import { MdOutlineInsertComment } from 'react-icons/md';
-import PostDetailsModal from '../../utilities/PostDetailsModal';
+import { Link } from 'react-router';
 
 const ImageGallery = ({ post }) => {
   //hooks
-  let [isOpen, setIsOpen] = useState(false);
 
   return (
     <div>
-      <div>
-        <img
-          src={post?.img}
-          alt=""
-          className="w-full h-36 object-cover rounded-lg"
-        />
-      </div>
+      <Link to={`/posts/${post?._id}`}>
+        <div>
+          <img
+            src={post?.img}
+            alt=""
+            className="w-full h-36 object-cover rounded-lg"
+          />
+        </div>
+      </Link>
       <div className="flex items-center gap-5 my-2">
         <div className="flex items-center gap-2">
           <FaHeart className="text-red-600" />
