@@ -43,7 +43,7 @@ const UpdatePostModal = ({ isOpen, setIsOpen, img, video, content, id }) => {
 
   // Generate a thumbnail at the 2-second mark
   const thumbnailUrl = video
-    .replace('/upload/', '/upload/w_1000,h_500,c_fill,so_2/') // Width: 300px, Height: 200px, Crop, Seek 2 sec
+    .replace('/upload/', '/upload/w_1000,h_500,c_fill,so_5/') // Width: 300px, Height: 200px, Crop, Seek 2 sec
     .replace('.mp4', '.jpg'); // Convert video to image
 
   const submit = async (data) => {

@@ -4,6 +4,8 @@ import { FiPlus } from 'react-icons/fi';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
+import VideoUploadModal from '../../utilities/VideoUploadModal';
+import { useState } from 'react';
 
 const Videos = ({ user, currentUserData }) => {
   const posts = user?.posts;
@@ -11,6 +13,7 @@ const Videos = ({ user, currentUserData }) => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { uid } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
 
   const postsWithVideos = posts?.filter(
     (post) => typeof post?.video === 'string' && post?.video.trim() !== ''
@@ -26,7 +29,11 @@ const Videos = ({ user, currentUserData }) => {
   let content;
 
   if (postsWithVideos?.length === 0) {
-    content = <div>No videos to show here!</div>;
+    content = (
+      <div>
+        <p className="text-gray-500 italic">No videos to show here!</p>
+      </div>
+    );
   } else {
     content = (
       <div className="grid grid-cols-1 md:grid-cols-3 my-5 gap-5">
@@ -76,10 +83,18 @@ const Videos = ({ user, currentUserData }) => {
       <div className="flex items-center mb-5 justify-between">
         <h5 className="font-bold text-xl">Videos</h5>
         {currentUser === uid && (
-          <button className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
+          >
             <FiPlus className="text-xl" /> Add a Video
           </button>
         )}
+        <VideoUploadModal
+          isModalOpen={isOpen}
+          setIsModalOpen={setIsOpen}
+          user={currentUserData}
+        />
       </div>
       {content}
     </div>

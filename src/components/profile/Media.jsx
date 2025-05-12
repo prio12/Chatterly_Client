@@ -20,7 +20,12 @@ const Media = ({ user, currentUserData }) => {
   let content;
 
   if (postsWithImages?.length === 0) {
-    content = <div> No images to show here! </div>;
+    content = (
+      <div>
+        {' '}
+        <p className="text-gray-500 italic">No images to show here!</p>{' '}
+      </div>
+    );
   } else {
     content = (
       <div className="grid grid-cols-1 md:grid-cols-3 my-5 gap-5">
