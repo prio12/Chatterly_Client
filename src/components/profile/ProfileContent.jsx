@@ -136,7 +136,9 @@ const ProfileContent = ({ user, currentUserData }) => {
         {activeTab === 'media' && (
           <Media user={user} currentUserData={currentUserData} />
         )}
-        {activeTab === 'videos' && <Videos />}
+        {activeTab === 'videos' && (
+          <Videos user={user} currentUserData={currentUserData} />
+        )}
       </div>
     </div>
   );
