@@ -13,8 +13,6 @@ const Media = ({ user, currentUserData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
 
-  console.log(pathname);
-
   const postsWithImages = posts?.filter(
     (post) => typeof post?.img === 'string' && post?.img.trim() !== ''
   );

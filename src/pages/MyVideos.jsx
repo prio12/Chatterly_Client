@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
+import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
-import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
-import Media from '../components/profile/Media';
-import { FaImages } from 'react-icons/fa';
+import Videos from '../components/profile/Videos';
+import { MdOndemandVideo } from 'react-icons/md';
 
-const MyAlbum = () => {
+const MyVideos = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data, isLoading } = useUserInfoByUidQuery(currentUser);
   const user = data?.user;
@@ -21,15 +21,15 @@ const MyAlbum = () => {
       <div className="col-span-1 md:col-span-7 bg-white flex justify-center md:py-5 md:px-5">
         <div className="w-full max-w-4xl">
           {/* Header */}
-          <div className="mb-8  px-5">
+          <div className="mb-8  px-5 ">
             <div className="flex items-center gap-3">
-              <FaImages className="text-blue-500 text-4xl" />
+              <MdOndemandVideo className="text-blue-500 text-4xl" />
               <h2 className="text-2xl font-bold border-b-4 pb-3 border-blue-600">
-                My Albums
+                My Videos
               </h2>
             </div>
             <p className="text-sm text-gray-500 mt-3">
-              All your uploaded photos are stored here. Keep your memories
+              All your uploaded videos are stored here. Keep your memories
               organized!
             </p>
           </div>
@@ -41,7 +41,7 @@ const MyAlbum = () => {
             </div>
           ) : (
             <div className="bg-white  ">
-              <Media currentUserData={user} user={user} />
+              <Videos currentUserData={user} user={user} />
             </div>
           )}
         </div>
@@ -55,4 +55,4 @@ const MyAlbum = () => {
   );
 };
 
-export default MyAlbum;
+export default MyVideos;

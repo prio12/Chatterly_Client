@@ -9,6 +9,7 @@ import Notifications from '../pages/Notifications';
 import PostDetails from '../components/common/posts/PostDetails';
 import Connections from '../pages/Connections';
 import MyAlbum from '../pages/MyAlbum';
+import MyVideos from '../pages/MyVideos';
 
 const AppRoutes = () => {
   return (
@@ -26,6 +27,8 @@ const AppRoutes = () => {
         <Route path="/notifications/:id" element={<Notifications />}></Route>
         <Route path="/connections" element={<Connections />}></Route>
         <Route path="/myAlbum" element={<MyAlbum />}></Route>
+        <Route path="/myVideos" element={<MyVideos />}></Route>
+
         <Route path="/posts/:id" element={<PostDetails />}></Route>
       </Route>
       <Route path="/signUp" element={<SignUp />}></Route>

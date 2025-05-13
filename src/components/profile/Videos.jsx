@@ -3,12 +3,14 @@ import { FaHeart } from 'react-icons/fa6';
 import { FiPlus } from 'react-icons/fi';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
 import VideoUploadModal from '../../utilities/VideoUploadModal';
 import { useState } from 'react';
 
 const Videos = ({ user, currentUserData }) => {
   const posts = user?.posts;
+
+  const { pathname } = useLocation();
 
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -36,7 +38,11 @@ const Videos = ({ user, currentUserData }) => {
     );
   } else {
     content = (
-      <div className="grid grid-cols-1 md:grid-cols-3 my-5 gap-5">
+      <div
+        className={`grid grid-cols-1   gap-5 ${
+          pathname === '/myVideos' ? 'md:grid-cols-2' : 'md:grid-cols-3'
+        }`}
+      >
         {postsWithVideos.map((post) => {
           const thumbnail = generateThumbnail(post?.video);
           return (
