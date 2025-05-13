@@ -4,9 +4,7 @@ import toast from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
 const WithDeleteButton = (props) => {
-  const { story, loggedInUserId, setStoryViewOpen, storyViewOpen } = props;
-
-  console.log(storyViewOpen);
+  const { story, loggedInUserId, setStoryViewOpen } = props;
 
   //rtk mutation hooks
   const [deleteAStory] = useDeleteAStoryMutation();

@@ -6,10 +6,17 @@ import {
   MdOutlinePhotoSizeSelectActual,
 } from 'react-icons/md';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router';
 
 const LeftSideBar = () => {
   // State to manage whether the sidebar is expanded
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+
+  console.log('currentUser in left ', currentUser);
 
   // Toggle sidebar width
   const toggleSidebarWidth = () => {
@@ -32,16 +39,23 @@ const LeftSideBar = () => {
         />
 
         {/* Grid layout for icons and corresponding text */}
-        <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+        <NavLink
+          to={`/profile/${currentUser}`}
+          className={({ isActive }) =>
+            `grid grid-cols-[auto,_1fr] gap-2 items-center ${
+              isActive && 'text-blue-600'
+            }`
+          }
+        >
           <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
             <CiViewTimeline />
           </div>
           {isExpanded && (
             <span className="text-sm font-semibold hover:text-blue-500 transition-all">
-              Feed
+              Profile
             </span>
           )}
-        </div>
+        </NavLink>
 
         <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
           <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
