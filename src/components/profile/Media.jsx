@@ -41,7 +41,7 @@ const Media = ({ user, currentUserData }) => {
       {/* Header */}
       <div className="flex items-center mb-5 justify-between">
         <h5 className="font-bold text-xl">Photos</h5>
-        {currentUser === uid && (
+        {(currentUser === uid || currentUser === currentUserData?.uid) && (
           <button
             onClick={() => setIsOpen(true)}
             className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
@@ -49,6 +49,7 @@ const Media = ({ user, currentUserData }) => {
             <FiPlus className="text-xl" /> Add a Photo
           </button>
         )}
+
         <ContentUploadModal
           isOpen={isOpen}
           setIsOpen={setIsOpen}

@@ -1,6 +1,5 @@
 import { RiMenu2Fill } from 'react-icons/ri';
 import { CiSettings, CiViewTimeline } from 'react-icons/ci';
-import { IoNotificationsOutline, IoPeopleOutline } from 'react-icons/io5';
 import {
   MdOutlineOndemandVideo,
   MdOutlinePhotoSizeSelectActual,
@@ -57,29 +56,14 @@ const LeftSideBar = () => {
           )}
         </NavLink>
 
-        <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
-          <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
-            <IoPeopleOutline />
-          </div>
-          {isExpanded && (
-            <span className="text-sm font-semibold hover:text-blue-500 transition-all">
-              Connections
-            </span>
-          )}
-        </div>
-
-        <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
-          <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
-            <IoNotificationsOutline />
-          </div>
-          {isExpanded && (
-            <span className="text-sm font-semibold hover:text-blue-500 transition-all">
-              Notifications
-            </span>
-          )}
-        </div>
-
-        <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+        <NavLink
+          to="/myAlbum"
+          className={({ isActive }) =>
+            `grid grid-cols-[auto,_1fr] gap-2 items-center ${
+              isActive && 'text-blue-600'
+            }`
+          }
+        >
           <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
             <MdOutlinePhotoSizeSelectActual />
           </div>
@@ -88,7 +72,7 @@ const LeftSideBar = () => {
               Albums
             </span>
           )}
-        </div>
+        </NavLink>
 
         <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
           <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">

@@ -8,6 +8,7 @@ import ProfilePage from '../pages/ProfilePage';
 import Notifications from '../pages/Notifications';
 import PostDetails from '../components/common/posts/PostDetails';
 import Connections from '../pages/Connections';
+import MyAlbum from '../pages/MyAlbum';
 
 const AppRoutes = () => {
   return (
@@ -24,7 +25,7 @@ const AppRoutes = () => {
         <Route path="/profile/:uid" element={<ProfilePage />}></Route>
         <Route path="/notifications/:id" element={<Notifications />}></Route>
         <Route path="/connections" element={<Connections />}></Route>
-        {/* <Route path="/connections" element={<Connections />}></Route> */}
+        <Route path="/myAlbum" element={<MyAlbum />}></Route>
         <Route path="/posts/:id" element={<PostDetails />}></Route>
       </Route>
       <Route path="/signUp" element={<SignUp />}></Route>
