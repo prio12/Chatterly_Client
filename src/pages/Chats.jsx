@@ -1,3 +1,4 @@
+import ChatBoxHeader from '../components/chats/ChatBoxHeader';
 import ChatLists from '../components/chats/ChatLists';
 import SearchBox from '../components/chats/SearchBox';
 
@@ -17,7 +18,9 @@ const Chats = () => {
         <SearchBox />
         <ChatLists />
       </div>
-      <div className="col-span-2 bg-blue-500"></div>
+      <div className="col-span-2 bg-white">
+        <ChatBoxHeader />
+      </div>
     </div>
   );
 };
