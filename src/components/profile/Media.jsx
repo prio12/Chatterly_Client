@@ -65,7 +65,7 @@ const Media = ({ user, currentUserData }) => {
       ) : (
         <div
           className={`grid grid-cols-1   gap-5 ${
-            pathname === '/myAlbum' ? 'md:grid-cols-2' : 'md:grid-cols-3'
+            pathname === '/myAlbums' ? 'md:grid-cols-2' : 'md:grid-cols-3'
           }`}
         >
           {postsWithImages.map((post) => (

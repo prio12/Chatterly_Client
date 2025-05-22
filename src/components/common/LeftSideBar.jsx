@@ -15,8 +15,6 @@ const LeftSideBar = () => {
   // hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
-  console.log('currentUser in left ', currentUser);
-
   // Toggle sidebar width
   const toggleSidebarWidth = () => {
     setIsExpanded(!isExpanded);
@@ -57,7 +55,7 @@ const LeftSideBar = () => {
         </NavLink>
 
         <NavLink
-          to="/myAlbum"
+          to="/myAlbums"
           className={({ isActive }) =>
             `grid grid-cols-[auto,_1fr] gap-2 items-center ${
               isActive && 'text-blue-600'
@@ -99,6 +97,16 @@ const LeftSideBar = () => {
           {isExpanded && (
             <span className="text-sm font-semibold hover:text-blue-500 transition-all">
               Settings
+            </span>
+          )}
+        </div>
+        <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+          <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
+            <CiSettings />
+          </div>
+          {isExpanded && (
+            <span className="text-sm font-semibold hover:text-blue-500 transition-all">
+              Bookmarks
             </span>
           )}
         </div>

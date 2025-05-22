@@ -1,13 +1,15 @@
-import { CiSettings, CiViewTimeline } from 'react-icons/ci';
+import { CiViewTimeline } from 'react-icons/ci';
+import { FaRegMessage } from 'react-icons/fa6';
 import { IoMdClose } from 'react-icons/io';
 import { IoPeopleOutline } from 'react-icons/io5';
-import {
-  MdOutlineOndemandVideo,
-  MdOutlinePhotoSizeSelectActual,
-} from 'react-icons/md';
+import { MdOutlineOndemandVideo } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router';
 
 const SmallScreenDropdown = () => {
+  //hooks
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+
   return (
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -30,14 +32,35 @@ const SmallScreenDropdown = () => {
             <div>
               <div className="text-2xl flex flex-col ps-5 justify-evenly cursor-pointer gap-12">
                 {/* Grid layout for icons and corresponding text */}
-                <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+                <NavLink
+                  to={`/profile/${currentUser}`}
+                  className={({ isActive }) =>
+                    `grid grid-cols-[auto,_1fr] gap-2 items-center ${
+                      isActive && 'text-blue-600'
+                    }`
+                  }
+                >
                   <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
                     <CiViewTimeline />
                   </div>
                   <span className="text-sm font-semibold hover:text-blue-500 transition-all">
                     Feed
                   </span>
-                </div>
+                </NavLink>
+
+                <NavLink
+                  to="/chats"
+                  className={({ isActive }) => `${isActive && 'text-blue-500'}`}
+                >
+                  <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+                    <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
+                      <FaRegMessage />
+                    </div>
+                    <span className="text-sm font-semibold hover:text-blue-500 transition-all">
+                      Chats
+                    </span>
+                  </div>
+                </NavLink>
 
                 <NavLink
                   to="/connections"
@@ -64,30 +87,21 @@ const SmallScreenDropdown = () => {
 
                 <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
                   <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
-                    <MdOutlinePhotoSizeSelectActual />
-                  </div>
-                  <span className="text-sm font-semibold hover:text-blue-500 transition-all">
-                    Albums
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
-                  <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
                     <MdOutlineOndemandVideo />
                   </div>
                   <span className="text-sm font-semibold hover:text-blue-500 transition-all">
-                    Videos
+                    Bookmarks
                   </span>
                 </div>
 
-                <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+                {/* <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
                   <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
                     <CiSettings />
                   </div>
                   <span className="text-sm font-semibold hover:text-blue-500 transition-all">
                     Settings
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -1,6 +1,5 @@
 import { IoHomeOutline, IoPeopleOutline } from 'react-icons/io5';
 import { IoSearchOutline } from 'react-icons/io5';
-import { IoAlbumsOutline } from 'react-icons/io5';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { FaRegMessage } from 'react-icons/fa6';
 import { Link, NavLink, useLocation } from 'react-router';
@@ -16,7 +15,7 @@ import {
   useHandleMarkAsSeenMutation,
 } from '../../redux/api/notifications/notificationsApi';
 import SmallScreenHeader from './smallScreenHeader/SmallScreenHeader';
-import SmallScreenDropdown from './smallScreenHeader/SmallScreenDropdown';
+import SmallScreenDropdown from './smallScreenHeader/SmallScreenSidebar';
 
 const Header = () => {
   //hooks
@@ -88,19 +87,17 @@ const Header = () => {
           >
             <IoHomeOutline />
           </NavLink>
-
-          <Link
-            title="Albums"
-            className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
-          >
-            <IoAlbumsOutline />
-          </Link>
-          <Link
+          <NavLink
+            to="/chats"
             title="Chats"
-            className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+            className={({ isActive }) =>
+              `relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+                isActive ? 'after:scale-x-100 after:bg-blue-500' : ''
+              }`
+            }
           >
             <FaRegMessage />
-          </Link>
+          </NavLink>
 
           <NavLink
             onClick={markAsSeen}
@@ -136,9 +133,14 @@ const Header = () => {
           >
             <IoPeopleOutline className="text-2xl" />
           </NavLink>
+          <Link
+            title="Search"
+            className="relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+          >
+            <IoSearchOutline className="text-xl" />
+          </Link>
         </div>
-        <div className="flex items-center cursor-pointer gap-3">
-          <IoSearchOutline />
+        <div className="cursor-pointer">
           <div className="avatar cursor-pointer">
             <div onClick={handleDropdown} className="mask mask-squircle w-10">
               {user?.profilePicture ? (

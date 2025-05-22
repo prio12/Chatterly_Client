@@ -1,12 +1,6 @@
 /* eslint-disable react/prop-types */
-import { FaRegMessage } from 'react-icons/fa6';
 import { IoIosSearch, IoMdClose } from 'react-icons/io';
-import {
-  IoAlbumsOutline,
-  IoHomeOutline,
-  IoNotificationsOutline,
-  IoPeopleOutline,
-} from 'react-icons/io5';
+import { IoHomeOutline, IoNotificationsOutline } from 'react-icons/io5';
 import { LuMenu } from 'react-icons/lu';
 import { RiMenu2Fill } from 'react-icons/ri';
 import { Link, NavLink } from 'react-router';
@@ -18,6 +12,11 @@ import {
 } from '../../../redux/api/notifications/notificationsApi';
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../../../context/SocketContext';
+import {
+  MdOutlineOndemandVideo,
+  MdOutlinePhotoSizeSelectActual,
+} from 'react-icons/md';
+import { CiSettings } from 'react-icons/ci';
 
 const SmallScreenHeader = ({
   setIsOpen,
@@ -64,6 +63,7 @@ const SmallScreenHeader = ({
       await handleMarkAsSeen({ _id: user?._id });
     }
   };
+
   return (
     <div className=" md:hidden  flex items-center sticky top-0  justify-between lg:hidden  w-full ">
       <label htmlFor="my-drawer">
@@ -96,7 +96,10 @@ const SmallScreenHeader = ({
         >
           <div className="p-5 w-1/2 mx-auto relative">
             <div className="grid grid-cols-1 ms-2 gap-5 pt-2">
-              <Link to="/">
+              <NavLink
+                to="/"
+                className={({ isActive }) => `${isActive && 'text-blue-500'}`}
+              >
                 <div
                   onClick={() => setIsOpen(false)}
                   className="flex items-center space-x-2"
@@ -104,35 +107,41 @@ const SmallScreenHeader = ({
                   <IoHomeOutline className="text-xl" />
                   <span>Home</span>
                 </div>
-              </Link>
-              <div
+              </NavLink>
+              <NavLink
+                to="/myAlbums"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center space-x-2"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 ${isActive && 'text-blue-500'}`
+                }
               >
-                <IoAlbumsOutline className="text-xl" />
+                <MdOutlinePhotoSizeSelectActual className="text-xl" />
                 <span>Albums</span>
-              </div>
+              </NavLink>
+              <NavLink
+                to="/myVideos"
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 ${isActive && 'text-blue-500'}`
+                }
+              >
+                <MdOutlineOndemandVideo className="text-xl" />
+                <span>Videos</span>
+              </NavLink>
               <div
                 onClick={() => setIsOpen(false)}
                 className="flex items-center space-x-2"
               >
-                <FaRegMessage className="text-xl" />
-                <span>Chats</span>
+                <CiSettings className="text-xl" />
+                <span>Settings</span>
               </div>
-              <div
-                onClick={() => setIsOpen(false)}
-                className="flex items-center space-x-2"
-              >
-                <IoAlbumsOutline className="text-xl" />
-                <span>Notifications</span>
-              </div>
-              <div
+              {/* <div
                 onClick={() => setIsOpen(false)}
                 className="flex items-center space-x-2"
               >
                 <IoPeopleOutline className="text-xl" />
                 <span>Connections</span>
-              </div>
+              </div> */}
               {/* Add more items as needed */}
             </div>
 
@@ -145,9 +154,6 @@ const SmallScreenHeader = ({
         </div>
       </div>
 
-      <div>
-        <IoIosSearch className="text-xl" />
-      </div>
       <NavLink
         onClick={markAsSeen}
         to={`/notifications/${user?._id}`}
@@ -170,6 +176,10 @@ const SmallScreenHeader = ({
           </span>
         )}
       </NavLink>
+
+      <div>
+        <IoIosSearch className="text-xl" />
+      </div>
 
       <div className="avatar relative cursor-pointer">
         <div onClick={handleDropdown} className="mask mask-squircle w-10">
