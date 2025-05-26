@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom CSS Variables for Chat Height */
+:root {
+  --chat-height: calc(100vh - 9rem);
+}
+
+@media (min-width: 768px) {
+  /* md breakpoint */
+  :root {
+    --chat-height: calc(100vh - 10rem);
+  }
+}
+
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
