@@ -3,8 +3,13 @@ import ChatFooter from '../components/chats/ChatFooter';
 import ChatLists from '../components/chats/ChatLists';
 import ChatMessages from '../components/chats/ChatMessages';
 import SearchBox from '../components/chats/SearchBox';
+import useBreakpoint from '../hooks/useBreakpoint';
 
 const Chats = () => {
+  //checking screen size with manual hook
+  const isSmall = useBreakpoint();
+  console.log('checking size in chat', isSmall);
+
   return (
     <div className="grid grid-cols-3 gap-5">
       <div className="col-span-1 bg-white p-5 hidden md:block">
