@@ -17,9 +17,11 @@ import {
   useIgnoreAConnectionRequestMutation,
 } from '../../redux/api/connections/connectionsApi';
 import toast from 'react-hot-toast';
+import { formatDistanceToNow } from 'date-fns';
 
 const Profile = ({ user, currentUserId, currentUserData }) => {
-  const { name, profilePicture, coverPhoto } = user;
+  const { name, profilePicture, coverPhoto, location, profession, createdAt } =
+    user;
 
   //hooks
   const [acceptRequest] = useAcceptConnectionRequestMutation();
@@ -41,6 +43,11 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
   const [type, setType] = useState('');
   const [error, setError] = useState(null);
   const [isUpdateNameOpen, setIsUpdateNameOpen] = useState(false);
+
+  // Converts createdAt timestamp into a human-readable relative time format.
+  const timeAgo = (timestamp) => {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  };
 
   //handle ignore/delete a connection request
   const handleIgnoreARequest = async () => {
@@ -227,18 +234,24 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
         />
       </div>
       <div className="md:flex hidden items-center px-5 gap-5 my-3">
-        <div className="flex items-center gap-3">
-          <PiSuitcaseSimple />
-          <p>Titan Hunter</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <CiLocationOn />
-          <p>Shiganshina</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <FaRegCalendar />
-          <p>Joined on Nov 26, 2019</p>
-        </div>
+        {profession && (
+          <div className="flex items-center gap-3">
+            <PiSuitcaseSimple />
+            <p>{profession}</p>
+          </div>
+        )}
+        {location && (
+          <div className="flex items-center gap-3">
+            <CiLocationOn />
+            <p>{location}</p>
+          </div>
+        )}
+        {createdAt && (
+          <div className="flex items-center gap-3">
+            <FaRegCalendar />
+            <p> Joined {timeAgo(createdAt)}</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -153,7 +153,7 @@ const UpdateProfileModal = ({
                 {...register('profession', {
                   maxLength: {
                     value: 20,
-                    message: 'Bio cannot exceed 20 characters.',
+                    message: 'Profession cannot exceed 20 characters.',
                   },
                   validate: (value) =>
                     value === '' ||
@@ -183,7 +183,7 @@ const UpdateProfileModal = ({
                 {...register('location', {
                   maxLength: {
                     value: 20,
-                    message: 'Bio cannot exceed 20 characters.',
+                    message: 'Location cannot exceed 20 characters.',
                   },
                   validate: (value) =>
                     value === '' ||
