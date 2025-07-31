@@ -15,6 +15,8 @@ const Chats = () => {
   //checking screen size with manual hook
   const isSmall = useBreakpoint();
 
+  console.log(isSmall);
+
   //here chatLists will be fetched
   const chatLists = [];
   // const connections = [1, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4];

@@ -84,24 +84,24 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   }
 
   if (activeStories?.length === 0) {
-    content =
-      myConnections?.length &&
-      myConnections?.map((connection) => (
-        <div key={connection?._id} className="flex-shrink-0 cursor-pointer">
-          <div className="avatar">
-            <div className=" w-12 md:w-[70px] rounded-full ">
-              {connection?.myConnection?.profilePicture ? (
-                <img src={connection?.myConnection?.profilePicture} />
-              ) : (
-                <DefaultProfilePIcture />
-              )}
+    content = myConnections?.length
+      ? myConnections?.map((connection) => (
+          <div key={connection?._id} className="flex-shrink-0 cursor-pointer">
+            <div className="avatar">
+              <div className=" w-12 md:w-[70px] rounded-full ">
+                {connection?.myConnection?.profilePicture ? (
+                  <img src={connection?.myConnection?.profilePicture} />
+                ) : (
+                  <DefaultProfilePIcture />
+                )}
+              </div>
             </div>
+            <p className="text-sm font-semibold mt-2">
+              {connection?.myConnection?.name}
+            </p>
           </div>
-          <p className="text-sm font-semibold mt-2">
-            {connection?.myConnection?.name}
-          </p>
-        </div>
-      ));
+        ))
+      : '';
   } else {
     content = activeStories?.map((story, index) => (
       <div

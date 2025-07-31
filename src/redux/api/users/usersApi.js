@@ -38,7 +38,6 @@ const usersApi = baseApi.injectEndpoints({
     //generate jwt token to secure url , sending user data to the server after successful signed up or login
     generateJwt: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: '/jwt',
           method: 'POST',
