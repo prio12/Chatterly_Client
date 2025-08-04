@@ -8,14 +8,16 @@ import useBreakpoint from '../hooks/useBreakpoint';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useGetMyConnectionsQuery } from '../redux/api/connections/connectionsApi';
 import { Link } from 'react-router';
-import { FaArrowRight } from 'react-icons/fa';
+import { FaHandPointRight } from 'react-icons/fa';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
+import { useState } from 'react';
 
 const Chats = () => {
   //checking screen size with manual hook
   const isSmall = useBreakpoint();
 
-  console.log(isSmall);
+  //assuming there's no active friends
+  const activeFriends = [];
 
   //here chatLists will be fetched
   const chatLists = [];
@@ -39,6 +41,8 @@ const Chats = () => {
   //extract myConnections
   const myConnections = myConnectionsData?.myConnections;
 
+  //select a friend to render the chat screen with the friend info, chat box(previous chats), input field
+  const [isSelected, setIsSelected] = useState(false);
   //left side content for md and lg screen
   let leftSideContent;
 
@@ -46,12 +50,17 @@ const Chats = () => {
     leftSideContent = (
       <div className="my-8">
         <div className="my-5 text-gray-600 font-semibold">
-          <p>Seems like you have no connections yet!</p>
-          <p>Go make some friends.</p>
+          <p className="mb-5">
+            Looks like you haven’t made any friends yet make some friends to
+            initiate chats{' '}
+          </p>
         </div>
-        <Link to="/connections">
-          <FaArrowRight className="text-2xl text-blue-600" />{' '}
-        </Link>
+        <div className="flex items-center gap-5">
+          <p className="text-blue-600 font-semibold">Connect with People</p>
+          <Link to="/connections">
+            <FaHandPointRight className="text-2xl text-blue-600" />{' '}
+          </Link>
+        </div>
       </div>
     );
   } else if (chatLists?.length === 0 && myConnections?.length > 0) {
@@ -91,44 +100,47 @@ const Chats = () => {
     leftSideContent = <ChatLists />;
   }
 
+  if (isSmall) {
+    return <div> this is small screen bro</div>;
+  }
+
   return (
     <div className="grid grid-cols-3 gap-5">
+      {/* left side chat content for the chat page starts from here */}
       <div className="col-span-1 bg-white p-5 hidden md:block">
-        {/* active chats for md and lg screen */}
         <div className="border-b hidden md:block ">
           <h3 className="text-xl font-bold mb-5">
             Active Chats{' '}
             <span className="bg-blue-100 rounded-full text-blue-600 px-2">
-              6
+              {activeFriends?.length}
             </span>
           </h3>
         </div>
         <SearchBox />
         {leftSideContent}
-        {/* <ChatLists /> */}
+        {/* left side Content ends here */}
       </div>
-      <div
-        style={{ height: 'var(--chat-height)' }}
-        className="md:col-span-2 col-span-3 bg-white flex flex-col"
-      >
-        {/* Chat Header */}
-        <div className="h-20 mb-5">
-          {' '}
-          {/* Adjust height as needed */}
-          <ChatBoxHeader />
-        </div>
-
-        {/* Chat Messages - Scrollable */}
-        <div className="flex-1 overflow-y-auto">
-          <ChatMessages />
-        </div>
-
-        {/* Chat Footer */}
-        <div className="h-20 border-t mt-5">
-          {' '}
-          {/* Adjust height as needed */}
-          <ChatFooter />
-        </div>
+      <div className="col-span-2 ">
+        {/* checking if the user has selected a friend to initiate chat or not */}
+        {!isSelected ? (
+          <div className="w-1/2 mx-auto mt-24">
+            <h3 className="font-semibold ">
+              Select a Friend to initiate Chat!
+            </h3>
+          </div>
+        ) : (
+          <div className="h-[var(--chat-height)]  bg-red-500 flex flex-col">
+            <div className="h-20 bg-white  p-4">
+              <ChatBoxHeader />
+            </div>
+            <div className="flex-1 overflow-y-auto bg-white p-4">
+              <ChatMessages />
+            </div>
+            <div className="h-20 bg-white  p-4">
+              <ChatFooter />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
