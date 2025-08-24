@@ -10,14 +10,17 @@ import { useGetMyConnectionsQuery } from '../redux/api/connections/connectionsAp
 import { Link } from 'react-router';
 import { FaHandPointRight } from 'react-icons/fa';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import ChatsSmallScreenFallback from '../components/chats/ChatsSmallScreenFallback';
+import SocketContext from '../context/SocketContext';
 
 const Chats = () => {
   //checking screen size with manual hook
   const isSmall = useBreakpoint();
+  const socket = useContext(SocketContext);
 
   //assuming there's no active friends
-  const activeFriends = [];
+  const [activeConnections, setActiveConnections] = useState([]);
 
   //here chatLists will be fetched
   const chatLists = [];
@@ -41,6 +44,54 @@ const Chats = () => {
   //extract myConnections
   const myConnections = myConnectionsData?.myConnections;
 
+  // useEffect(() => {
+  //   if (socket && socket.connected && myConnections?.length > 0) {
+  //     //getting uid from connections
+  //     const friendsUid = myConnections?.map(
+  //       (connection) => connection?.myConnection?.uid
+  //     );
+
+  //     //emitting ActiveFriends event
+  //     socket.emit('activeConnections', friendsUid, (activeConnectionsUid) => {
+  //       const activeConnections = myConnections.filter((connection) =>
+  //         activeConnectionsUid.includes(connection.myConnection.uid)
+  //       );
+  //       //here setting active connections
+  //       setActiveConnections(activeConnections);
+  //     });
+  //   }
+  // }, [socket, myConnections]);
+  useEffect(() => {
+    if (!socket) return;
+
+    const refreshActiveConnections = () => {
+      if (socket.connected && myConnections?.length > 0) {
+        const friendsUid = myConnections.map((c) => c.myConnection?.uid);
+
+        socket.emit('activeConnections', friendsUid, (activeConnectionsUid) => {
+          console.log(
+            'getting activeConnectionsUid from server successfully!',
+            activeConnectionsUid
+          );
+          const activeConnections = myConnections.filter((c) =>
+            activeConnectionsUid.includes(c.myConnection.uid)
+          );
+          setActiveConnections(activeConnections);
+        });
+      }
+    };
+
+    // first run when page loads
+    refreshActiveConnections();
+
+    // run whenever server notifies that users changed
+    socket.on('usersUpdated', refreshActiveConnections);
+
+    return () => {
+      socket.off('usersUpdated', refreshActiveConnections);
+    };
+  }, [socket, myConnections]);
+
   //select a friend to render the chat screen with the friend info, chat box(previous chats), input field
   const [isSelected, setIsSelected] = useState(false);
   //left side content for md and lg screen
@@ -50,7 +101,7 @@ const Chats = () => {
     leftSideContent = (
       <div className="my-8">
         <div className="my-5 text-gray-600 font-semibold">
-          <p className="mb-5">
+          <p className="mb-5 ">
             Looks like you haven’t made any friends yet make some friends to
             initiate chats{' '}
           </p>
@@ -67,7 +118,7 @@ const Chats = () => {
     leftSideContent = (
       <div>
         <div className="flex flex-col items-center justify-center text-center p-5">
-          <p className="text-gray-600 text-lg mb-2">
+          <p className="text-gray-600  mb-2 text-sm font-semibold">
             Looks like you haven’t started a chat yet.
           </p>
           <p className="text-gray-500">
@@ -76,23 +127,39 @@ const Chats = () => {
           </p>
         </div>
         <div className="w-full flex items-center gap-5 overflow-x-auto my-5 p-5 no-scrollbar bg-slate-100 ">
-          {myConnections?.length > 0 &&
-            myConnections?.map((connection) => (
-              <div key={connection?._id} className="bg-white p-3">
-                <div className="avatar">
-                  <div className="w-16 rounded-full">
-                    {connection?.myConnection?.profilePicture ? (
-                      <img src={connection?.myConnection?.profilePicture} />
-                    ) : (
-                      <DefaultProfilePIcture />
-                    )}
+          {activeConnections?.length > 0
+            ? activeConnections?.map((connection) => (
+                <div key={connection?._id} className="bg-white p-3">
+                  <div className="avatar online">
+                    <div className="w-12 rounded-full">
+                      {connection?.myConnection?.profilePicture ? (
+                        <img src={connection?.myConnection?.profilePicture} />
+                      ) : (
+                        <DefaultProfilePIcture />
+                      )}
+                    </div>
                   </div>
+                  <p className="mt-2 font-semibold text-sm">
+                    {connection?.myConnection?.name}
+                  </p>
                 </div>
-                <p className="mt-2 font-semibold">
-                  {connection?.myConnection?.name}
-                </p>
-              </div>
-            ))}
+              ))
+            : myConnections?.map((connection) => (
+                <div key={connection?._id} className="bg-white p-3">
+                  <div className="avatar offline">
+                    <div className="w-12 rounded-full">
+                      {connection?.myConnection?.profilePicture ? (
+                        <img src={connection?.myConnection?.profilePicture} />
+                      ) : (
+                        <DefaultProfilePIcture />
+                      )}
+                    </div>
+                  </div>
+                  <p className="mt-2 font-semibold text-sm">
+                    {connection?.myConnection?.name}
+                  </p>
+                </div>
+              ))}
         </div>
       </div>
     );
@@ -101,7 +168,14 @@ const Chats = () => {
   }
 
   if (isSmall) {
-    return <div> this is small screen bro</div>;
+    return (
+      <div>
+        <ChatsSmallScreenFallback
+          chatLists={chatLists}
+          myConnections={myConnections}
+        />
+      </div>
+    );
   }
 
   return (
@@ -112,7 +186,7 @@ const Chats = () => {
           <h3 className="text-xl font-bold mb-5">
             Active Chats{' '}
             <span className="bg-blue-100 rounded-full text-blue-600 px-2">
-              {activeFriends?.length}
+              {activeConnections?.length}
             </span>
           </h3>
         </div>

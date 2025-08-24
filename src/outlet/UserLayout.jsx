@@ -8,21 +8,38 @@ const UserLayout = () => {
   const socket = useContext(SocketContext);
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
-  //registering the user with firebase user Uid  when he is online for socket.io
-
   useEffect(() => {
-    // socket.emit('register', currentUser);
-    if (socket.connected) {
-      socket.emit('register', currentUser);
+    if (!socket) return;
+
+    //if a user is logged in register him in the server
+    if (currentUser) {
+      const handleConnect = () => {
+        socket.emit('register', currentUser);
+      };
+
+      if (socket.connected) {
+        handleConnect();
+      } else {
+        socket.on('connect', handleConnect);
+      }
+
+      return () => {
+        socket.off('connect', handleConnect);
+      };
     }
-  }, [currentUser, socket]);
+
+    //if current user is not available (logs out) disconnect the socket.io
+    if (!currentUser && socket.connected) {
+      socket.disconnect();
+    }
+  }, [socket, currentUser]);
 
   return (
     <div className="relative">
       <div className="sticky top-0 z-50">
         <Header />
       </div>
-      <div className="md:px-5  ">
+      <div className="md:px-5">
         <Outlet />
       </div>
     </div>
