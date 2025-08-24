@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
     const newSocket = io('http://localhost:5000', {
       path: '/socket.io/',
       transports: ['websocket'],
-      reconnection: true, // Enable auto reconnection
+      reconnection: false, // Enable auto reconnection
       reconnectionAttempts: 5, // Max attempts for reconnection
       reconnectionDelay: 1000, // Time between reconnection attempts in ms
       reconnectionDelayMax: 5000, // Max delay between reconnections

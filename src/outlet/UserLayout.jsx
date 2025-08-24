@@ -9,26 +9,27 @@ const UserLayout = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
+    console.log('before !socket');
     if (!socket) return;
+    console.log('after socket');
 
-    //if a user is logged in register him in the server
     if (currentUser) {
+      console.log('if it enters in this if block just after login');
+      //declaring handler to register the user in server with uid
       const handleConnect = () => {
         socket.emit('register', currentUser);
       };
 
-      if (socket.connected) {
-        handleConnect();
-      } else {
-        socket.on('connect', handleConnect);
-      }
+      //connecting the socket first in case it's disconnected
+      if (!socket.connected) socket.connect();
+      //listening to the connect event then passing the handler ref to register the user
+      socket.on('connect', handleConnect);
 
       return () => {
         socket.off('connect', handleConnect);
       };
     }
 
-    //if current user is not available (logs out) disconnect the socket.io
     if (!currentUser && socket.connected) {
       socket.disconnect();
     }

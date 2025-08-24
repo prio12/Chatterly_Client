@@ -13,13 +13,19 @@ import {
   toggleLoading,
 } from '../redux/features/loggedInUser/userSlice';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
+import { useContext } from 'react';
+import SocketContext from '../context/SocketContext';
 
 const AvatarDropDownContent = ({ user }) => {
   //hooks
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const socket = useContext(SocketContext);
 
   const handleSignOut = () => {
+    //disconnect socket to remove user uid from server (to prevent showing online status after logout)
+    socket.disconnect();
+
     signOut(auth)
       .then(() => {
         dispatch(setUser(null));

@@ -91,7 +91,6 @@ const UpdateProfileModal = ({
       }).unwrap();
 
       if (updatedResult.user) {
-        console.log(updatedResult.user);
         reset();
         setIsLoading(false);
 
