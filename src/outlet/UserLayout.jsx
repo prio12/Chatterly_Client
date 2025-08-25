@@ -9,12 +9,10 @@ const UserLayout = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
-    console.log('before !socket');
     if (!socket) return;
-    console.log('after socket');
 
     if (currentUser) {
-      console.log('if it enters in this if block just after login');
+      console.log(currentUser);
       //declaring handler to register the user in server with uid
       const handleConnect = () => {
         socket.emit('register', currentUser);
@@ -24,6 +22,11 @@ const UserLayout = () => {
       if (!socket.connected) socket.connect();
       //listening to the connect event then passing the handler ref to register the user
       socket.on('connect', handleConnect);
+
+      // also handle the already-connected case
+      if (socket.connected) {
+        handleConnect();
+      }
 
       return () => {
         socket.off('connect', handleConnect);

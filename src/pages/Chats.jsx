@@ -44,23 +44,6 @@ const Chats = () => {
   //extract myConnections
   const myConnections = myConnectionsData?.myConnections;
 
-  // useEffect(() => {
-  //   if (socket && socket.connected && myConnections?.length > 0) {
-  //     //getting uid from connections
-  //     const friendsUid = myConnections?.map(
-  //       (connection) => connection?.myConnection?.uid
-  //     );
-
-  //     //emitting ActiveFriends event
-  //     socket.emit('activeConnections', friendsUid, (activeConnectionsUid) => {
-  //       const activeConnections = myConnections.filter((connection) =>
-  //         activeConnectionsUid.includes(connection.myConnection.uid)
-  //       );
-  //       //here setting active connections
-  //       setActiveConnections(activeConnections);
-  //     });
-  //   }
-  // }, [socket, myConnections]);
   useEffect(() => {
     if (!socket) return;
 
@@ -69,10 +52,6 @@ const Chats = () => {
         const friendsUid = myConnections.map((c) => c.myConnection?.uid);
 
         socket.emit('activeConnections', friendsUid, (activeConnectionsUid) => {
-          console.log(
-            'getting activeConnectionsUid from server successfully!',
-            activeConnectionsUid
-          );
           const activeConnections = myConnections.filter((c) =>
             activeConnectionsUid.includes(c.myConnection.uid)
           );
@@ -94,8 +73,15 @@ const Chats = () => {
 
   //select a friend to render the chat screen with the friend info, chat box(previous chats), input field
   const [isSelected, setIsSelected] = useState(false);
+  const [selectedUserData, setSelectedUserData] = useState();
   //left side content for md and lg screen
   let leftSideContent;
+
+  //handle selecting a connection to initiate chat
+  const handleInitiateChat = (userData) => {
+    setIsSelected(true);
+    setSelectedUserData(userData);
+  };
 
   if (chatLists?.length === 0 && myConnections?.length === 0) {
     leftSideContent = (
@@ -130,7 +116,10 @@ const Chats = () => {
           {activeConnections?.length > 0
             ? activeConnections?.map((connection) => (
                 <div key={connection?._id} className="bg-white p-3">
-                  <div className="avatar online">
+                  <div
+                    onClick={() => handleInitiateChat(connection?.myConnection)}
+                    className="avatar online cursor-pointer"
+                  >
                     <div className="w-12 rounded-full">
                       {connection?.myConnection?.profilePicture ? (
                         <img src={connection?.myConnection?.profilePicture} />
@@ -146,7 +135,10 @@ const Chats = () => {
               ))
             : myConnections?.map((connection) => (
                 <div key={connection?._id} className="bg-white p-3">
-                  <div className="avatar offline">
+                  <div
+                    onClick={() => handleInitiateChat(connection?.myConnection)}
+                    className="avatar offline cursor-pointer"
+                  >
                     <div className="w-12 rounded-full">
                       {connection?.myConnection?.profilePicture ? (
                         <img src={connection?.myConnection?.profilePicture} />
@@ -205,10 +197,13 @@ const Chats = () => {
         ) : (
           <div className="h-[var(--chat-height)]  bg-red-500 flex flex-col">
             <div className="h-20 bg-white  p-4">
-              <ChatBoxHeader />
+              <ChatBoxHeader
+                selectedUserData={selectedUserData}
+                activeConnections={activeConnections}
+              />
             </div>
             <div className="flex-1 overflow-y-auto bg-white p-4">
-              <ChatMessages />
+              <ChatMessages selectedUserData={selectedUserData} />
             </div>
             <div className="h-20 bg-white  p-4">
               <ChatFooter />
