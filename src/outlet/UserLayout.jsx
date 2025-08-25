@@ -12,7 +12,6 @@ const UserLayout = () => {
     if (!socket) return;
 
     if (currentUser) {
-      console.log(currentUser);
       //declaring handler to register the user in server with uid
       const handleConnect = () => {
         socket.emit('register', currentUser);

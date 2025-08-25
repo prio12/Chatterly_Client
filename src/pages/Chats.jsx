@@ -203,7 +203,10 @@ const Chats = () => {
               />
             </div>
             <div className="flex-1 overflow-y-auto bg-white p-4">
-              <ChatMessages selectedUserData={selectedUserData} />
+              <ChatMessages
+                selectedUserData={selectedUserData}
+                myConnections={myConnections}
+              />
             </div>
             <div className="h-20 bg-white  p-4">
               <ChatFooter />
