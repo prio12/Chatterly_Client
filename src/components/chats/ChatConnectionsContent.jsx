@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router';
-import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import ChatLists from './ChatLists';
 import { FaHandPointRight } from 'react-icons/fa6';
+import FriendsList from './FriendsList';
 
 const ChatConnectionsContent = ({
   chatLists,
@@ -39,51 +39,24 @@ const ChatConnectionsContent = ({
             conversation.
           </p>
         </div>
-        <div className="w-full flex items-center gap-5 overflow-x-auto my-5 p-5 no-scrollbar bg-slate-100 ">
-          {activeConnections?.length > 0
-            ? activeConnections?.map((connection) => (
-                <div key={connection?._id} className="bg-white p-3">
-                  <div
-                    onClick={() => handleInitiateChat(connection?.myConnection)}
-                    className="avatar online cursor-pointer"
-                  >
-                    <div className="w-12 rounded-full">
-                      {connection?.myConnection?.profilePicture ? (
-                        <img src={connection?.myConnection?.profilePicture} />
-                      ) : (
-                        <DefaultProfilePIcture />
-                      )}
-                    </div>
-                  </div>
-                  <p className="mt-2 font-semibold text-sm">
-                    {connection?.myConnection?.name}
-                  </p>
-                </div>
-              ))
-            : myConnections?.map((connection) => (
-                <div key={connection?._id} className="bg-white p-3">
-                  <div
-                    onClick={() => handleInitiateChat(connection?.myConnection)}
-                    className="avatar offline cursor-pointer"
-                  >
-                    <div className="w-12 rounded-full">
-                      {connection?.myConnection?.profilePicture ? (
-                        <img src={connection?.myConnection?.profilePicture} />
-                      ) : (
-                        <DefaultProfilePIcture />
-                      )}
-                    </div>
-                  </div>
-                  <p className="mt-2 font-semibold text-sm">
-                    {connection?.myConnection?.name}
-                  </p>
-                </div>
-              ))}
-        </div>
+        <FriendsList
+          myConnections={myConnections}
+          activeConnections={activeConnections}
+          handleInitiateChat={handleInitiateChat}
+        />
       </div>
     );
   } else {
-    return <ChatLists />;
+    return (
+      <div>
+        <FriendsList
+          myConnections={myConnections}
+          activeConnections={activeConnections}
+          handleInitiateChat={handleInitiateChat}
+        />
+        <ChatLists />
+      </div>
+    );
   }
 };
 
