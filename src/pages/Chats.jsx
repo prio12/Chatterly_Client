@@ -20,7 +20,7 @@ const Chats = () => {
   const [activeConnections, setActiveConnections] = useState([]);
 
   //here chatLists will be fetched
-  const chatLists = [];
+  const chatLists = [1];
 
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
@@ -83,6 +83,7 @@ const Chats = () => {
         <ChatsSmallScreenFallback
           chatLists={chatLists}
           myConnections={myConnections}
+          activeConnections={activeConnections}
         />
       </div>
     );
