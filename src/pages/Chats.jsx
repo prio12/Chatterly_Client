@@ -1,7 +1,4 @@
 import { useSelector } from 'react-redux';
-import ChatBoxHeader from '../components/chats/ChatBoxHeader';
-import ChatFooter from '../components/chats/ChatFooter';
-import ChatMessages from '../components/chats/ChatMessages';
 import SearchBox from '../components/chats/SearchBox';
 import useBreakpoint from '../hooks/useBreakpoint';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
@@ -10,6 +7,7 @@ import { useContext, useEffect, useState } from 'react';
 import ChatsSmallScreenFallback from '../components/chats/ChatsSmallScreenFallback';
 import SocketContext from '../context/SocketContext';
 import ChatConnectionsContent from '../components/chats/ChatConnectionsContent';
+import ChatPanel from '../components/chats/ChatPanel';
 
 const Chats = () => {
   //checking screen size with manual hook
@@ -20,7 +18,7 @@ const Chats = () => {
   const [activeConnections, setActiveConnections] = useState([]);
 
   //here chatLists will be fetched
-  const chatLists = [1];
+  const chatLists = [];
 
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
@@ -84,6 +82,7 @@ const Chats = () => {
           chatLists={chatLists}
           myConnections={myConnections}
           activeConnections={activeConnections}
+          isSmall={isSmall}
         />
       </div>
     );
@@ -107,6 +106,7 @@ const Chats = () => {
           myConnections={myConnections}
           activeConnections={activeConnections}
           handleInitiateChat={handleInitiateChat}
+          isSmall={isSmall}
         />
         {/* left side Content ends here */}
       </div>
@@ -119,23 +119,11 @@ const Chats = () => {
             </h3>
           </div>
         ) : (
-          <div className="h-[var(--chat-height)]  bg-red-500 flex flex-col">
-            <div className="h-20 bg-white  p-4">
-              <ChatBoxHeader
-                selectedUserData={selectedUserData}
-                activeConnections={activeConnections}
-              />
-            </div>
-            <div className="flex-1 overflow-y-auto bg-white p-4">
-              <ChatMessages
-                selectedUserData={selectedUserData}
-                myConnections={myConnections}
-              />
-            </div>
-            <div className="h-20 bg-white  p-4">
-              <ChatFooter />
-            </div>
-          </div>
+          <ChatPanel
+            selectedUserData={selectedUserData}
+            activeConnections={activeConnections}
+            myConnections={myConnections}
+          />
         )}
       </div>
     </div>

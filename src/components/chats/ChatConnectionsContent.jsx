@@ -9,6 +9,7 @@ const ChatConnectionsContent = ({
   myConnections,
   activeConnections,
   handleInitiateChat,
+  isSmall,
 }) => {
   if (chatLists?.length === 0 && myConnections?.length === 0) {
     return (
@@ -40,6 +41,7 @@ const ChatConnectionsContent = ({
           </p>
         </div>
         <FriendsList
+          isSmall={isSmall}
           myConnections={myConnections}
           activeConnections={activeConnections}
           handleInitiateChat={handleInitiateChat}
@@ -50,6 +52,7 @@ const ChatConnectionsContent = ({
     return (
       <div>
         <FriendsList
+          isSmall={isSmall}
           myConnections={myConnections}
           activeConnections={activeConnections}
           handleInitiateChat={handleInitiateChat}

@@ -5,13 +5,14 @@ import { CiLock } from 'react-icons/ci';
 
 /* eslint-disable react/prop-types */
 const ChatMessages = ({ selectedUserData, myConnections }) => {
-  const { haveConversasions, sethaveConverSations } = useState([]);
+  const [haveConversasions, sethaveConverSations] = useState(['hello', 'no']);
+
+  console.log(haveConversasions, 'haveConvo');
 
   let isConnected = myConnections?.some((connection) =>
     connection?.myConnection?.uid.includes(selectedUserData?.uid)
   );
 
-  console.log(isConnected);
   return (
     <div>
       {haveConversasions?.length > 0 ? (

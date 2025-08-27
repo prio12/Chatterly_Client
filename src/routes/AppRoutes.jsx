@@ -11,6 +11,7 @@ import Connections from '../pages/Connections';
 import MyAlbum from '../pages/MyAlbum';
 import MyVideos from '../pages/MyVideos';
 import Chats from '../pages/Chats';
+import ChatPanel from '../components/chats/ChatPanel';
 
 const AppRoutes = () => {
   return (
@@ -31,6 +32,7 @@ const AppRoutes = () => {
         <Route path="/myVideos" element={<MyVideos />}></Route>
         <Route path="/posts/:id" element={<PostDetails />}></Route>
         <Route path="/chats" element={<Chats />}></Route>
+        <Route path="/chats/:uid" element={<ChatPanel />}></Route>
       </Route>
       <Route path="/signUp" element={<SignUp />}></Route>
       <Route path="/signIn" element={<SignIn />}></Route>

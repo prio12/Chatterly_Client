@@ -6,6 +6,7 @@ const ChatsSmallScreenFallback = ({
   myConnections,
   chatLists,
   activeConnections,
+  isSmall,
 }) => {
   return (
     <div className="p-3">
@@ -21,6 +22,7 @@ const ChatsSmallScreenFallback = ({
         chatLists={chatLists}
         myConnections={myConnections}
         activeConnections={activeConnections}
+        isSmall={isSmall}
       />
     </div>
   );

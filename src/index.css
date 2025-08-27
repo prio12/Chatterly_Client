@@ -4,13 +4,13 @@
 
 /* Custom CSS Variables for Chat Height */
 :root {
-  --chat-height: calc(100vh - 9rem);
+  --chat-height: calc(100vh - 10rem);
 }
 
 @media (min-width: 768px) {
   /* md breakpoint */
   :root {
-    --chat-height: calc(100vh - 10rem);
+    --chat-height: calc(100vh - 11rem);
   }
 }
 
