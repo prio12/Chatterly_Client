@@ -3,16 +3,22 @@ import { useParams } from 'react-router';
 import ChatBoxHeader from './ChatBoxHeader';
 import ChatFooter from './ChatFooter';
 import ChatMessages from './ChatMessages';
+import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 
 const ChatPanel = ({ selectedUserData, activeConnections, myConnections }) => {
   //getting the uid from url
   const { uid } = useParams();
 
+  //fetching the data of the user who was clicked to chat
+  const { data: clickedUserData } = useUserInfoByUidQuery(uid, { skip: !uid });
+
+  const clickedUser = clickedUserData?.user;
+
   return (
     <div className="h-[var(--chat-height)]   flex flex-col">
       <div className="h-20 bg-white  p-4">
         <ChatBoxHeader
-          selectedUserData={selectedUserData}
+          selectedUserData={selectedUserData || clickedUser}
           activeConnections={activeConnections}
         />
       </div>

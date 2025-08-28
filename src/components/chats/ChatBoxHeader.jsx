@@ -7,9 +7,10 @@ const ChatBoxHeader = ({ selectedUserData, activeConnections }) => {
   let onlineStatus = activeConnections?.some((connection) =>
     connection?.myConnection?.uid.includes(selectedUserData?.uid)
   );
+
   return (
     <div className="flex items-center justify-between border-b pb-5">
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3">
         <div className="avatar">
           <div className="w-14 rounded-full">
             {selectedUserData?.profilePicture ? (
@@ -34,7 +35,7 @@ const ChatBoxHeader = ({ selectedUserData, activeConnections }) => {
           )}
         </div>
       </div>
-      <div className="flex items-center gap-3 cursor-pointer">
+      <div className="flex items-center gap-2 cursor-pointer">
         <div className="flex items-center justify-center text-xl bg-blue-100 rounded-full w-10 h-10 text-blue-500 hover:bg-blue-500 hover:text-white">
           <IoIosCall />
         </div>

@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchBox from '../components/chats/SearchBox';
 import useBreakpoint from '../hooks/useBreakpoint';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
@@ -8,19 +8,22 @@ import ChatsSmallScreenFallback from '../components/chats/ChatsSmallScreenFallba
 import SocketContext from '../context/SocketContext';
 import ChatConnectionsContent from '../components/chats/ChatConnectionsContent';
 import ChatPanel from '../components/chats/ChatPanel';
+import {
+  setActiveConnections,
+  setMyConnections,
+} from '../redux/features/chat/chatSlice';
 
 const Chats = () => {
   //checking screen size with manual hook
   const isSmall = useBreakpoint();
   const socket = useContext(SocketContext);
-
-  //assuming there's no active friends
-  const [activeConnections, setActiveConnections] = useState([]);
+  const dispatch = useDispatch();
 
   //here chatLists will be fetched
   const chatLists = [];
 
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { activeConnections } = useSelector((state) => state.chat);
   const { data } = useUserInfoByUidQuery(currentUser);
 
   //extract the currentlyLoggedIn user from db
@@ -38,6 +41,13 @@ const Chats = () => {
   //extract myConnections
   const myConnections = myConnectionsData?.myConnections;
 
+  //storing my connections data in redux store for using it for sm screen
+  useEffect(() => {
+    if (myConnections?.length) {
+      dispatch(setMyConnections(myConnections));
+    }
+  }, [dispatch, myConnections]);
+
   useEffect(() => {
     if (!socket) return;
 
@@ -49,7 +59,8 @@ const Chats = () => {
           const activeConnections = myConnections.filter((c) =>
             activeConnectionsUid.includes(c.myConnection.uid)
           );
-          setActiveConnections(activeConnections);
+          // setActiveConnections(activeConnections);
+          dispatch(setActiveConnections(activeConnections));
         });
       }
     };
@@ -63,7 +74,7 @@ const Chats = () => {
     return () => {
       socket.off('usersUpdated', refreshActiveConnections);
     };
-  }, [socket, myConnections]);
+  }, [socket, myConnections, dispatch]);
 
   //select a friend to render the chat screen with the friend info, chat box(previous chats), input field
   const [isSelected, setIsSelected] = useState(false);
