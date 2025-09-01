@@ -7,8 +7,6 @@ import { CiLock } from 'react-icons/ci';
 const ChatMessages = ({ selectedUserData, myConnections }) => {
   const [haveConversasions, sethaveConverSations] = useState(['hello', 'no']);
 
-  console.log(haveConversasions, 'haveConvo');
-
   let isConnected = myConnections?.some((connection) =>
     connection?.myConnection?.uid.includes(selectedUserData?.uid)
   );

@@ -1,12 +1,32 @@
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import { IoIosSend, IoMdAttach } from 'react-icons/io';
 import { MdEmojiEmotions } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 
-const ChatFooter = () => {
+const ChatFooter = ({ selectedUserData }) => {
+  const { userProfile } = useSelector((state) => state.chat);
+
+  const [text, setText] = useState('');
+
+  //needs : sender, receiver, text
+
+  const handleOnChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (!text.trim()) return;
+    console.log(text);
+
+    setText('');
+  };
+
   return (
     <div className="w-full bg-slate-100 p-5 rounded-lg">
       <textarea
-        // onChange={handleOnchange}
-        // value={commentText}
+        onChange={handleOnChange}
+        value={text}
         className="w-full h-10 p-2 pr-10 resize-none  rounded-md focus:outline-none   overflow-y-scroll no-scrollbar"
         placeholder="Type a message..."
         style={{
@@ -20,8 +40,13 @@ const ChatFooter = () => {
           <MdEmojiEmotions />
           <IoMdAttach />
         </div>
-        <div className="text-2xl text-blue-600">
-          <IoIosSend />
+        <div>
+          <IoIosSend
+            onClick={text ? handleSubmit : undefined}
+            className={`text-2xl ${
+              text ? 'text-blue-600 cursor-pointer' : 'text-gray-400'
+            }`}
+          />
         </div>
       </div>
     </div>

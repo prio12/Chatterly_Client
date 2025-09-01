@@ -28,12 +28,12 @@ const ChatPanel = ({ selectedUserData }) => {
       </div>
       <div className="flex-1 overflow-y-auto bg-white p-4">
         <ChatMessages
-          selectedUserData={selectedUserData}
+          selectedUserData={selectedUserData || clickedUser}
           myConnections={myConnections}
         />
       </div>
       <div className="h-20 bg-white  p-4">
-        <ChatFooter />
+        <ChatFooter selectedUserData={selectedUserData || clickedUser} />
       </div>
     </div>
   );

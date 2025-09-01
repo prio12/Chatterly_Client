@@ -11,7 +11,6 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     setMyConnections: (state, { payload }) => {
-      console.log(payload, 'in chatSlice');
       state.myConnections = payload;
     },
 
