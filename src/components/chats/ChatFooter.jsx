@@ -3,23 +3,39 @@ import { useState } from 'react';
 import { IoIosSend, IoMdAttach } from 'react-icons/io';
 import { MdEmojiEmotions } from 'react-icons/md';
 import { useSelector } from 'react-redux';
+import { useSendMessageMutation } from '../../redux/api/messaging/messagingApi';
+import toast from 'react-hot-toast';
 
 const ChatFooter = ({ selectedUserData }) => {
+  //hooks
   const { userProfile } = useSelector((state) => state.chat);
-
   const [text, setText] = useState('');
-
+  const [sendText] = useSendMessageMutation();
   //needs : sender, receiver, text
 
   const handleOnChange = (e) => {
     setText(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!text.trim()) return;
-    console.log(text);
 
-    setText('');
+    //preparing message data to send to the server
+    const messageData = {
+      participants: [selectedUserData?._id, userProfile?.payload?._id],
+      sender: userProfile?.payload?._id,
+      text,
+    };
+
+    try {
+      const result = await sendText(messageData).unwrap();
+      if (result.success) {
+        setText('');
+      }
+    } catch (error) {
+      toast.error(error.data.error);
+      setText('');
+    }
   };
 
   return (
