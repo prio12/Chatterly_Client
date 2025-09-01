@@ -4,10 +4,14 @@ import ChatBoxHeader from './ChatBoxHeader';
 import ChatFooter from './ChatFooter';
 import ChatMessages from './ChatMessages';
 import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
+import { useSelector } from 'react-redux';
 
-const ChatPanel = ({ selectedUserData, activeConnections, myConnections }) => {
+const ChatPanel = ({ selectedUserData }) => {
   //getting the uid from url
   const { uid } = useParams();
+  const { activeConnections, myConnections } = useSelector(
+    (state) => state.chat
+  );
 
   //fetching the data of the user who was clicked to chat
   const { data: clickedUserData } = useUserInfoByUidQuery(uid, { skip: !uid });

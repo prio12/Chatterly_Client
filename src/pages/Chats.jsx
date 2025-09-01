@@ -11,6 +11,7 @@ import ChatPanel from '../components/chats/ChatPanel';
 import {
   setActiveConnections,
   setMyConnections,
+  setUserProfile,
 } from '../redux/features/chat/chatSlice';
 
 const Chats = () => {
@@ -40,6 +41,13 @@ const Chats = () => {
 
   //extract myConnections
   const myConnections = myConnectionsData?.myConnections;
+
+  //storing user profile in redux store to avoid fetching multiple times regarding chat feature
+  useEffect(() => {
+    if (currentlyLoggedInUserData) {
+      dispatch(setUserProfile(currentlyLoggedInUserData));
+    }
+  }, [currentlyLoggedInUserData, dispatch]);
 
   //storing my connections data in redux store for using it for sm screen
   useEffect(() => {
@@ -130,11 +138,7 @@ const Chats = () => {
             </h3>
           </div>
         ) : (
-          <ChatPanel
-            selectedUserData={selectedUserData}
-            activeConnections={activeConnections}
-            myConnections={myConnections}
-          />
+          <ChatPanel selectedUserData={selectedUserData} />
         )}
       </div>
     </div>
