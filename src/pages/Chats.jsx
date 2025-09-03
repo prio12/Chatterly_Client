@@ -13,6 +13,7 @@ import {
   setMyConnections,
   setUserProfile,
 } from '../redux/features/chat/chatSlice';
+import { useGetUserConversationQuery } from '../redux/api/messaging/messagingApi';
 
 const Chats = () => {
   //checking screen size with manual hook
@@ -21,7 +22,7 @@ const Chats = () => {
   const dispatch = useDispatch();
 
   //here chatLists will be fetched
-  const chatLists = [];
+  const [chatLists, setChatLists] = useState([]);
 
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { activeConnections } = useSelector((state) => state.chat);
@@ -38,6 +39,18 @@ const Chats = () => {
       skip: !currentlyLoggedInUserData?._id,
     }
   );
+
+  //fetching chatList
+  const { data: userConversations } = useGetUserConversationQuery(
+    { id: currentlyLoggedInUserData?._id },
+    { skip: !currentlyLoggedInUserData?._id }
+  );
+
+  useEffect(() => {
+    if (userConversations?.conversations?.length > 0) {
+      setChatLists(userConversations?.conversations);
+    }
+  }, [userConversations?.conversations]);
 
   //extract myConnections
   const myConnections = myConnectionsData?.myConnections;

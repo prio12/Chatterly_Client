@@ -57,7 +57,18 @@ const ChatConnectionsContent = ({
           activeConnections={activeConnections}
           handleInitiateChat={handleInitiateChat}
         />
-        <ChatLists />
+        <div
+          className={`bg-slate-100 ${
+            !isSmall
+              ? 'flex flex-col overflow-y-auto no-scrollbar h-[45vh] min-h-0'
+              : ''
+          }`}
+        >
+          {chatLists?.length > 0 &&
+            chatLists?.map((chatList) => (
+              <ChatLists key={chatList?._id} chatList={chatList} />
+            ))}
+        </div>
       </div>
     );
   }
