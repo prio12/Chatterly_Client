@@ -43,7 +43,7 @@ const Chats = () => {
   //fetching chatList
   const { data: userConversations } = useGetUserConversationQuery(
     { id: currentlyLoggedInUserData?._id },
-    { skip: !currentlyLoggedInUserData?._id }
+    { skip: !currentlyLoggedInUserData?._id, refetchOnMountOrArgChange: true }
   );
 
   useEffect(() => {
@@ -51,6 +51,18 @@ const Chats = () => {
       setChatLists(userConversations?.conversations);
     }
   }, [userConversations?.conversations]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('conversationUpdated', (conversation) => {
+      setChatLists((prev) => {
+        const filtered = prev.filter((c) => c._id !== conversation?._id);
+        console.log('filtered', filtered);
+        return [conversation, ...filtered];
+      });
+    });
+  }, [socket]);
 
   //extract myConnections
   const myConnections = myConnectionsData?.myConnections;

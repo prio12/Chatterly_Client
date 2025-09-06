@@ -16,7 +16,6 @@ const messaging = baseApi.injectEndpoints({
     //get user specific conversation
     getUserConversation: builder.query({
       query: ({ id }) => {
-        console.log(id, 'from messaging api');
         return {
           url: `/conversations/${id}`,
         };

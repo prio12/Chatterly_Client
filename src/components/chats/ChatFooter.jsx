@@ -24,6 +24,8 @@ const ChatFooter = ({ selectedUserData }) => {
     const messageData = {
       participants: [selectedUserData?._id, userProfile?.payload?._id],
       sender: userProfile?.payload?._id,
+      senderUid: userProfile?.payload?.uid,
+      receiverUid: selectedUserData?.uid,
       text,
     };
 
