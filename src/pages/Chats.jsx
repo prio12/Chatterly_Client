@@ -58,7 +58,6 @@ const Chats = () => {
     socket.on('conversationUpdated', (conversation) => {
       setChatLists((prev) => {
         const filtered = prev.filter((c) => c._id !== conversation?._id);
-        console.log('filtered', filtered);
         return [conversation, ...filtered];
       });
     });
@@ -108,6 +107,8 @@ const Chats = () => {
       socket.off('usersUpdated', refreshActiveConnections);
     };
   }, [socket, myConnections, dispatch]);
+
+  console.log(chatLists, 'from chat');
 
   //select a friend to render the chat screen with the friend info, chat box(previous chats), input field
   const [isSelected, setIsSelected] = useState(false);

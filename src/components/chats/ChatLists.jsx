@@ -9,8 +9,6 @@ const ChatLists = ({ chatList }) => {
     (participant) => participant?.uid !== currentUser
   );
 
-  console.log(chatList);
-
   return (
     <div>
       <div className="flex items-center gap-5 my-3 rounded-md  p-5 bg-slate-50">

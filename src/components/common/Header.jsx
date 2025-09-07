@@ -16,12 +16,14 @@ import {
 } from '../../redux/api/notifications/notificationsApi';
 import SmallScreenHeader from './smallScreenHeader/SmallScreenHeader';
 import SmallScreenDropdown from './smallScreenHeader/SmallScreenSidebar';
+import { useGetUserConversationQuery } from '../../redux/api/messaging/messagingApi';
 
 const Header = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
   const user = data?.user;
+
   const { data: notifications } = useGetUserSpecificNotificationsQuery({
     _id: user?._id,
   });
@@ -44,6 +46,10 @@ const Header = () => {
   const location = useLocation();
   const socket = useContext(SocketContext);
 
+  // State to hold user conversations for calculating unread badge
+  const [chatLists, setChatLists] = useState([]);
+  const [convoBadgeCount, setConvoBadgeCount] = useState(0);
+
   const handleDropdown = () => {
     setDropDownOpen(!isDropDownOpen);
   };
@@ -64,6 +70,32 @@ const Header = () => {
       await handleMarkAsSeen({ _id: user?._id });
     }
   };
+
+  //fetching chatList
+  const { data: userConversations } = useGetUserConversationQuery(
+    { id: user?._id },
+    { skip: !user?._id, refetchOnMountOrArgChange: true }
+  );
+
+  useEffect(() => {
+    if (userConversations?.conversations?.length > 0) {
+      setChatLists(userConversations?.conversations);
+    }
+  }, [userConversations?.conversations]);
+
+  // Calculate the number of conversations with unread messages for the current user
+  useEffect(() => {
+    if (!chatLists?.length) return;
+
+    const unreadConversations = chatLists?.filter(
+      (c) => c?.unreadCounts[user?._id] > 0
+    );
+
+    setConvoBadgeCount(unreadConversations?.length);
+  }, [chatLists, user?._id]);
+
+  console.log(chatLists, 'From header chatLists');
+  console.log(convoBadgeCount, 'convo badge from header');
 
   return (
     <div className="md:p-5 px-2  py-5 z-50 bg-white">
@@ -96,6 +128,11 @@ const Header = () => {
             }
           >
             <FaRegMessage />
+            {convoBadgeCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[18px] text-center">
+                {convoBadgeCount >= 9 ? '9+' : convoBadgeCount}
+              </span>
+            )}
           </NavLink>
 
           <NavLink
