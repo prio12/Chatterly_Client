@@ -83,6 +83,17 @@ const Header = () => {
     }
   }, [userConversations?.conversations]);
 
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('conversationUpdated', (conversation) => {
+      setChatLists((prev) => {
+        const filtered = prev.filter((c) => c._id !== conversation?._id);
+        return [conversation, ...filtered];
+      });
+    });
+  }, [socket]);
+
   // Calculate the number of conversations with unread messages for the current user
   useEffect(() => {
     if (!chatLists?.length) return;
