@@ -66,7 +66,12 @@ const ChatConnectionsContent = ({
         >
           {chatLists?.length > 0 &&
             chatLists?.map((chatList) => (
-              <ChatLists key={chatList?._id} chatList={chatList} />
+              <ChatLists
+                key={chatList?._id}
+                chatList={chatList}
+                handleInitiateChat={handleInitiateChat}
+                isSmall={isSmall}
+              />
             ))}
         </div>
       </div>

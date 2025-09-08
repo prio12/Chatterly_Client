@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
+import { Link } from 'react-router';
 
 /* eslint-disable react/prop-types */
-const ChatLists = ({ chatList }) => {
+const ChatLists = ({ chatList, handleInitiateChat, isSmall }) => {
   //hooks
   const { userProfile } = useSelector((state) => state.chat);
   const otherParticipant = chatList?.participants.find(
@@ -41,25 +42,50 @@ const ChatLists = ({ chatList }) => {
 
   return (
     <div>
-      <div
-        className={`flex items-center gap-5 my-3 rounded-md  p-5 cursor-pointer ${
-          unreadCount > 0 ? 'bg-slate-200' : 'bg-slate-50'
-        }`}
-      >
-        <div className="avatar ">
-          <div className="w-12 rounded-full">
-            {otherParticipant?.profilePicture ? (
-              <img src={otherParticipant?.profilePicture} />
-            ) : (
-              <DefaultProfilePIcture />
-            )}
+      {isSmall ? (
+        <Link to={`/chats/${otherParticipant?.uid}`}>
+          <div
+            className={`flex items-center gap-5 my-3 rounded-md  p-5 cursor-pointer ${
+              unreadCount > 0 ? 'bg-slate-200' : 'bg-slate-50'
+            }`}
+          >
+            <div className="avatar ">
+              <div className="w-12 rounded-full">
+                {otherParticipant?.profilePicture ? (
+                  <img src={otherParticipant?.profilePicture} />
+                ) : (
+                  <DefaultProfilePIcture />
+                )}
+              </div>
+            </div>
+            <div>
+              <h3 className="text-sm font-bold">{otherParticipant?.name}</h3>
+              {lastMessageContent}
+            </div>
+          </div>
+        </Link>
+      ) : (
+        <div
+          onClick={() => handleInitiateChat(otherParticipant)}
+          className={`flex items-center gap-5 my-3 rounded-md  p-5 cursor-pointer ${
+            unreadCount > 0 ? 'bg-slate-200' : 'bg-slate-50'
+          }`}
+        >
+          <div className="avatar ">
+            <div className="w-12 rounded-full">
+              {otherParticipant?.profilePicture ? (
+                <img src={otherParticipant?.profilePicture} />
+              ) : (
+                <DefaultProfilePIcture />
+              )}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm font-bold">{otherParticipant?.name}</h3>
+            {lastMessageContent}
           </div>
         </div>
-        <div>
-          <h3 className="text-sm font-bold">{otherParticipant?.name}</h3>
-          {lastMessageContent}
-        </div>
-      </div>
+      )}
     </div>
   );
 };
