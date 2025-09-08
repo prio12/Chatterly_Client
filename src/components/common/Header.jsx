@@ -94,6 +94,11 @@ const Header = () => {
     setConvoBadgeCount(unreadConversations?.length);
   }, [chatLists, user?._id]);
 
+  //handle convoBadgeCount locally
+  const handleBadgeCount = () => {
+    setConvoBadgeCount(0);
+  };
+
   return (
     <div className="md:p-5 px-2  py-5 z-50 bg-white">
       <div className="h-16 hidden relative md:flex lg:flex justify-between ">
@@ -116,6 +121,7 @@ const Header = () => {
             <IoHomeOutline />
           </NavLink>
           <NavLink
+            onClick={handleBadgeCount}
             to="/chats"
             title="Chats"
             className={({ isActive }) =>
@@ -206,6 +212,7 @@ const Header = () => {
         unseenNotifications={unseenNotifications}
         markAsSeen={markAsSeen}
         convoBadgeCount={convoBadgeCount}
+        handleBadgeCount={handleBadgeCount}
       />
 
       {/* drawer for small screen */}

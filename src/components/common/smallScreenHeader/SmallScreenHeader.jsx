@@ -27,6 +27,7 @@ const SmallScreenHeader = ({
   cIcon,
   user,
   convoBadgeCount,
+  handleBadgeCount,
 }) => {
   //fetching all notifications
   const { data: notifications } = useGetUserSpecificNotificationsQuery({
@@ -148,6 +149,7 @@ const SmallScreenHeader = ({
       </div>
 
       <NavLink
+        onClick={handleBadgeCount}
         to="/chats"
         title="Chats"
         className={({ isActive }) =>
