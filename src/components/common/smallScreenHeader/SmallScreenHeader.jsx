@@ -26,8 +26,8 @@ const SmallScreenHeader = ({
   handleDropdown,
   cIcon,
   user,
+  convoBadgeCount,
 }) => {
-  //write here
   //fetching all notifications
   const { data: notifications } = useGetUserSpecificNotificationsQuery({
     _id: user?._id,
@@ -159,13 +159,11 @@ const SmallScreenHeader = ({
         <FaRegMessage className="text-xl" />
 
         {/* Notification Badge (Only Shows if Unseen Notifications Exist) */}
-        {/* {unseenNotifications.length > 0 && (
+        {convoBadgeCount > 0 && (
           <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[18px] text-center">
-            {unseenNotifications.length >= 9
-              ? '9+'
-              : unseenNotifications.length}
+            {convoBadgeCount >= 9 ? '9+' : convoBadgeCount}
           </span>
-        )} */}
+        )}
       </NavLink>
 
       <NavLink

@@ -205,6 +205,7 @@ const Header = () => {
         user={user}
         unseenNotifications={unseenNotifications}
         markAsSeen={markAsSeen}
+        convoBadgeCount={convoBadgeCount}
       />
 
       {/* drawer for small screen */}

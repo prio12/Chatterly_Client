@@ -108,8 +108,6 @@ const Chats = () => {
     };
   }, [socket, myConnections, dispatch]);
 
-  console.log(chatLists, 'from chat');
-
   //select a friend to render the chat screen with the friend info, chat box(previous chats), input field
   const [isSelected, setIsSelected] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState();
