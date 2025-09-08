@@ -17,6 +17,7 @@ import {
   MdOutlinePhotoSizeSelectActual,
 } from 'react-icons/md';
 import { CiSettings } from 'react-icons/ci';
+import { FaRegMessage } from 'react-icons/fa6';
 
 const SmallScreenHeader = ({
   setIsOpen,
@@ -135,14 +136,6 @@ const SmallScreenHeader = ({
                 <CiSettings className="text-xl" />
                 <span>Settings</span>
               </div>
-              {/* <div
-                onClick={() => setIsOpen(false)}
-                className="flex items-center space-x-2"
-              >
-                <IoPeopleOutline className="text-xl" />
-                <span>Connections</span>
-              </div> */}
-              {/* Add more items as needed */}
             </div>
 
             {/* Close Icon with Enhanced Styling and Animations */}
@@ -153,6 +146,27 @@ const SmallScreenHeader = ({
           </div>
         </div>
       </div>
+
+      <NavLink
+        to="/chats"
+        title="Chats"
+        className={({ isActive }) =>
+          `relative hover:after:bg-blue-500 after:absolute after:h-[4px] after:w-full after:bottom-[-10px] after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 ${
+            isActive ? 'after:scale-x-100 after:bg-blue-500' : ''
+          }`
+        }
+      >
+        <FaRegMessage className="text-xl" />
+
+        {/* Notification Badge (Only Shows if Unseen Notifications Exist) */}
+        {/* {unseenNotifications.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[18px] text-center">
+            {unseenNotifications.length >= 9
+              ? '9+'
+              : unseenNotifications.length}
+          </span>
+        )} */}
+      </NavLink>
 
       <NavLink
         onClick={markAsSeen}

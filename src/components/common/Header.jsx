@@ -94,9 +94,6 @@ const Header = () => {
     setConvoBadgeCount(unreadConversations?.length);
   }, [chatLists, user?._id]);
 
-  console.log(chatLists, 'From header chatLists');
-  console.log(convoBadgeCount, 'convo badge from header');
-
   return (
     <div className="md:p-5 px-2  py-5 z-50 bg-white">
       <div className="h-16 hidden relative md:flex lg:flex justify-between ">

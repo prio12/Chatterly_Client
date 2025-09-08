@@ -1,5 +1,4 @@
 import { CiViewTimeline } from 'react-icons/ci';
-import { FaRegMessage } from 'react-icons/fa6';
 import { IoMdClose } from 'react-icons/io';
 import { IoPeopleOutline } from 'react-icons/io5';
 import { MdOutlineOndemandVideo } from 'react-icons/md';
@@ -46,20 +45,6 @@ const SmallScreenDropdown = () => {
                   <span className="text-sm font-semibold hover:text-blue-500 transition-all">
                     Feed
                   </span>
-                </NavLink>
-
-                <NavLink
-                  to="/chats"
-                  className={({ isActive }) => `${isActive && 'text-blue-500'}`}
-                >
-                  <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
-                    <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
-                      <FaRegMessage />
-                    </div>
-                    <span className="text-sm font-semibold hover:text-blue-500 transition-all">
-                      Chats
-                    </span>
-                  </div>
                 </NavLink>
 
                 <NavLink
