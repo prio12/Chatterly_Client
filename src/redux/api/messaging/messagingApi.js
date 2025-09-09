@@ -21,8 +21,22 @@ const messaging = baseApi.injectEndpoints({
         };
       },
     }),
+
+    //mark a conversation as read
+    markConversationAsRead: builder.mutation({
+      query: ({ conversationId, userId }) => {
+        return {
+          url: `/conversations/${conversationId}/read`,
+          method: 'PATCH',
+          body: { userId },
+        };
+      },
+    }),
   }),
 });
 
-export const { useSendMessageMutation, useGetUserConversationQuery } =
-  messaging;
+export const {
+  useSendMessageMutation,
+  useGetUserConversationQuery,
+  useMarkConversationAsReadMutation,
+} = messaging;
