@@ -22,6 +22,15 @@ const messaging = baseApi.injectEndpoints({
       },
     }),
 
+    //get messages
+    getMessages: builder.query({
+      query: ({ user1, user2 }) => {
+        return {
+          url: `/conversations/messages/between?user1=${user1}&user2=${user2}`,
+        };
+      },
+    }),
+
     //mark a conversation as read
     markConversationAsRead: builder.mutation({
       query: ({ conversationId, userId }) => {
@@ -38,5 +47,6 @@ const messaging = baseApi.injectEndpoints({
 export const {
   useSendMessageMutation,
   useGetUserConversationQuery,
+  useGetMessagesQuery,
   useMarkConversationAsReadMutation,
 } = messaging;

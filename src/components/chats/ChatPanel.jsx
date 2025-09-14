@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import ChatBoxHeader from './ChatBoxHeader';
 import ChatFooter from './ChatFooter';
 import ChatMessages from './ChatMessages';
 import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
+import { useGetMessagesQuery } from '../../redux/api/messaging/messagingApi';
+import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
+import { CiLock } from 'react-icons/ci';
 
 const ChatPanel = ({ selectedUserData }) => {
   //getting the uid from url
@@ -12,11 +15,84 @@ const ChatPanel = ({ selectedUserData }) => {
   const { activeConnections, myConnections } = useSelector(
     (state) => state.chat
   );
+  const { userProfile } = useSelector((state) => state.chat);
 
   //fetching the data of the user who was clicked to chat
   const { data: clickedUserData } = useUserInfoByUidQuery(uid, { skip: !uid });
 
   const clickedUser = clickedUserData?.user;
+
+  const { data, isLoading, isError } = useGetMessagesQuery(
+    {
+      user1: userProfile?.payload._id,
+      user2: selectedUserData?._id || clickedUser?._id,
+    },
+    { skip: !selectedUserData?._id && !clickedUser?._id }
+  );
+
+  let isConnected = myConnections?.some((connection) =>
+    connection?.myConnection?.uid.includes(selectedUserData?.uid)
+  );
+
+  const messages = data?.messages;
+
+  let messageContent;
+
+  if (isLoading) {
+    messageContent = <div>Loading...</div>;
+  }
+
+  if (!isLoading && isError) {
+    <div>
+      <h5>Something Went wrong!!</h5>
+    </div>;
+  }
+
+  if (!isLoading && !isError && messages.length === 0) {
+    messageContent = (
+      <div className=" mt-24 text-center">
+        <div>
+          <div className="avatar">
+            <div className="w-20 rounded-full">
+              {selectedUserData?.profilePicture ? (
+                <img src={selectedUserData?.profilePicture} />
+              ) : (
+                <DefaultProfilePIcture />
+              )}
+            </div>
+          </div>
+          <h5 className="text-xl font-semibold">{selectedUserData?.name}</h5>
+          <p className="text-sm">{selectedUserData?.email}</p>
+          {isConnected ? (
+            <p className="text-xs my-1">
+              You are connected with {selectedUserData?.name}
+            </p>
+          ) : (
+            <p className="text-xs my-1">
+              You are not connected with {selectedUserData?.name}
+            </p>
+          )}
+          <Link
+            className="btn  btn-md md:btn-sm rounded-md bg-blue-100 text-blue-500
+               hover:bg-blue-500 hover:text-white my-2"
+            to={`/profile/${selectedUserData?.uid}`}
+          >
+            View Profile
+          </Link>
+          <p className="mt-3 text-xs">
+            <CiLock className="inline text-xs" /> Messages and calls are
+            secured. Only people in this chat can read and listen to them
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isLoading && !isError && messages?.length > 0) {
+    messageContent = messages.map((message) => (
+      <ChatMessages key={message?._id} message={message} />
+    ));
+  }
 
   return (
     <div className="h-[var(--chat-height)]   flex flex-col">
@@ -27,10 +103,7 @@ const ChatPanel = ({ selectedUserData }) => {
         />
       </div>
       <div className="flex-1 overflow-y-auto bg-white p-4">
-        <ChatMessages
-          selectedUserData={selectedUserData || clickedUser}
-          myConnections={myConnections}
-        />
+        {messageContent}
       </div>
       <div className="h-20 bg-white  p-4">
         <ChatFooter selectedUserData={selectedUserData || clickedUser} />
