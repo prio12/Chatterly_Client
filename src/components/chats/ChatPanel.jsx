@@ -31,7 +31,9 @@ const ChatPanel = ({ selectedUserData }) => {
   );
 
   let isConnected = myConnections?.some((connection) =>
-    connection?.myConnection?.uid.includes(selectedUserData?.uid)
+    connection?.myConnection?.uid.includes(
+      selectedUserData?.uid || clickedUser?.uid
+    )
   );
 
   const messages = data?.messages;
@@ -48,34 +50,43 @@ const ChatPanel = ({ selectedUserData }) => {
     </div>;
   }
 
-  if (!isLoading && !isError && messages.length === 0) {
+  if (!isLoading && !isError && messages?.length === 0) {
     messageContent = (
       <div className=" mt-24 text-center">
         <div>
           <div className="avatar">
             <div className="w-20 rounded-full">
               {selectedUserData?.profilePicture ? (
-                <img src={selectedUserData?.profilePicture} />
+                <img
+                  src={
+                    selectedUserData?.profilePicture ||
+                    clickedUser?.profilePicture
+                  }
+                />
               ) : (
                 <DefaultProfilePIcture />
               )}
             </div>
           </div>
-          <h5 className="text-xl font-semibold">{selectedUserData?.name}</h5>
+          <h5 className="text-xl font-semibold">
+            {selectedUserData?.name || clickedUser?.name}
+          </h5>
           <p className="text-sm">{selectedUserData?.email}</p>
           {isConnected ? (
             <p className="text-xs my-1">
-              You are connected with {selectedUserData?.name}
+              You are connected with{' '}
+              {selectedUserData?.name || clickedUser?.name}
             </p>
           ) : (
             <p className="text-xs my-1">
-              You are not connected with {selectedUserData?.name}
+              You are not connected with{' '}
+              {selectedUserData?.name || clickedUser?.name}
             </p>
           )}
           <Link
             className="btn  btn-md md:btn-sm rounded-md bg-blue-100 text-blue-500
                hover:bg-blue-500 hover:text-white my-2"
-            to={`/profile/${selectedUserData?.uid}`}
+            to={`/profile/${selectedUserData?.uid || clickedUser?.uid}`}
           >
             View Profile
           </Link>
