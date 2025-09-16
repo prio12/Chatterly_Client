@@ -56,7 +56,6 @@ const Chats = () => {
     if (!socket) return;
 
     socket.on('conversationUpdated', (conversation) => {
-      console.log(conversation, 'from socket');
       setChatLists((prev) => {
         const filtered = prev.filter((c) => c._id !== conversation?._id);
         return [conversation, ...filtered];

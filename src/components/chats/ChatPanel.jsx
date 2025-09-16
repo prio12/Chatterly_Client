@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import { useGetMessagesQuery } from '../../redux/api/messaging/messagingApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { CiLock } from 'react-icons/ci';
+import { useContext, useEffect, useState } from 'react';
+import SocketContext from '../../context/SocketContext';
 
 const ChatPanel = ({ selectedUserData }) => {
   //getting the uid from url
@@ -16,6 +18,7 @@ const ChatPanel = ({ selectedUserData }) => {
     (state) => state.chat
   );
   const { userProfile } = useSelector((state) => state.chat);
+  const socket = useContext(SocketContext);
 
   //fetching the data of the user who was clicked to chat
   const { data: clickedUserData } = useUserInfoByUidQuery(uid, { skip: !uid });
@@ -27,8 +30,14 @@ const ChatPanel = ({ selectedUserData }) => {
       user1: userProfile?.payload._id,
       user2: selectedUserData?._id || clickedUser?._id,
     },
-    { skip: !selectedUserData?._id && !clickedUser?._id }
+    {
+      skip: !selectedUserData?._id && !clickedUser?._id,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    }
   );
+
+  console.log(clickedUser?._id, 'for small screen');
 
   let isConnected = myConnections?.some((connection) =>
     connection?.myConnection?.uid.includes(
@@ -36,7 +45,28 @@ const ChatPanel = ({ selectedUserData }) => {
     )
   );
 
-  const messages = data?.messages;
+  const [messages, setMessages] = useState([]);
+
+  // const messages = data?.messages;
+  useEffect(() => {
+    if (data?.messages?.length && messages.length === 0) {
+      setMessages(data.messages);
+    }
+  }, [data?.messages, messages?.length]);
+
+  useEffect(() => {
+    const handleNewMessage = (newMessage) => {
+      setMessages((prev) => [...prev, newMessage]);
+    };
+
+    socket.on('newMessage', handleNewMessage);
+
+    return () => {
+      socket.off('newMessage', handleNewMessage);
+    };
+  }, [socket, messages]);
+
+  console.log(messages, 'testing for sm screen');
 
   let messageContent;
 

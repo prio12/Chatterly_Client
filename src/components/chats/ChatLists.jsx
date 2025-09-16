@@ -1,15 +1,22 @@
 import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
-import { useMarkConversationAsReadMutation } from '../../redux/api/messaging/messagingApi';
+import {
+  useCreateEmptyConversationMutation,
+  useMarkConversationAsReadMutation,
+} from '../../redux/api/messaging/messagingApi';
 import { useNavigate } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import SocketContext from '../../context/SocketContext';
+import getOrCreateConversation from '../../utilities/conversation/conversationUtils';
 
 /* eslint-disable react/prop-types */
 const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
   //hooks
   const { userProfile } = useSelector((state) => state.chat);
   const [setMarkAsRead] = useMarkConversationAsReadMutation();
+  const [createConversation] = useCreateEmptyConversationMutation();
   const navigate = useNavigate();
+  const socket = useContext(SocketContext);
 
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -51,6 +58,12 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
   }
 
   const handleOpenConversation = async () => {
+    //passing necessary arguments to the getOrCreateConversation function
+    await getOrCreateConversation({
+      socket,
+      createConversation,
+      conversationId: conversation?._id,
+    });
     if (isSmall) {
       navigate(`/chats/${otherParticipant?.uid}`);
     } else {

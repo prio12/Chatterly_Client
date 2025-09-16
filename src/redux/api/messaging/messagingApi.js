@@ -41,6 +41,18 @@ const messaging = baseApi.injectEndpoints({
         };
       },
     }),
+
+    //create an empty conversation
+    createEmptyConversation: builder.mutation({
+      query: (participants) => {
+        console.log(participants, 'from messaging api');
+        return {
+          url: '/conversations/initiate/conversation',
+          method: 'POST',
+          body: { participants },
+        };
+      },
+    }),
   }),
 });
 
@@ -49,4 +61,5 @@ export const {
   useGetUserConversationQuery,
   useGetMessagesQuery,
   useMarkConversationAsReadMutation,
+  useCreateEmptyConversationMutation,
 } = messaging;
