@@ -37,8 +37,6 @@ const ChatPanel = ({ selectedUserData }) => {
     }
   );
 
-  console.log(clickedUser?._id, 'for small screen');
-
   let isConnected = myConnections?.some((connection) =>
     connection?.myConnection?.uid.includes(
       selectedUserData?.uid || clickedUser?.uid
@@ -56,6 +54,7 @@ const ChatPanel = ({ selectedUserData }) => {
 
   useEffect(() => {
     const handleNewMessage = (newMessage) => {
+      console.log(newMessage, 'new message receiving from socket.io');
       setMessages((prev) => [...prev, newMessage]);
     };
 
@@ -65,8 +64,6 @@ const ChatPanel = ({ selectedUserData }) => {
       socket.off('newMessage', handleNewMessage);
     };
   }, [socket, messages]);
-
-  console.log(messages, 'testing for sm screen');
 
   let messageContent;
 

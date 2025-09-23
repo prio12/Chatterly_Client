@@ -1,13 +1,23 @@
 import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { PiChecks } from 'react-icons/pi';
+import { LiaCheckDoubleSolid } from 'react-icons/lia';
 
 /* eslint-disable react/prop-types */
 const ChatMessages = ({ message }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const [seenStatus, setSeenStatus] = useState(false);
 
   const isMe = message?.sender?.uid === currentUser;
+
+  useEffect(() => {
+    const status = message?.seenBy.some((user) => user?.uid !== currentUser);
+    if (status) {
+      setSeenStatus(true);
+    }
+  }, [currentUser, message?.seenBy]);
 
   // Example status logic
   // const status = message?.seen ? 'seen' : 'delivered';
@@ -62,17 +72,14 @@ const ChatMessages = ({ message }) => {
               {timeAgo(message?.updatedAt)}
             </time>
           </div>
-          <div className="chat-bubble bg-blue-500 text-white relative">
-            {message?.text}
-            <div className="absolute right-1 bottom-[-18px] flex items-center gap-1 text-xs opacity-70">
-              <span>{message?.time || '12:46'}</span>
-              {/* {status === 'seen' ? (
-                <CheckCheck className="w-4 h-4 text-blue-500" />
-              ) : (
-                <Check className="w-4 h-4 text-gray-400" />
-              )} */}
+          {seenStatus && (
+            <div className="chat-bubble bg-blue-500 text-white relative flex items-end gap-5">
+              <p>{message?.text} </p>
+              <span>
+                <LiaCheckDoubleSolid className="text-cyan-200" />
+              </span>
             </div>
-          </div>
+          )}
         </div>
       )}
 

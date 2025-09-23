@@ -59,11 +59,11 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
 
   const handleOpenConversation = async () => {
     //passing necessary arguments to the getOrCreateConversation function
-    await getOrCreateConversation({
-      socket,
-      createConversation,
-      conversationId: conversation?._id,
-    });
+    // await getOrCreateConversation({
+    //   socket,
+    //   createConversation,
+    //   conversationId: conversation?._id,
+    // });
     if (isSmall) {
       navigate(`/chats/${otherParticipant?.uid}`);
     } else {
