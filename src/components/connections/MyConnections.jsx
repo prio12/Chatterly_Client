@@ -9,6 +9,8 @@ import {
 import toast from 'react-hot-toast';
 import { Link, useLocation, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import ChatModal from '../chats/ChatModal';
 
 /* eslint-disable react/prop-types */
 const MyConnections = ({ connection, currentUserData }) => {
@@ -19,6 +21,7 @@ const MyConnections = ({ connection, currentUserData }) => {
   const { pathname } = useLocation();
   const { uid } = useParams();
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const [isOpen, setIsOpen] = useState(false);
 
   //using rtk to get connection status between two users
   const { data, isLoading } = useGetConnectionStatusQuery(
@@ -96,12 +99,18 @@ const MyConnections = ({ connection, currentUserData }) => {
     }
   };
 
+  //handler to open and close floating chat panel
+  const chatHandler = () => {
+    setIsOpen(!isOpen);
+  };
+
   let buttons;
 
   if (pathname === '/connections' || uid === currentUser) {
     buttons = (
       <div className="flex items-center gap-5">
         <button
+          onClick={chatHandler}
           className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
          hover:text-white"
         >
@@ -156,6 +165,7 @@ const MyConnections = ({ connection, currentUserData }) => {
       buttons = (
         <div className="flex items-center gap-5">
           <button
+            onClick={chatHandler}
             className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
          hover:text-white"
           >
@@ -200,6 +210,7 @@ const MyConnections = ({ connection, currentUserData }) => {
         </Link>
         {buttons}
       </div>
+      {isOpen && <ChatModal chatHandler={chatHandler} />}
     </div>
   );
 };
