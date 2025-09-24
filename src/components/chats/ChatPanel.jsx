@@ -43,18 +43,26 @@ const ChatPanel = ({ selectedUserData }) => {
     )
   );
 
-  const [messages, setMessages] = useState([]);
+  console.log(data?.messages, 'checking messages if change');
 
-  // const messages = data?.messages;
+  const [messages, setMessages] = useState([]);
+  const [conversationId, setConversationId] = useState(null);
+
   useEffect(() => {
-    if (data?.messages?.length && messages.length === 0) {
-      setMessages(data.messages);
-    }
-  }, [data?.messages, messages?.length]);
+    setConversationId(data?.conversationId);
+  }, [data?.conversationId]);
+
+  useEffect(() => {
+    if (!conversationId) return;
+    socket.emit('joinedRoom', conversationId);
+  }, [conversationId, socket]);
+
+  useEffect(() => {
+    setMessages(data?.messages);
+  }, [data?.messages]);
 
   useEffect(() => {
     const handleNewMessage = (newMessage) => {
-      console.log(newMessage, 'new message receiving from socket.io');
       setMessages((prev) => [...prev, newMessage]);
     };
 
@@ -64,6 +72,8 @@ const ChatPanel = ({ selectedUserData }) => {
       socket.off('newMessage', handleNewMessage);
     };
   }, [socket, messages]);
+
+  console.log(clickedUser?.profilePicture, 'checking profile picture');
 
   let messageContent;
 
@@ -83,7 +93,8 @@ const ChatPanel = ({ selectedUserData }) => {
         <div>
           <div className="avatar">
             <div className="w-20 rounded-full">
-              {selectedUserData?.profilePicture ? (
+              {selectedUserData?.profilePicture ||
+              clickedUser?.profilePicture ? (
                 <img
                   src={
                     selectedUserData?.profilePicture ||
@@ -98,7 +109,7 @@ const ChatPanel = ({ selectedUserData }) => {
           <h5 className="text-xl font-semibold">
             {selectedUserData?.name || clickedUser?.name}
           </h5>
-          <p className="text-sm">{selectedUserData?.email}</p>
+          <p className="text-sm">{selectedUserData?.email} </p>
           {isConnected ? (
             <p className="text-xs my-1">
               You are connected with{' '}
