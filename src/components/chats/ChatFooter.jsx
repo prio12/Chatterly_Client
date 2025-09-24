@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { useSendMessageMutation } from '../../redux/api/messaging/messagingApi';
 import toast from 'react-hot-toast';
 
-const ChatFooter = ({ selectedUserData }) => {
+const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
   //hooks
   const { userProfile } = useSelector((state) => state.chat);
   const [text, setText] = useState('');
@@ -22,8 +22,11 @@ const ChatFooter = ({ selectedUserData }) => {
 
     //preparing message data to send to the server
     const messageData = {
-      participants: [selectedUserData?._id, userProfile?.payload?._id],
-      sender: userProfile?.payload?._id,
+      participants: [
+        selectedUserData?._id,
+        userProfile?.payload?._id || loggedInUserId,
+      ],
+      sender: userProfile?.payload?._id || loggedInUserId,
       senderUid: userProfile?.payload?.uid,
       receiverUid: selectedUserData?.uid,
       text,

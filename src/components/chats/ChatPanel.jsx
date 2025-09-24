@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Link, useParams } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
 import ChatBoxHeader from './ChatBoxHeader';
 import ChatFooter from './ChatFooter';
 import ChatMessages from './ChatMessages';
@@ -11,9 +11,12 @@ import { CiLock } from 'react-icons/ci';
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../../context/SocketContext';
 
-const ChatPanel = ({ selectedUserData }) => {
+const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   //getting the uid from url
   const { uid } = useParams();
+  const { pathname } = useLocation();
+  const isChatPage = pathname.startsWith('/chats');
+
   const { activeConnections, myConnections } = useSelector(
     (state) => state.chat
   );
@@ -27,7 +30,7 @@ const ChatPanel = ({ selectedUserData }) => {
 
   const { data, isLoading, isError } = useGetMessagesQuery(
     {
-      user1: userProfile?.payload._id,
+      user1: userProfile?.payload._id || loggedInUserId,
       user2: selectedUserData?._id || clickedUser?._id,
     },
     {
@@ -42,8 +45,6 @@ const ChatPanel = ({ selectedUserData }) => {
       selectedUserData?.uid || clickedUser?.uid
     )
   );
-
-  console.log(data?.messages, 'checking messages if change');
 
   const [messages, setMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
@@ -72,8 +73,6 @@ const ChatPanel = ({ selectedUserData }) => {
       socket.off('newMessage', handleNewMessage);
     };
   }, [socket, messages]);
-
-  console.log(clickedUser?.profilePicture, 'checking profile picture');
 
   let messageContent;
 
@@ -144,7 +143,11 @@ const ChatPanel = ({ selectedUserData }) => {
   }
 
   return (
-    <div className="h-[var(--chat-height)]   flex flex-col">
+    <div
+      className={`${
+        isChatPage ? 'h-[var(--chat-height)]' : 'h-3/4'
+      }   flex flex-col`}
+    >
       <div className="h-20 bg-white  p-4">
         <ChatBoxHeader
           selectedUserData={selectedUserData || clickedUser}
@@ -155,7 +158,10 @@ const ChatPanel = ({ selectedUserData }) => {
         {messageContent}
       </div>
       <div className="h-20 bg-white  p-4">
-        <ChatFooter selectedUserData={selectedUserData || clickedUser} />
+        <ChatFooter
+          selectedUserData={selectedUserData || clickedUser}
+          loggedInUserId={loggedInUserId}
+        />
       </div>
     </div>
   );

@@ -22,6 +22,7 @@ const MyConnections = ({ connection, currentUserData }) => {
   const { uid } = useParams();
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   //using rtk to get connection status between two users
   const { data, isLoading } = useGetConnectionStatusQuery(
@@ -100,7 +101,8 @@ const MyConnections = ({ connection, currentUserData }) => {
   };
 
   //handler to open and close floating chat panel
-  const chatHandler = () => {
+  const chatHandler = (selectedUser) => {
+    setSelectedUser(selectedUser);
     setIsOpen(!isOpen);
   };
 
@@ -110,7 +112,7 @@ const MyConnections = ({ connection, currentUserData }) => {
     buttons = (
       <div className="flex items-center gap-5">
         <button
-          onClick={chatHandler}
+          onClick={() => chatHandler(connection?.myConnection)}
           className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
          hover:text-white"
         >
@@ -165,7 +167,7 @@ const MyConnections = ({ connection, currentUserData }) => {
       buttons = (
         <div className="flex items-center gap-5">
           <button
-            onClick={chatHandler}
+            onClick={() => chatHandler(connection?.myConnection)}
             className="btn px-3 md:px-8  btn-md rounded bg-blue-100 text-blue-500 hover:bg-blue-200
          hover:text-white"
           >
@@ -210,7 +212,9 @@ const MyConnections = ({ connection, currentUserData }) => {
         </Link>
         {buttons}
       </div>
-      {isOpen && <ChatModal chatHandler={chatHandler} />}
+      {isOpen && (
+        <ChatModal selectedUser={selectedUser} chatHandler={chatHandler} />
+      )}
     </div>
   );
 };
