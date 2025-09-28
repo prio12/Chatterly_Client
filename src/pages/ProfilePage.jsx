@@ -6,7 +6,7 @@ import { FaRegCalendarAlt } from 'react-icons/fa';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 
 import { Link, useParams } from 'react-router';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../context/SocketContext';
 import { useSelector } from 'react-redux';
 import {
@@ -15,6 +15,8 @@ import {
 } from '../redux/api/connections/connectionsApi';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import toast from 'react-hot-toast';
+import FloatingChatButton from '../components/common/FloatingChatButton';
+import ChatModal from '../components/chats/ChatModal';
 
 const ProfilePage = () => {
   //hooks
@@ -37,6 +39,9 @@ const ProfilePage = () => {
   const { data, refetch } = useUserInfoByUidQuery(uid, {
     refetchOnMountOrArgChange: true,
   });
+
+  //state to maintain chatModal
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
   const user = data?.user;
 
@@ -72,6 +77,12 @@ const ProfilePage = () => {
       }
     });
   }, [socket, refetch]);
+
+  //handler to open and close floating chat panel
+  const chatHandler = () => {
+    console.log('clicked');
+    setIsChatModalOpen(!isChatModalOpen);
+  };
 
   let suggestedConnections;
 
@@ -111,6 +122,7 @@ const ProfilePage = () => {
               )}
             </div>
           </div>
+
           <button
             onClick={() => handleConnect(connection)}
             className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
@@ -189,6 +201,16 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+
+      {/* Modern Floating Message Icon - Only show when viewing someone else's profile */}
+      {currentUser?.user?._id !== user?._id && (
+        <FloatingChatButton user={user} chatHandler={chatHandler} />
+      )}
+
+      {/* chat modal  */}
+      {isChatModalOpen && (
+        <ChatModal selectedUser={user} chatHandler={chatHandler} />
+      )}
     </div>
   );
 };
