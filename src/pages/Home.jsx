@@ -6,30 +6,54 @@ import Stories from '../components/home/StoriesViewer';
 import PostCard from '../components/profile/PostCard';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../context/SocketContext';
 import { useFetchStoriesQuery } from '../redux/api/stories/storiesApi';
+import { useRef } from 'react';
 
 const Home = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
+  const [posts, setPosts] = useState([]);
+  const loaderRef = useRef(null);
+  const [page, setPage] = useState(1);
+  const limit = 5;
   const {
     data: postData,
     error,
     isLoading,
     isError,
+    isFetching,
     refetch,
-  } = useGetAllPostsQuery(null, {
-    refetchOnMountOrArgChange: true,
-  });
+  } = useGetAllPostsQuery(
+    { page, limit },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   //getting socket to listen event
   const socket = useContext(SocketContext);
 
   const user = data?.user;
 
-  const posts = postData?.result;
+  useEffect(() => {
+    if (postData?.result) {
+      setPosts((prev) => {
+        if (page === 1) {
+          // fresh load → reset posts
+          return postData.result;
+        } else {
+          // load more → append, but avoid duplicates
+          const newPosts = postData.result.filter(
+            (p) => !prev.some((old) => old._id === p._id)
+          );
+          return [...prev, ...newPosts];
+        }
+      });
+    }
+  }, [postData?.result, page]);
 
   useEffect(() => {
     socket.on('newPost', ({ success }) => {
@@ -50,6 +74,32 @@ const Home = () => {
       }
     });
   }, [socket, refetch]);
+
+  //observing loaderRef to implement infinite scroller
+  useEffect(() => {
+    if (!loaderRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        console.log('being triggered');
+        const first = entries[0];
+        if (first.isIntersecting && postData?.hasMore && !isFetching) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(loaderRef.current);
+
+    // 🔹 Manual check on mount: if loader already visible, trigger load
+    const rect = loaderRef.current.getBoundingClientRect();
+    if (rect.top < window.innerHeight && postData?.hasMore && !isFetching) {
+      setPage((prev) => prev + 1);
+    }
+
+    return () => observer.disconnect();
+  }, [isFetching, postData?.hasMore]);
 
   //use rtk query to get stories
   const { data: storiesData, isLoading: isStoryLoading } = useFetchStoriesQuery(
@@ -105,6 +155,14 @@ const Home = () => {
           />
           <CreatePost user={user} />
           {content}
+          <div
+            ref={loaderRef}
+            className="h-10 flex justify-center items-center"
+          >
+            {isFetching && (
+              <span className="text-gray-500">Loading more...</span>
+            )}
+          </div>
         </div>
       </div>
 

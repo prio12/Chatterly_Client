@@ -14,8 +14,8 @@ const postsApi = baseApi.injectEndpoints({
 
     //fetching all posts
     getAllPosts: builder.query({
-      query: () => ({
-        url: '/posts',
+      query: ({ page = 1, limit = 5 }) => ({
+        url: `/posts?page=${page}&limit=${limit}`,
       }),
       providesTags: ['posts'],
     }),
