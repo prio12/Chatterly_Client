@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { useGetMessagesQuery } from '../../redux/api/messaging/messagingApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { CiLock } from 'react-icons/ci';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import SocketContext from '../../context/SocketContext';
 
 const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
@@ -28,10 +28,16 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
   const clickedUser = clickedUserData?.user;
 
-  const { data, isLoading, isError } = useGetMessagesQuery(
+  const loaderRef = useRef(null);
+  const [page, setPage] = useState(1);
+  const limit = 7;
+
+  const { data, isLoading, isError, isFetching } = useGetMessagesQuery(
     {
       user1: userProfile?.payload._id || loggedInUserId,
       user2: selectedUserData?._id || clickedUser?._id,
+      page,
+      limit,
     },
     {
       skip: !selectedUserData?._id && !clickedUser?._id,
@@ -59,7 +65,13 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   }, [conversationId, socket]);
 
   useEffect(() => {
-    setMessages(data?.messages);
+    if (!data?.messages) return;
+    setMessages((prev) => {
+      // avoid duplicate messages when switching pages
+      const ids = new Set(prev.map((m) => m._id));
+      const newOnes = data.messages.filter((m) => !ids.has(m._id));
+      return [...prev, ...newOnes]; // prepend older messages
+    });
   }, [data?.messages]);
 
   useEffect(() => {
@@ -73,6 +85,28 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       socket.off('newMessage', handleNewMessage);
     };
   }, [socket, messages]);
+
+  //observing loaderRef to implement infinite scroller
+
+  useEffect(() => {
+    if (!loaderRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && data?.hasMore && !isFetching) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      {
+        threshold: 0,
+      }
+    );
+
+    observer.observe(loaderRef.current);
+
+    return () => observer.disconnect();
+  }, [data?.hasMore, isFetching]);
 
   let messageContent;
 
@@ -155,6 +189,14 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
         />
       </div>
       <div className="flex-1 overflow-y-auto bg-white p-4">
+        <div
+          ref={loaderRef}
+          className="h-10 flex justify-center bg-green-500 items-center"
+        >
+          {/* {isFetching && (
+              <span className="text-gray-500">Loading more...</span>
+            )} */}
+        </div>
         {messageContent}
       </div>
       <div className="h-20 bg-white  p-4">

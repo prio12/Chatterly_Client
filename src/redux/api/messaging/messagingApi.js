@@ -24,9 +24,9 @@ const messaging = baseApi.injectEndpoints({
 
     //get messages
     getMessages: builder.query({
-      query: ({ user1, user2 }) => {
+      query: ({ user1, user2, page = 1, limit = 7 }) => {
         return {
-          url: `/conversations/messages/between?user1=${user1}&user2=${user2}`,
+          url: `/conversations/messages/between?user1=${user1}&user2=${user2}&page=${page}&limit=${limit}`,
         };
       },
     }),

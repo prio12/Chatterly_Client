@@ -77,13 +77,16 @@ const Home = () => {
 
   //observing loaderRef to implement infinite scroller
   useEffect(() => {
-    if (!loaderRef.current) return;
+    if (!loaderRef.current) {
+      console.log('is not available');
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
-        console.log('being triggered');
         const first = entries[0];
         if (first.isIntersecting && postData?.hasMore && !isFetching) {
+          console.log('checking if its intersecting');
           setPage((prev) => prev + 1);
         }
       },
@@ -92,14 +95,8 @@ const Home = () => {
 
     observer.observe(loaderRef.current);
 
-    // 🔹 Manual check on mount: if loader already visible, trigger load
-    const rect = loaderRef.current.getBoundingClientRect();
-    if (rect.top < window.innerHeight && postData?.hasMore && !isFetching) {
-      setPage((prev) => prev + 1);
-    }
-
     return () => observer.disconnect();
-  }, [isFetching, postData?.hasMore]);
+  }, [isFetching, postData?.hasMore, posts.length, user]);
 
   //use rtk query to get stories
   const { data: storiesData, isLoading: isStoryLoading } = useFetchStoriesQuery(
