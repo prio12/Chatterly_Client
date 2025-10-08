@@ -2,23 +2,15 @@ import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
 import { useEffect, useRef } from 'react';
+import { LiaCheckDoubleSolid } from 'react-icons/lia';
 
 /* eslint-disable react/prop-types */
 const ChatMessages = ({ message }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
-  // const [seenStatus, setSeenStatus] = useState(false);
 
   const isMe = message?.sender?.uid === currentUser;
-
-  // useEffect(() => {
-  //   const status = message?.seenBy.some((user) => user?.uid !== currentUser);
-  //   if (status) {
-  //     setSeenStatus(true);
-  //   }
-  // }, [currentUser, message?.seenBy]);
-
-  // Example status logic
-  // const status = message?.seen ? 'seen' : 'delivered';
+  const seenStatus = message?.seenBy.some((user) => user?.uid !== currentUser);
+  console.log(seenStatus);
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
@@ -72,9 +64,11 @@ const ChatMessages = ({ message }) => {
           </div>
           <div className="chat-bubble bg-blue-500 text-white relative flex items-end gap-5">
             <p>{message?.text} </p>
-            {/* <span>
-              <LiaCheckDoubleSolid className="text-cyan-200" />
-            </span> */}
+            {seenStatus && (
+              <span>
+                <LiaCheckDoubleSolid className="text-cyan-200" />
+              </span>
+            )}
           </div>
         </div>
       )}
