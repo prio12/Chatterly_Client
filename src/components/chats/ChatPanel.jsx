@@ -56,7 +56,15 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   useEffect(() => {
     if (!conversationId) return;
     socket.emit('joinedRoom', conversationId);
-  }, [conversationId, socket]);
+
+    //emitting event to let server know that messages are read
+    socket.emit('messagesRead', {
+      conversationId,
+      userId: userProfile?.payload._id || loggedInUserId,
+    });
+
+    return () => socket.emit('leaveRoom', conversationId);
+  }, [conversationId, socket, loggedInUserId, userProfile?.payload._id]);
 
   useEffect(() => {
     setMessages(data?.messages);
@@ -73,6 +81,30 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       socket.off('newMessage', handleNewMessage);
     };
   }, [socket, messages]);
+
+  //listen to messagesReadUpdate event by socket.io and update messages's seenBy
+  useEffect(() => {
+    const handleMessagesReadUpdate = ({
+      conversationId: incomingConvoId,
+      userId,
+    }) => {
+      console.log('first step');
+
+      if (incomingConvoId === conversationId) {
+        console.log('second step');
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.seenBy.some((u) => u._id === userId)
+              ? msg
+              : { ...msg, seenBy: [...msg.seenBy, { _id: userId }] }
+          )
+        );
+      }
+    };
+
+    socket.on('messagesReadUpdate', handleMessagesReadUpdate);
+    return () => socket.off('messagesReadUpdate', handleMessagesReadUpdate);
+  }, [conversationId, socket]);
 
   let messageContent;
 

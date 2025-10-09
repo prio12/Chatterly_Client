@@ -10,7 +10,6 @@ const ChatMessages = ({ message }) => {
 
   const isMe = message?.sender?.uid === currentUser;
   const seenStatus = message?.seenBy.some((user) => user?.uid !== currentUser);
-  console.log(seenStatus);
 
   // Converts createdAt timestamp into a human-readable relative time format.
   const timeAgo = (timestamp) => {
