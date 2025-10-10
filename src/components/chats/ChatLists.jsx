@@ -117,7 +117,11 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
         </div>
         <div>
           <h3 className="text-sm font-bold">{otherParticipant?.name}</h3>
-          {isTyping ? <TypingIndicator /> : lastMessageContent}
+          {isTyping ? (
+            <TypingIndicator isChatPanel={false} />
+          ) : (
+            lastMessageContent
+          )}
         </div>
       </div>
     </div>

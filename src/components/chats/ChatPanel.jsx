@@ -10,6 +10,7 @@ import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { CiLock } from 'react-icons/ci';
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../../context/SocketContext';
+import TypingIndicator from './TypingIndicator';
 
 const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   //getting the uid from url
@@ -48,6 +49,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
   const [messages, setMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     setConversationId(data?.conversationId);
@@ -122,6 +124,33 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       );
     });
   }, [socket, conversationId, userProfile?.payload._id, loggedInUserId]);
+
+  selectedUserData?._id || clickedUser?._id;
+
+  useEffect(() => {
+    socket.on('userTyping', ({ userId }) => {
+      console.log('typing..');
+      const isTypingIndicatorReceiver =
+        (selectedUserData?._id || clickedUser?._id) === userId;
+
+      console.log('true or false?', isTypingIndicatorReceiver);
+      if (isTypingIndicatorReceiver) {
+        setIsTyping(true);
+      }
+    });
+    socket.on('userStopTyping', ({ userId }) => {
+      const isTypingIndicatorReceiver =
+        (selectedUserData?._id || clickedUser?._id) === userId;
+      if (isTypingIndicatorReceiver) {
+        setIsTyping(false);
+      }
+    });
+
+    return () => {
+      socket.off('userTyping');
+      socket.off('userStopTyping');
+    };
+  }, [socket, selectedUserData?._id, clickedUser?._id]);
 
   let messageContent;
 
@@ -205,6 +234,12 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       </div>
       <div className="flex-1 overflow-y-auto bg-white p-4">
         {messageContent}
+        {isTyping && (
+          <TypingIndicator
+            selectedUserData={selectedUserData || clickedUser}
+            isChatPanel={true}
+          />
+        )}
       </div>
       <div className="h-20 bg-white  p-4">
         <ChatFooter
