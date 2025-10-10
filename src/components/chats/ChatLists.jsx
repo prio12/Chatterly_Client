@@ -2,7 +2,9 @@ import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { useMarkConversationAsReadMutation } from '../../redux/api/messaging/messagingApi';
 import { useNavigate } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import SocketContext from '../../context/SocketContext';
+import TypingIndicator from './TypingIndicator';
 
 /* eslint-disable react/prop-types */
 const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
@@ -10,8 +12,10 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
   const { userProfile } = useSelector((state) => state.chat);
   const [setMarkAsRead] = useMarkConversationAsReadMutation();
   const navigate = useNavigate();
+  const socket = useContext(SocketContext);
 
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
 
   const otherParticipant = conversation?.participants.find(
     (participant) => participant?._id !== userProfile?.payload._id
@@ -70,6 +74,30 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
     }
   };
 
+  useEffect(() => {
+    socket.on('userTyping', ({ userId }) => {
+      const isInParticipants = conversation.participants.some(
+        (user) => user._id === userId
+      );
+      if (isInParticipants) {
+        setIsTyping(true);
+      }
+    });
+    socket.on('userStopTyping', ({ userId }) => {
+      const isInParticipants = conversation.participants.some(
+        (user) => user._id === userId
+      );
+      if (isInParticipants) {
+        setIsTyping(false);
+      }
+    });
+
+    return () => {
+      socket.off('userTyping');
+      socket.off('userStopTyping');
+    };
+  }, [socket, conversation.participants]);
+
   return (
     <div>
       <div
@@ -89,7 +117,7 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
         </div>
         <div>
           <h3 className="text-sm font-bold">{otherParticipant?.name}</h3>
-          {lastMessageContent}
+          {isTyping ? <TypingIndicator /> : lastMessageContent}
         </div>
       </div>
     </div>

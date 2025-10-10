@@ -1,20 +1,40 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { IoIosSend, IoMdAttach } from 'react-icons/io';
 import { MdEmojiEmotions } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { useSendMessageMutation } from '../../redux/api/messaging/messagingApi';
 import toast from 'react-hot-toast';
+import SocketContext from '../../context/SocketContext';
 
 const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
   //hooks
   const { userProfile } = useSelector((state) => state.chat);
   const [text, setText] = useState('');
   const [sendText] = useSendMessageMutation();
-  //needs : sender, receiver, text
+  const socket = useContext(SocketContext);
+
+  let typingTimeout = useRef(null);
 
   const handleOnChange = (e) => {
     setText(e.target.value);
+
+    if (!socket) return;
+
+    socket.emit('typing', {
+      receiver: selectedUserData,
+      sender: loggedInUserId,
+    });
+
+    if (typingTimeout.current) {
+      clearTimeout(typingTimeout.current);
+    }
+    typingTimeout.current = setTimeout(() => {
+      socket.emit('stopTyping', {
+        receiver: selectedUserData,
+        sender: loggedInUserId,
+      });
+    }, 2000);
   };
 
   const handleSubmit = async () => {

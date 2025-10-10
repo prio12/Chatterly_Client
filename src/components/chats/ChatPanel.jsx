@@ -209,7 +209,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       <div className="h-20 bg-white  p-4">
         <ChatFooter
           selectedUserData={selectedUserData || clickedUser}
-          loggedInUserId={loggedInUserId}
+          loggedInUserId={loggedInUserId || userProfile?.payload._id}
         />
       </div>
     </div>

@@ -8,8 +8,6 @@ import { LiaCheckDoubleSolid, LiaCheckSolid } from 'react-icons/lia';
 const ChatMessages = ({ message }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
-  console.log(message, 'logging from chat Messages');
-
   const isMe = message?.sender?.uid === currentUser;
   const seenStatus = message?.seenBy.some((user) => user?.uid !== currentUser);
 
