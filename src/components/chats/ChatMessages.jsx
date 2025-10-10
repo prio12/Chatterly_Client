@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
 import { useEffect, useRef } from 'react';
-import { LiaCheckDoubleSolid } from 'react-icons/lia';
+import { LiaCheckDoubleSolid, LiaCheckSolid } from 'react-icons/lia';
 
 /* eslint-disable react/prop-types */
 const ChatMessages = ({ message }) => {
@@ -67,11 +67,18 @@ const ChatMessages = ({ message }) => {
             <p>{message?.text}</p>
 
             {/* Sent */}
-            {!seenStatus && message?.status === 'sent' && <span>sent</span>}
+            {!seenStatus && message?.status === 'sent' && (
+              <span>
+                <LiaCheckSolid />
+              </span>
+            )}
 
             {/* Delivered */}
             {!seenStatus && message?.status === 'delivered' && (
-              <span>delivered</span>
+              <span>
+                {' '}
+                <LiaCheckDoubleSolid />
+              </span>
             )}
 
             {/* Seen */}
