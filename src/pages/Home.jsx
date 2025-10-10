@@ -78,7 +78,6 @@ const Home = () => {
   //observing loaderRef to implement infinite scroller
   useEffect(() => {
     if (!loaderRef.current) {
-      console.log('is not available');
       return;
     }
 

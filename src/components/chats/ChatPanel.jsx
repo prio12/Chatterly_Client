@@ -88,10 +88,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       conversationId: incomingConvoId,
       userId,
     }) => {
-      console.log('first step');
-
       if (incomingConvoId === conversationId) {
-        console.log('second step');
         setMessages((prev) =>
           prev.map((msg) =>
             msg.seenBy.some((u) => u._id === userId)
@@ -105,6 +102,26 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     socket.on('messagesReadUpdate', handleMessagesReadUpdate);
     return () => socket.off('messagesReadUpdate', handleMessagesReadUpdate);
   }, [conversationId, socket]);
+
+  useEffect(() => {
+    socket.on('messagesDeliveredUpdate', ({ userId, conversationIds }) => {
+      const myConversationIsExit = conversationIds.includes(conversationId);
+
+      if (
+        !myConversationIsExit ||
+        userId === userProfile?.payload._id ||
+        loggedInUserId
+      ) {
+        return;
+      }
+
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg?.status === 'sent' ? { ...msg, status: 'delivered' } : msg
+        )
+      );
+    });
+  }, [socket, conversationId, userProfile?.payload._id, loggedInUserId]);
 
   let messageContent;
 

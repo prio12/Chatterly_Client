@@ -8,6 +8,8 @@ import { LiaCheckDoubleSolid } from 'react-icons/lia';
 const ChatMessages = ({ message }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
+  console.log(message, 'logging from chat Messages');
+
   const isMe = message?.sender?.uid === currentUser;
   const seenStatus = message?.seenBy.some((user) => user?.uid !== currentUser);
 
@@ -62,7 +64,17 @@ const ChatMessages = ({ message }) => {
             </time>
           </div>
           <div className="chat-bubble bg-blue-500 text-white relative flex items-end gap-5">
-            <p>{message?.text} </p>
+            <p>{message?.text}</p>
+
+            {/* Sent */}
+            {!seenStatus && message?.status === 'sent' && <span>sent</span>}
+
+            {/* Delivered */}
+            {!seenStatus && message?.status === 'delivered' && (
+              <span>delivered</span>
+            )}
+
+            {/* Seen */}
             {seenStatus && (
               <span>
                 <LiaCheckDoubleSolid className="text-cyan-200" />
