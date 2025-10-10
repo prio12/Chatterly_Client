@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { useGetMessagesQuery } from '../../redux/api/messaging/messagingApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { CiLock } from 'react-icons/ci';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import SocketContext from '../../context/SocketContext';
 import TypingIndicator from './TypingIndicator';
 
@@ -50,10 +50,12 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   const [messages, setMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
+  const messageEndRef = useRef(null);
 
   useEffect(() => {
     setConversationId(data?.conversationId);
   }, [data?.conversationId]);
+  // 🔹 Ref for auto-scrolling to bottom
 
   useEffect(() => {
     if (!conversationId) return;
@@ -152,6 +154,10 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     };
   }, [socket, selectedUserData?._id, clickedUser?._id]);
 
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
+
   let messageContent;
 
   if (isLoading) {
@@ -234,12 +240,15 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       </div>
       <div className="flex-1 overflow-y-auto bg-white p-4">
         {messageContent}
-        {isTyping && (
-          <TypingIndicator
-            selectedUserData={selectedUserData || clickedUser}
-            isChatPanel={true}
-          />
-        )}
+        <div className="mt-5">
+          {isTyping && (
+            <TypingIndicator
+              selectedUserData={selectedUserData || clickedUser}
+              isChatPanel={true}
+            />
+          )}
+        </div>
+        <div ref={messageEndRef} />
       </div>
       <div className="h-20 bg-white  p-4">
         <ChatFooter

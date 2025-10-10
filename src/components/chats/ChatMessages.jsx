@@ -88,9 +88,6 @@ const ChatMessages = ({ message }) => {
           </div>
         </div>
       )}
-
-      {/* 🔹 Invisible div used for auto scroll */}
-      <div ref={messageEndRef} />
     </div>
   );
 };

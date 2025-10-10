@@ -27,7 +27,7 @@ const TypingIndicator = ({ selectedUserData, isChatPanel }) => {
 
   return (
     <div>
-      <div className="chat chat-start mt-5">
+      <div className="chat chat-start mt-2">
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
             {selectedUserData?.profilePicture ? (
