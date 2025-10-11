@@ -1,8 +1,9 @@
 import { CiSearch } from 'react-icons/ci';
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
+import { useGetAllUsersQuery } from '../redux/api/users/usersApi';
 
 // Helper: escape regex special chars
 function escapeRegex(str) {
@@ -12,6 +13,7 @@ function escapeRegex(str) {
 const SearchPage = () => {
   const [text, setText] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const page = 0;
   const limit = 0;
 
@@ -19,7 +21,13 @@ const SearchPage = () => {
     { page, limit },
     { refetchOnMountOrArgChange: true }
   );
-  const posts = postData?.result || [];
+
+  const { data: usersData, isLoading } = useGetAllUsersQuery(null, {
+    refetchOnMountOrArgChange: true,
+  });
+  const posts = useMemo(() => postData?.result || [], [postData]);
+
+  const users = useMemo(() => usersData?.response || [], [usersData]);
 
   // Debounced search state
   const [debouncedText, setDebouncedText] = useState(text);
@@ -39,15 +47,24 @@ const SearchPage = () => {
     }
 
     const regex = new RegExp(escapeRegex(trimmed), 'gi');
-    const results = posts.filter(
+    const foundPostsResults = posts.filter(
       (post) => post?.author?.name?.match(regex) || post?.content?.match(regex)
     );
+    if (foundPostsResults.length) {
+      setFilteredPosts(foundPostsResults);
+    }
 
-    setFilteredPosts(results);
-  }, [debouncedText, posts]);
+    const foundUsers = users.filter((user) => user?.name.match(regex));
+    if (foundUsers.length) {
+      setFilteredUsers(foundUsers);
+    }
+  }, [debouncedText, posts, users]);
+
+  console.log(filteredPosts, 'filteredPosts');
+  console.log(filteredUsers, 'filteredUsers');
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-5 bg-gray-100 max-h-screen">
       {/* Left Sidebar */}
       <div className="hidden md:block col-span-3 bg-white">
         <LeftSideBar />
@@ -78,8 +95,8 @@ const SearchPage = () => {
           </div>
 
           {/* Search Results */}
-          <div className="relative z-0 mt-5">
-            {filteredPosts.length > 0 ? (
+          <div className="relative z-0 mt-5 max-h-[600px] overflow-y-scroll no-scrollbar">
+            {/* {filteredPosts.length > 0 ? (
               filteredPosts.map((post) => (
                 <div
                   key={post._id}
@@ -91,7 +108,7 @@ const SearchPage = () => {
               ))
             ) : (
               <p className="text-gray-500">No results</p>
-            )}
+            )} */}
           </div>
         </div>
       </div>

@@ -111,7 +111,7 @@ const Header = () => {
   };
 
   return (
-    <div className="md:p-5 px-2  py-5 z-50 bg-white">
+    <div className="md:p-5 px-2  py-5 z-50 bg-white ">
       <div className="h-16 hidden relative md:flex lg:flex justify-between ">
         <div className="w-12">
           <Link to="/">
