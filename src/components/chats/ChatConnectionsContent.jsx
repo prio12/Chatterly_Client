@@ -10,6 +10,7 @@ const ChatConnectionsContent = ({
   activeConnections,
   handleInitiateChat,
   isSmall,
+  filteredFriendsList,
 }) => {
   if (chatLists?.length === 0 && myConnections?.length === 0) {
     return (
@@ -45,6 +46,7 @@ const ChatConnectionsContent = ({
           myConnections={myConnections}
           activeConnections={activeConnections}
           handleInitiateChat={handleInitiateChat}
+          filteredFriendsList={filteredFriendsList}
         />
       </div>
     );
@@ -56,6 +58,7 @@ const ChatConnectionsContent = ({
           myConnections={myConnections}
           activeConnections={activeConnections}
           handleInitiateChat={handleInitiateChat}
+          filteredFriendsList={filteredFriendsList}
         />
         <div
           className={`bg-slate-100 ${

@@ -9,7 +9,6 @@ const SearchPostsList = ({ post }) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
 
-  console.log(post, 'from search post list');
   return (
     <div className="mb-5">
       <Link to={`/posts/${post?._id}`}>

@@ -27,6 +27,7 @@ const Chats = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { activeConnections } = useSelector((state) => state.chat);
   const { data } = useUserInfoByUidQuery(currentUser);
+  const [filteredFriendsList, setFilteredFriendsList] = useState([]);
 
   //extract the currentlyLoggedIn user from db
   const currentlyLoggedInUserData = data?.user;
@@ -118,6 +119,13 @@ const Chats = () => {
     setSelectedUserData(userData);
   };
 
+  //handle SearchLists
+  const handleSearch = (filteredUsers) => {
+    if (filteredUsers?.length > 0) {
+      setFilteredFriendsList(filteredUsers);
+    }
+  };
+
   if (isSmall) {
     return (
       <div>
@@ -143,13 +151,19 @@ const Chats = () => {
             </span>
           </h3>
         </div>
-        <SearchBox />
+        {myConnections?.length > 0 && (
+          <SearchBox
+            myConnections={myConnections}
+            handleSearch={handleSearch}
+          />
+        )}
         <ChatConnectionsContent
           chatLists={chatLists}
           myConnections={myConnections}
           activeConnections={activeConnections}
           handleInitiateChat={handleInitiateChat}
           isSmall={isSmall}
+          filteredFriendsList={filteredFriendsList}
         />
         {/* left side Content ends here */}
       </div>

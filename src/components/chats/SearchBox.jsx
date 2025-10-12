@@ -1,4 +1,46 @@
-const SearchBox = () => {
+import { useEffect, useState } from 'react';
+
+/* eslint-disable react/prop-types */
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+const SearchBox = ({ myConnections, handleSearch }) => {
+  const [text, setText] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [debouncedText, setDebouncedText] = useState(text);
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedText(text), 400);
+    return () => clearTimeout(handler);
+  }, [text]);
+
+  // Filter logic
+  useEffect(() => {
+    const trimmed = debouncedText.trim();
+
+    // Reset if input is empty
+    if (trimmed.length === 0) {
+      setFilteredUsers([]);
+      return;
+    }
+
+    const regex = new RegExp(escapeRegex(trimmed), 'gi');
+
+    const foundUsers = myConnections.filter((user) =>
+      user?.myConnection?.name?.match(regex)
+    );
+
+    setFilteredUsers(foundUsers);
+  }, [debouncedText, myConnections]);
+
+  useEffect(() => {
+    if (filteredUsers.length < 1) {
+      return;
+    }
+    handleSearch(filteredUsers);
+  }, [filteredUsers, handleSearch]);
+
   return (
     <div className="w-full relative">
       <svg
@@ -15,6 +57,8 @@ const SearchBox = () => {
         <line x1="21" y1="21" x2="16.65" y2="16.65" />
       </svg>
       <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
         type="search"
         placeholder="Search For Friends"
         className="w-full pl-10 pr-4 py-2 rounded-lg focus:outline-none resize-none"

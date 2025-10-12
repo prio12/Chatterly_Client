@@ -8,6 +8,7 @@ const FriendsList = ({
   activeConnections = [],
   handleInitiateChat,
   isSmall,
+  filteredFriendsList = [],
 }) => {
   const [margedConnections, setMargedConnections] = useState([]);
   const navigate = useNavigate();
@@ -37,23 +38,31 @@ const FriendsList = ({
     }
   };
 
+  useEffect(() => {
+    if (filteredFriendsList?.length > 0) {
+      setMargedConnections(filteredFriendsList);
+    }
+  }, [filteredFriendsList]);
+
   return (
     <div className="w-full flex items-center gap-5 overflow-x-auto my-5 p-5 no-scrollbar bg-slate-100 ">
       {margedConnections?.map((conn) => (
-        <div
-          key={conn?.myConnection?._id}
-          className={`avatar  cursor-pointer ${
-            conn?.status === 'active' ? 'online' : 'offline'
-          }`}
-          onClick={() => handleOpenChat(conn?.myConnection)}
-        >
-          <div className="w-12 rounded-full">
-            {conn?.myConnection?.profilePicture ? (
-              <img src={conn?.myConnection?.profilePicture} />
-            ) : (
-              <DefaultProfilePIcture />
-            )}
+        <div key={conn?.myConnection?._id}>
+          <div
+            className={`avatar  cursor-pointer ${
+              conn?.status === 'active' ? 'online' : 'offline'
+            }`}
+            onClick={() => handleOpenChat(conn?.myConnection)}
+          >
+            <div className="w-12 rounded-full">
+              {conn?.myConnection?.profilePicture ? (
+                <img src={conn?.myConnection?.profilePicture} />
+              ) : (
+                <DefaultProfilePIcture />
+              )}
+            </div>
           </div>
+          <p className="text-xs">{conn?.myConnection?.name}</p>
         </div>
       ))}
     </div>
