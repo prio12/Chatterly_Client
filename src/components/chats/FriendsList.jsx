@@ -25,10 +25,17 @@ const FriendsList = ({
       ),
     ];
 
-    if (margedConn?.length) {
+    if (filteredFriendsList?.length === 0 && margedConn?.length > 0) {
       setMargedConnections(margedConn);
+    } else {
+      setMargedConnections(filteredFriendsList);
     }
-  }, [activeConnections, myConnections]);
+  }, [
+    activeConnections,
+    myConnections,
+    filteredFriendsList?.length,
+    filteredFriendsList,
+  ]);
 
   const handleOpenChat = (user) => {
     if (isSmall) {
@@ -37,12 +44,6 @@ const FriendsList = ({
       handleInitiateChat(user);
     }
   };
-
-  useEffect(() => {
-    if (filteredFriendsList?.length > 0) {
-      setMargedConnections(filteredFriendsList);
-    }
-  }, [filteredFriendsList]);
 
   return (
     <div className="w-full flex items-center gap-5 overflow-x-auto my-5 p-5 no-scrollbar bg-slate-100 ">

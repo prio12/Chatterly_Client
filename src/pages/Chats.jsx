@@ -121,9 +121,11 @@ const Chats = () => {
 
   //handle SearchLists
   const handleSearch = (filteredUsers) => {
-    if (filteredUsers?.length > 0) {
-      setFilteredFriendsList(filteredUsers);
+    // console.log(filteredUsers.length, 'checking filteredUsers length');
+    if (filteredUsers?.length === 0) {
+      setFilteredFriendsList([]);
     }
+    setFilteredFriendsList(filteredUsers);
   };
 
   if (isSmall) {

@@ -35,9 +35,6 @@ const SearchBox = ({ myConnections, handleSearch }) => {
   }, [debouncedText, myConnections]);
 
   useEffect(() => {
-    if (filteredUsers.length < 1) {
-      return;
-    }
     handleSearch(filteredUsers);
   }, [filteredUsers, handleSearch]);
 
