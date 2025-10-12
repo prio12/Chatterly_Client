@@ -35,6 +35,7 @@ const FriendsList = ({
     myConnections,
     filteredFriendsList?.length,
     filteredFriendsList,
+    isSmall,
   ]);
 
   const handleOpenChat = (user) => {

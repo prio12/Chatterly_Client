@@ -136,6 +136,8 @@ const Chats = () => {
           myConnections={myConnections}
           activeConnections={activeConnections}
           isSmall={isSmall}
+          handleSearch={handleSearch}
+          filteredFriendsList={filteredFriendsList}
         />
       </div>
     );
