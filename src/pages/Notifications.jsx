@@ -12,6 +12,7 @@ import { MdDelete } from 'react-icons/md';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
 import { FaCommentAlt, FaUserFriends } from 'react-icons/fa';
+import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 
 const Notifications = () => {
   //hooks
@@ -22,6 +23,14 @@ const Notifications = () => {
     isError,
   } = useGetUserSpecificNotificationsQuery({
     _id: id,
+  });
+
+  const {
+    data: suggestedConnectionsData,
+    isLoading: suggestedCOnnectionsDataIsLoading,
+  } = useFetchConnectionSuggestionsQuery(id, {
+    refetchOnMountOrArgChange: true,
+    skip: !id,
   });
 
   const [deleteNotification] = useHandleDeleteMutation();
@@ -183,7 +192,10 @@ const Notifications = () => {
 
       {/* Right Sidebar */}
       <div className="hidden md:block col-span-2 bg-white">
-        <RightSideBar />
+        <RightSideBar
+          suggestedCOnnectionsDataIsLoading={suggestedCOnnectionsDataIsLoading}
+          suggestedConnectionsData={suggestedConnectionsData}
+        />
       </div>
     </div>
   );

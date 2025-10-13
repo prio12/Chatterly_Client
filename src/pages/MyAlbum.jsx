@@ -4,11 +4,20 @@ import RightSideBar from '../components/common/RightSideBar';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import Media from '../components/profile/Media';
 import { FaImages } from 'react-icons/fa';
+import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 
 const MyAlbum = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { data, isLoading } = useUserInfoByUidQuery(currentUser);
   const user = data?.user;
+
+  const {
+    data: suggestedConnectionsData,
+    isLoading: suggestedCOnnectionsDataIsLoading,
+  } = useFetchConnectionSuggestionsQuery(user?._id, {
+    refetchOnMountOrArgChange: true,
+    skip: !user?._id,
+  });
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
@@ -49,7 +58,10 @@ const MyAlbum = () => {
 
       {/* Right Sidebar */}
       <div className="hidden md:block col-span-2 bg-white">
-        <RightSideBar />
+        <RightSideBar
+          suggestedConnectionsData={suggestedConnectionsData}
+          suggestedCOnnectionsDataIsLoading={suggestedCOnnectionsDataIsLoading}
+        />
       </div>
     </div>
   );

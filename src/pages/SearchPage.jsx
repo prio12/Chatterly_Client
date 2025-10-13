@@ -158,11 +158,6 @@ const SearchPage = () => {
           </div>
         </div>
       </div>
-
-      {/* Right Sidebar */}
-      <div className="hidden md:block col-span-2 bg-white">
-        <RightSideBar />
-      </div>
     </div>
   );
 };
