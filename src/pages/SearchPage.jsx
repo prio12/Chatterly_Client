@@ -1,6 +1,5 @@
 import { CiSearch } from 'react-icons/ci';
 import LeftSideBar from '../components/common/LeftSideBar';
-import RightSideBar from '../components/common/RightSideBar';
 import { useEffect, useMemo, useState } from 'react';
 import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
 import { useGetAllUsersQuery } from '../redux/api/users/usersApi';

@@ -19,8 +19,6 @@ const RightSideBar = ({
   const suggestedConnections =
     suggestedConnectionsData?.suggestedConnections || [];
 
-  console.log(suggestedConnections, 'in rightside bar');
-
   let content;
 
   if (suggestedCOnnectionsDataIsLoading) {
