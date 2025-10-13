@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../context/SocketContext';
 import { useFetchStoriesQuery } from '../redux/api/stories/storiesApi';
 import { useRef } from 'react';
+import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 
 const Home = () => {
   //hooks
@@ -108,6 +109,14 @@ const Home = () => {
 
   const stories = storiesData?.activeStories;
 
+  const {
+    data: suggestedConnectionsData,
+    isLoading: suggestedCOnnectionsDataIsLoading,
+  } = useFetchConnectionSuggestionsQuery(user?._id, {
+    refetchOnMountOrArgChange: true,
+    skip: !user?._id,
+  });
+
   let content;
 
   if (!user) {
@@ -164,7 +173,10 @@ const Home = () => {
 
       {/* Right Sidebar */}
       <div className="hidden md:block col-span-2 bg-white">
-        <RightSideBar />
+        <RightSideBar
+          suggestedConnectionsData={suggestedConnectionsData}
+          suggestedCOnnectionsDataIsLoading={suggestedCOnnectionsDataIsLoading}
+        />
       </div>
     </div>
   );
