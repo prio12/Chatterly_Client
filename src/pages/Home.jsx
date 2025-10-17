@@ -67,12 +67,16 @@ const Home = () => {
   }, [socket, refetch]);
 
   useEffect(() => {
-    socket.on('postInteraction', ({ success }) => {
-      if (success) {
-        setTimeout(() => {
-          refetch();
-        }, 1000);
+    socket.on('postInteraction', ({ success, updatedPost, isDeleted }) => {
+      if (!success) return;
+
+      if (!isDeleted) {
+        return setPosts((prev) =>
+          prev?.map((p) => (p?._id === updatedPost?._id ? updatedPost : p))
+        );
       }
+
+      setPosts((prev) => prev?.filter((p) => p?._id !== updatedPost?._id));
     });
   }, [socket, refetch]);
 
