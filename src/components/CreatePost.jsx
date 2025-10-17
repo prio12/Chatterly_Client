@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { IoVideocamOffOutline } from 'react-icons/io5';
-import { MdEventAvailable, MdOutlineInsertPhoto } from 'react-icons/md';
+import { MdOutlineInsertPhoto } from 'react-icons/md';
 import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 import ContentUploadModal from '../utilities/ContentUploadModal ';
 import LoadingButton from '../utilities/btn/LoadingButton';
 import VideoUploadModal from '../utilities/VideoUploadModal';
 import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
 import toast from 'react-hot-toast';
+import { FcIdea } from 'react-icons/fc';
 
 const CreatePost = ({ user }) => {
   //hooks
@@ -43,6 +44,7 @@ const CreatePost = ({ user }) => {
       toast.error(error);
     }
   };
+
   return (
     <div className="my-5 border p-5 ">
       {/* Avatar and Textarea */}
@@ -61,7 +63,7 @@ const CreatePost = ({ user }) => {
             value={text}
             onChange={handleOnChange}
             className="w-full p-2 resize-none overflow-y-scroll no-scrollbar focus:outline-none"
-            placeholder="Share your thoughts..."
+            placeholder="What’s on your mind?"
             style={{
               scrollbarWidth: 'none', // For Firefox
               msOverflowStyle: 'none', // For IE and Edge
@@ -102,8 +104,8 @@ const CreatePost = ({ user }) => {
             user={user}
           />
           <div className="flex btn btn-sm items-center gap-2">
-            <MdEventAvailable className="text-green-600 font-bold" />
-            <p className="text-sm font-semibold">Event</p>
+            <FcIdea className="font-bold text-xl" />
+            <p className="text-sm font-semibold">Thought</p>
           </div>
         </div>
         <div className="my-5 md:my-0 ">

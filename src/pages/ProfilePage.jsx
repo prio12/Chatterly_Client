@@ -80,7 +80,6 @@ const ProfilePage = () => {
 
   //handler to open and close floating chat panel
   const chatHandler = () => {
-    console.log('clicked');
     setIsChatModalOpen(!isChatModalOpen);
   };
 

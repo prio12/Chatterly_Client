@@ -82,11 +82,6 @@ const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
         let post = {
           author: user?._id,
           content: caption,
-          // Apply transformation only for cover photo
-          // video: result.secure_url.replace(
-          //   '/upload/',
-          //   '/upload/w_1000,h_500,c_pad,b_auto/'
-          // ),
           video: result.secure_url,
         };
 
@@ -137,7 +132,7 @@ const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
             // value={text}
             onChange={handleCaptionOnChange}
             className="w-full p-2 resize-none overflow-y-scroll no-scrollbar focus:outline-none"
-            placeholder="Share your thoughts..."
+            placeholder="Add caption..."
             style={{
               scrollbarWidth: 'none', // For Firefox
               msOverflowStyle: 'none', // For IE and Edge

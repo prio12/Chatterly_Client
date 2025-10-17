@@ -134,7 +134,7 @@ const ContentUploadModal = ({ isOpen, setIsOpen, user, type }) => {
               // value={text}
               onChange={handleCaptionOnChange}
               className="w-full p-2 resize-none overflow-y-scroll no-scrollbar focus:outline-none"
-              placeholder="Share your thoughts..."
+              placeholder="Add caption..."
               style={{
                 scrollbarWidth: 'none', // For Firefox
                 msOverflowStyle: 'none', // For IE and Edge
