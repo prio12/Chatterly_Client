@@ -17,6 +17,7 @@ const CreatePost = ({ user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isThoughtMode, setIsThoughtMode] = useState(false);
 
   const handleOnChange = (e) => {
     setText(e.target.value);
@@ -26,6 +27,7 @@ const CreatePost = ({ user }) => {
   const post = {
     author: user?._id,
     content: text,
+    thoughtMode: isThoughtMode,
   };
   const handleSubmit = async () => {
     if (!text) {
@@ -62,8 +64,12 @@ const CreatePost = ({ user }) => {
           <textarea
             value={text}
             onChange={handleOnChange}
-            className="w-full p-2 resize-none overflow-y-scroll no-scrollbar focus:outline-none"
-            placeholder="What’s on your mind?"
+            className={`w-full p-2 resize-none overflow-y-scroll no-scrollbar focus:outline-none ${
+              isThoughtMode ? 'bg-[#fff8e7]' : 'bg-white'
+            }`}
+            placeholder={`${
+              !isThoughtMode ? 'What’s on your mind?' : 'Drop your thought..'
+            }`}
             style={{
               scrollbarWidth: 'none', // For Firefox
               msOverflowStyle: 'none', // For IE and Edge
@@ -79,7 +85,9 @@ const CreatePost = ({ user }) => {
             onClick={() => {
               setIsOpen(true);
             }}
-            className="flex btn btn-sm items-center gap-2"
+            className={`flex btn btn-sm items-center gap-2 ${
+              isThoughtMode ? 'hidden' : 'block'
+            }`}
           >
             <MdOutlineInsertPhoto className="text-green-600 font-bold" />
             <p className="text-sm font-semibold">Photo</p>
@@ -93,7 +101,9 @@ const CreatePost = ({ user }) => {
           {/* <UploadImageModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
           <div
             onClick={() => setIsModalOpen(true)}
-            className="flex btn btn-sm items-center gap-2"
+            className={`flex btn btn-sm items-center gap-2 ${
+              isThoughtMode ? 'hidden' : 'block'
+            }`}
           >
             <IoVideocamOffOutline className="text-green-600 font-bold" />
             <p className="text-sm font-semibold">Video</p>
@@ -103,7 +113,10 @@ const CreatePost = ({ user }) => {
             setIsModalOpen={setIsModalOpen}
             user={user}
           />
-          <div className="flex btn btn-sm items-center gap-2">
+          <div
+            className="flex btn btn-sm items-center gap-2"
+            onClick={() => setIsThoughtMode(!isThoughtMode)}
+          >
             <FcIdea className="font-bold text-xl" />
             <p className="text-sm font-semibold">Thought</p>
           </div>

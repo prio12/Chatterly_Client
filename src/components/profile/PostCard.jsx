@@ -21,7 +21,17 @@ import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 const PostCard = ({ post }) => {
   const [handleLikeUnlike] = useHandleLikeUnlikeMutation();
   //post object destructuring
-  const { content, img, author, createdAt, likes, _id, video, comments } = post;
+  const {
+    content,
+    img,
+    author,
+    createdAt,
+    likes,
+    _id,
+    video,
+    comments,
+    thoughtMode,
+  } = post;
 
   //hooks
 
@@ -101,16 +111,83 @@ const PostCard = ({ post }) => {
     );
   }
 
+  if (thoughtMode) {
+    return (
+      <div className="my-5 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-indigo-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+        {/* Decorative top accent */}
+        <div className="h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+
+        <div className="p-5">
+          {/* Header section */}
+          <div className="flex items-center gap-4 mb-4">
+            {author?.profilePicture ? (
+              <Link to={`/profile/${author.uid}`}>
+                <div className="avatar cursor-pointer">
+                  <div className="w-12 rounded-full ring ring-indigo-200 ring-offset-2">
+                    <img src={author.profilePicture} />
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <Link to={`/profile/${author.uid}`}>
+                <div className="avatar">
+                  <div className="w-12 rounded-full ring ring-indigo-200 ring-offset-2">
+                    <DefaultProfilePIcture />
+                  </div>
+                </div>
+              </Link>
+            )}
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <Link to={`/profile/${author.uid}`}>
+                  <h5 className="font-bold text-gray-900">{author?.name}</h5>
+                </Link>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                  Thought
+                </span>
+              </div>
+              <span className="text-xs text-gray-500">
+                {timeAgo(createdAt)}
+              </span>
+            </div>
+          </div>
+
+          {/* Content section */}
+          <div className="bg-white bg-opacity-50 rounded-md p-4 my-4 border-l-4 border-indigo-500">
+            <p className="italic text-gray-700 text-[15px] leading-relaxed">
+              {content.split('\n').map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
+          </div>
+
+          {/* Footer info */}
+          <div className="flex items-center justify-between text-xs text-gray-500 pt-2">
+            <span className="inline-flex items-center gap-1">
+              💭 Personal thought
+            </span>
+            <span>No likes or comments</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`${PostDetailsPage ? 'my-0' : 'my-5'} bg-white border p-5 `}
+      className={`${
+        PostDetailsPage ? 'my-0' : 'my-5'
+      } bg-white border p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300`}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between border-b border-gray-100 p-5">
         <div className="flex items-center gap-5">
           {author?.profilePicture ? (
             <Link to={`/profile/${author.uid}`}>
-              <div className="avatar cursor-pointer">
-                <div className=" w-10 rounded-full ">
+              <div className="avatar cursor-pointer ">
+                <div className=" w-11 rounded-full ring ring-gray-200 ring-offset-1">
                   <img src={author.profilePicture} />
                 </div>
               </div>
@@ -118,7 +195,7 @@ const PostCard = ({ post }) => {
           ) : (
             <Link to={`/profile/${author.uid}`}>
               <div className="avatar">
-                <div className=" w-10 rounded-full">
+                <div className=" w-11 rounded-full ring ring-gray-200 ring-offset-1">
                   <DefaultProfilePIcture />
                 </div>
               </div>
@@ -126,7 +203,7 @@ const PostCard = ({ post }) => {
           )}
           <div>
             <Link to={`/profile/${author.uid}`}>
-              <h5 className="font-bold">{author?.name}</h5>
+              <h5 className="font-semibold">{author?.name}</h5>
             </Link>
             <span className="text-xs">{timeAgo(createdAt)}</span>
           </div>
@@ -145,7 +222,7 @@ const PostCard = ({ post }) => {
           id={_id}
         />
       </div>
-      <div>
+      <div className="px-5 py-4">
         <div>
           {content && (
             <p className="my-5">
@@ -158,21 +235,25 @@ const PostCard = ({ post }) => {
             </p>
           )}
           {img && (
-            <img
-              src={img}
-              alt="cover photo"
-              className="rounded-md w-full my-5"
-            />
+            <div className="rounded-lg overflow-hidden bg-gray-100 my-4">
+              <img
+                src={img}
+                alt="cover photo"
+                className="w-full h-auto object-cover"
+              />
+            </div>
           )}
           {video && (
-            <video
-              ref={videoRef}
-              src={video}
-              controls
-              autoPlay
-              loop
-              className="rounded-md w-full max-h-[500px] object-cover"
-            />
+            <div className="rounded-lg overflow-hidden bg-gray-100 my-4">
+              <video
+                ref={videoRef}
+                src={video}
+                controls
+                autoPlay
+                loop
+                className="w-full max-h-[500px] object-cover"
+              />
+            </div>
           )}
         </div>
       </div>
@@ -205,11 +286,13 @@ const PostCard = ({ post }) => {
         </p>
       )}
 
-      <CommentInputField
-        post={post}
-        user={data?.user}
-        userId={data?.user?._id}
-      />
+      <div className="px-5 py-4 border-t border-gray-100">
+        <CommentInputField
+          post={post}
+          user={data?.user}
+          userId={data?.user?._id}
+        />
+      </div>
       {comments.length > 0 && (
         <div className="max-h-64 overflow-y-scroll no-scrollbar">
           {comments.length > 0 &&
