@@ -14,6 +14,7 @@ import Chats from '../pages/Chats';
 import ChatPanel from '../components/chats/ChatPanel';
 import SearchPage from '../pages/SearchPage';
 import LikedPosts from '../pages/LikedPosts';
+import Settings from '../pages/Settings';
 
 const AppRoutes = () => {
   return (
@@ -35,6 +36,7 @@ const AppRoutes = () => {
         <Route path="/posts/:id" element={<PostDetails />}></Route>
         <Route path="/chats" element={<Chats />}></Route>
         <Route path="/search" element={<SearchPage />}></Route>
+        <Route path="/settings" element={<Settings />}></Route>
         <Route path="/chats/:uid" element={<ChatPanel />}></Route>
         <Route path="/likedPosts" element={<LikedPosts />}></Route>
       </Route>

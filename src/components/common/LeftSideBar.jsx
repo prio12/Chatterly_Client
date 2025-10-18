@@ -108,7 +108,14 @@ const LeftSideBar = () => {
           )}
         </NavLink>
 
-        <div className="grid grid-cols-[auto,_1fr] gap-2 items-center">
+        <NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            `grid grid-cols-[auto,_1fr] gap-2 items-center ${
+              isActive && 'text-blue-600'
+            }`
+          }
+        >
           <div className="cursor-pointer flex justify-center hover:text-blue-500 hover:bg-gray-100 p-2 rounded-md transition-all">
             <CiSettings />
           </div>
@@ -117,7 +124,7 @@ const LeftSideBar = () => {
               Settings
             </span>
           )}
-        </div>
+        </NavLink>
       </div>
     </div>
   );

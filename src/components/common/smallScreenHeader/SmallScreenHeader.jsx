@@ -130,13 +130,16 @@ const SmallScreenHeader = ({
                 <MdOutlineOndemandVideo className="text-xl" />
                 <span>Videos</span>
               </NavLink>
-              <div
+              <NavLink
+                to="/settings"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center space-x-2"
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 ${isActive && 'text-blue-500'}`
+                }
               >
                 <CiSettings className="text-xl" />
                 <span>Settings</span>
-              </div>
+              </NavLink>
             </div>
 
             {/* Close Icon with Enhanced Styling and Animations */}
