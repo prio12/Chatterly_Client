@@ -4,9 +4,20 @@ import { useSelector } from 'react-redux';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import UpdateNameModal from '../components/profile/modals/UpdateNameModal';
 import { useState } from 'react';
+import auth from '../firebase/firebase.cofig';
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 export default function Settings() {
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const [currentPass, setCurrentPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [confirmedPass, setConfirmedPass] = useState('');
+  const [error, setError] = useState('');
 
   const { data, isLoading } = useUserInfoByUidQuery(currentUser, {
     refetchOnMountOrArgChange: true,
@@ -17,6 +28,38 @@ export default function Settings() {
   const user = data?.user;
 
   const fullName = user?.name.split(' ');
+
+  const handleChangeUserPassword = async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      return setError('User not found!!');
+    }
+    const newPassword = newPass.trim();
+    const confirmedPassword = confirmedPass.trim();
+
+    if (newPassword.length === 0 && confirmedPassword.length === 0) {
+      return setError('Password cannot be empty or contain only spaces.');
+    }
+
+    if (newPassword !== confirmedPassword) {
+      return setError(
+        'The new password and confirmation password do not match.'
+      );
+    }
+
+    try {
+      const credential = EmailAuthProvider.credential(user.email, currentPass);
+      await reauthenticateWithCredential(user, credential);
+      await updatePassword(user, newPass);
+      toast.success('Password Changed Successfully!!');
+      setCurrentPass('');
+      setNewPass('');
+      setConfirmedPass('');
+      setError('');
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -119,10 +162,11 @@ export default function Settings() {
                   Current Password
                 </label>
                 <input
+                  onChange={(e) => setCurrentPass(e.target.value)}
+                  value={currentPass}
                   type="password"
                   placeholder="Enter your current password"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  disabled
                 />
               </div>
 
@@ -132,10 +176,11 @@ export default function Settings() {
                   New Password
                 </label>
                 <input
+                  onChange={(e) => setNewPass(e.target.value)}
+                  value={newPass}
                   type="password"
                   placeholder="Enter your new password"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  disabled
                 />
               </div>
 
@@ -145,22 +190,27 @@ export default function Settings() {
                   Confirm Password
                 </label>
                 <input
+                  onChange={(e) => setConfirmedPass(e.target.value)}
+                  value={confirmedPass}
                   type="password"
                   placeholder="Confirm your new password"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  disabled
                 />
                 <p className="text-xs text-gray-500 mt-2">
-                  Must be at least 8 characters
+                  Must be at least 6 characters
                 </p>
               </div>
 
               {/* Divider */}
               <div className="border-t border-gray-200"></div>
 
+              {error && <p className="text-red-500 text-sm my-3">{error}</p>}
               {/* Update Button */}
               <div className="flex gap-3">
-                <button className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors">
+                <button
+                  onClick={handleChangeUserPassword}
+                  className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors"
+                >
                   Update Password
                 </button>
               </div>
