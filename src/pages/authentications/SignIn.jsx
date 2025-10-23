@@ -3,14 +3,21 @@ import Animation from '../../components/Animation';
 import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { signInUserWithEmail } from '../../redux/features/loggedInUser/userSlice';
+import {
+  createUserWithGoogle,
+  signInUserWithEmail,
+} from '../../redux/features/loggedInUser/userSlice';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useGenerateJwtMutation } from '../../redux/api/users/usersApi';
+import {
+  useAddNewUserMutation,
+  useGenerateJwtMutation,
+} from '../../redux/api/users/usersApi';
 
 const SignIn = () => {
   //hooks
   const [generateJwt] = useGenerateJwtMutation();
+  const [addNewUser] = useAddNewUserMutation();
 
   const {
     register,
@@ -61,6 +68,75 @@ const SignIn = () => {
       setError(error.message);
     }
   };
+
+  const googleSubmitHandler = async () => {
+    try {
+      const payload = await dispatch(createUserWithGoogle()).unwrap();
+      if (payload) {
+        //gathering data of user to save in db
+        const userInfo = {
+          name: payload.currentUser.displayName,
+          email: payload.currentUser.email,
+          uid: payload.currentUser.uid,
+        };
+
+        //ei obdi all ok
+        try {
+          const response = await generateJwt(payload).unwrap();
+          if (response.success && response.token) {
+            localStorage.setItem('token', response.token);
+          }
+        } catch (error) {
+          console.log(error);
+          setError(error.message);
+        }
+
+        try {
+          const response = await addNewUser(userInfo);
+          if (response?.error?.status === 409) {
+            toast.success('Welcome Back! 🎉', {
+              duration: 5000, // Toast stays visible for 5 seconds
+              style: {
+                border: '1px solid #4caf50',
+                padding: '16px',
+                color: '#4caf50',
+              },
+              iconTheme: {
+                primary: '#4caf50',
+                secondary: '#fff',
+              },
+            });
+
+            setTimeout(() => {
+              navigate('/');
+            }, 1000);
+          } else {
+            toast.success('Account created successfully! 🎉', {
+              duration: 5000, // Toast stays visible for 5 seconds
+              style: {
+                border: '1px solid #4caf50',
+                padding: '16px',
+                color: '#4caf50',
+              },
+              iconTheme: {
+                primary: '#4caf50',
+                secondary: '#fff',
+              },
+            });
+
+            setTimeout(() => {
+              navigate('/');
+            }, 1000);
+          }
+        } catch (error) {
+          console.log(error);
+          setError(error.message);
+        }
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   return (
     <div className="flex flex-col md:flex-row h-screen">
       {/* Left Div */}
@@ -68,7 +144,10 @@ const SignIn = () => {
         <h2 className="text-2xl font-semibold">Get Started Now</h2>
         <p>Enter your credential to access your account</p>
         <div className="my-5">
-          <button className="text-center flex items-center gap-2 p-3 shadow-md">
+          <button
+            onClick={googleSubmitHandler}
+            className="text-center flex items-center gap-2 p-3 shadow-md"
+          >
             <span>
               <FcGoogle />
             </span>{' '}

@@ -43,7 +43,6 @@ const SignUp = () => {
 
       if (payload.currentUser) {
         //gathering data of user to save in db
-        console.log(payload);
         const userInfo = {
           name: `${data.fname} ${data.lname}`,
           email: data.email,
@@ -102,24 +101,58 @@ const SignUp = () => {
           email: payload.currentUser.email,
           uid: payload.currentUser.uid,
         };
-        const response = await addNewUser(userInfo);
-        if (response) {
-          toast.success('Account created successfully! 🎉', {
-            duration: 5000, // Toast stays visible for 5 seconds
-            style: {
-              border: '1px solid #4caf50',
-              padding: '16px',
-              color: '#4caf50',
-            },
-            iconTheme: {
-              primary: '#4caf50',
-              secondary: '#fff',
-            },
-          });
 
-          setTimeout(() => {
-            navigate('/');
-          }, 1000);
+        //ei obdi all ok
+        try {
+          const response = await generateJwt(payload).unwrap();
+          if (response.success && response.token) {
+            localStorage.setItem('token', response.token);
+          }
+        } catch (error) {
+          console.log(error);
+          setError(error.message);
+        }
+
+        try {
+          const response = await addNewUser(userInfo);
+          if (response?.error?.status === 409) {
+            toast.success('Welcome Back! 🎉', {
+              duration: 5000, // Toast stays visible for 5 seconds
+              style: {
+                border: '1px solid #4caf50',
+                padding: '16px',
+                color: '#4caf50',
+              },
+              iconTheme: {
+                primary: '#4caf50',
+                secondary: '#fff',
+              },
+            });
+
+            setTimeout(() => {
+              navigate('/');
+            }, 1000);
+          } else {
+            toast.success('Account created successfully! 🎉', {
+              duration: 5000, // Toast stays visible for 5 seconds
+              style: {
+                border: '1px solid #4caf50',
+                padding: '16px',
+                color: '#4caf50',
+              },
+              iconTheme: {
+                primary: '#4caf50',
+                secondary: '#fff',
+              },
+            });
+
+            setTimeout(() => {
+              navigate('/');
+            }, 1000);
+          }
+        } catch (error) {
+          console.log(error);
+          setError(error.message);
         }
       }
     } catch (error) {

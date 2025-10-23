@@ -61,7 +61,10 @@ const AvatarDropDownContent = ({ user }) => {
       >
         View Profile
       </Link>
-      <Link className="flex items-center gap-2 hover:text-blue-600 my-3">
+      <Link
+        to="/settings"
+        className="flex items-center gap-2 hover:text-blue-600 my-3"
+      >
         <CiSettings className="text-xl" />
         <p className="text-sm leading-none">Settings</p>
       </Link>
