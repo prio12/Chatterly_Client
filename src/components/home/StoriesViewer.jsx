@@ -6,6 +6,7 @@ import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import StoriesModal from '../profile/modals/StoriesModal';
 import { formatDistanceToNow } from 'date-fns';
 import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
+import { Link } from 'react-router';
 
 const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   //hooks
@@ -86,20 +87,25 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   if (activeStories?.length === 0) {
     content = myConnections?.length
       ? myConnections?.map((connection) => (
-          <div key={connection?._id} className="flex-shrink-0 cursor-pointer">
-            <div className="avatar">
-              <div className=" w-12 md:w-[70px] rounded-full ">
-                {connection?.myConnection?.profilePicture ? (
-                  <img src={connection?.myConnection?.profilePicture} />
-                ) : (
-                  <DefaultProfilePIcture />
-                )}
+          <Link
+            to={`/profile/${connection?.myConnection?.uid}`}
+            key={connection?._id}
+          >
+            <div className="flex-shrink-0 cursor-pointer">
+              <div className="avatar">
+                <div className=" w-12 md:w-[70px] rounded-full ">
+                  {connection?.myConnection?.profilePicture ? (
+                    <img src={connection?.myConnection?.profilePicture} />
+                  ) : (
+                    <DefaultProfilePIcture />
+                  )}
+                </div>
               </div>
+              <p className="text-sm font-semibold mt-2">
+                {connection?.myConnection?.name}
+              </p>
             </div>
-            <p className="text-sm font-semibold mt-2">
-              {connection?.myConnection?.name}
-            </p>
-          </div>
+          </Link>
         ))
       : '';
   } else {
