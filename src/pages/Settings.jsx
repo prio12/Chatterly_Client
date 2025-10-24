@@ -13,11 +13,15 @@ import {
 import toast from 'react-hot-toast';
 
 export default function Settings() {
-  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { currentUser, isGoogleSignIn } = useSelector(
+    (state) => state.loggedInUser
+  );
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [confirmedPass, setConfirmedPass] = useState('');
   const [error, setError] = useState('');
+
+  console.log(isGoogleSignIn, 'checking if the user logged in with google?');
 
   const { data, isLoading } = useUserInfoByUidQuery(currentUser, {
     refetchOnMountOrArgChange: true,
@@ -167,6 +171,7 @@ export default function Settings() {
                   type="password"
                   placeholder="Enter your current password"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  disabled={user?.isGoogleSignIn}
                 />
               </div>
 
@@ -181,6 +186,7 @@ export default function Settings() {
                   type="password"
                   placeholder="Enter your new password"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  disabled={user?.isGoogleSignIn}
                 />
               </div>
 
@@ -195,6 +201,7 @@ export default function Settings() {
                   type="password"
                   placeholder="Confirm your new password"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  disabled={user?.isGoogleSignIn}
                 />
                 <p className="text-xs text-gray-500 mt-2">
                   Must be at least 6 characters
@@ -208,12 +215,24 @@ export default function Settings() {
               {/* Update Button */}
               <div className="flex gap-3">
                 <button
+                  disabled={user?.isGoogleSignIn}
                   onClick={handleChangeUserPassword}
-                  className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors"
+                  className={`px-6 py-2 font-medium rounded-lg transition-colors 
+    ${
+      user?.isGoogleSignIn
+        ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+        : 'bg-red-500 hover:bg-red-600 text-white'
+    }`}
                 >
                   Update Password
                 </button>
               </div>
+              {user?.isGoogleSignIn && (
+                <p className="text-gray-600 text-center text-sm">
+                  You signed in using Google. Password change is not available
+                  for social logins.
+                </p>
+              )}
             </div>
           </div>
         </div>

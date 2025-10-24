@@ -100,6 +100,7 @@ const SignUp = () => {
           name: payload.currentUser.displayName,
           email: payload.currentUser.email,
           uid: payload.currentUser.uid,
+          isGoogleSignIn: true,
         };
 
         //ei obdi all ok
