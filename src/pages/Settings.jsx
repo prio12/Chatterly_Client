@@ -13,15 +13,11 @@ import {
 import toast from 'react-hot-toast';
 
 export default function Settings() {
-  const { currentUser, isGoogleSignIn } = useSelector(
-    (state) => state.loggedInUser
-  );
+  const { currentUser } = useSelector((state) => state.loggedInUser);
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [confirmedPass, setConfirmedPass] = useState('');
   const [error, setError] = useState('');
-
-  console.log(isGoogleSignIn, 'checking if the user logged in with google?');
 
   const { data, isLoading } = useUserInfoByUidQuery(currentUser, {
     refetchOnMountOrArgChange: true,
