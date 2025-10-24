@@ -11,6 +11,7 @@ import SocketContext from '../context/SocketContext';
 import { useFetchStoriesQuery } from '../redux/api/stories/storiesApi';
 import { useRef } from 'react';
 import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
+import PostFeedToggle from '../components/home/PostFeedToggle';
 
 const Home = () => {
   //hooks
@@ -163,6 +164,9 @@ const Home = () => {
             isStoryLoading={isStoryLoading}
           />
           <CreatePost user={user} />
+          {/* here the toggle button */}
+          <PostFeedToggle />
+
           {content}
           <div
             ref={loaderRef}
