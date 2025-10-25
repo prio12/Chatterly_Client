@@ -115,7 +115,7 @@ const GuidelinesPage = () => {
               Community Guidelines
             </h1>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Together, let's make Chatterly a place for meaningful
+              Together, let us make Chatterly a place for meaningful
               conversations and positive vibes
             </p>
           </div>

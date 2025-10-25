@@ -174,7 +174,7 @@ const Home = () => {
     );
   } else if (posts.length === 0) {
     content = (
-      <div className="flex items-center justify-center  bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+      <div className="flex items-center justify-center  bg-gradient-to-br from-slate-50 to-slate-100 p-4  ">
         <div className="text-center max-w-md">
           {/* Icon Container */}
           <div className="relative inline-flex items-center justify-center mb-6">
@@ -202,17 +202,16 @@ const Home = () => {
               const el = createPostRef.current;
               if (!el) return;
 
-              // First scroll into view smoothly
-              el.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center', // or 'start'
-              });
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-              // Then focus AFTER a slight delay
-              setTimeout(() => {
+              const onScroll = () => {
                 const input = el.querySelector('textarea, input');
                 input?.focus();
-              }, 400); // enough time for smooth scroll to finish
+                window.removeEventListener('scrollend', onScroll);
+              };
+
+              // Modern browsers: listen to "scrollend" (Chrome 116+, Safari 17+)
+              window.addEventListener('scrollend', onScroll);
             }}
             className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
           >
@@ -247,12 +246,12 @@ const Home = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
       {/* Left Sidebar */}
-      <div className="hidden md:block col-span-3 bg-white">
+      <div className="hidden md:block col-span-3 bg-white dark:bg-slate-900 dark:text-white">
         <LeftSideBar />
       </div>
 
       {/* Middle Section */}
-      <div className="col-span-1 md:col-span-7 bg-white flex justify-center md:py-2 md:px-5 ">
+      <div className="col-span-1 md:col-span-7 bg-white flex justify-center md:py-2 md:px-5 dark:bg-slate-900 dark:text-white">
         <div className="w-full max-w-5xl md:px-5 px-0 py-2">
           <Stories
             user={user}
@@ -275,7 +274,7 @@ const Home = () => {
       </div>
 
       {/* Right Sidebar */}
-      <div className="hidden md:block col-span-2 bg-white">
+      <div className="hidden md:block col-span-2 bg-white dark:bg-slate-900 dark:text-white">
         <RightSideBar
           suggestedConnectionsData={suggestedConnectionsData}
           suggestedCOnnectionsDataIsLoading={suggestedCOnnectionsDataIsLoading}

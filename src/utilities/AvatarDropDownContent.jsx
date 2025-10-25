@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
 import { signOut } from 'firebase/auth';
 import { BsQuestionOctagon } from 'react-icons/bs';
-import { CiLight, CiSettings } from 'react-icons/ci';
+import { CiSettings } from 'react-icons/ci';
 import { ImSwitch } from 'react-icons/im';
 import { IoBookOutline } from 'react-icons/io5';
-import { MdDarkMode } from 'react-icons/md';
 import { Link } from 'react-router';
 import auth from '../firebase/firebase.cofig';
 import { useDispatch, useSelector } from 'react-redux';
@@ -89,17 +88,6 @@ const AvatarDropDownContent = ({ user }) => {
       >
         <ImSwitch className="text-lg" />
         <p className="text-sm leading-none">Sign Out</p>
-      </div>
-
-      <div className="divider my-2"></div>
-      <div className="flex items-center justify-between">
-        <p className="text-sm">Mode</p>
-        <div className="tooltip hover:tooltip-open" data-tip="Light Mode">
-          <CiLight className="text-lg cursor-pointer" />
-        </div>
-        <div className="tooltip hover:tooltip-open" data-tip="Dark Mode">
-          <MdDarkMode className="text-lg cursor-pointer" />
-        </div>
       </div>
     </div>
   );
