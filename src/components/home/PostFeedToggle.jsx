@@ -1,18 +1,16 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
 
-const PostFeedToggle = () => {
-  const [activeTab, setActiveTab] = useState('friends');
-
+const PostFeedToggle = ({ activeTab, setActiveTab }) => {
   return (
     <div className="w-full my-5  bg-white border p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
       {/* Tab Switcher */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1 flex gap-1">
         <button
-          onClick={() => setActiveTab('friends')}
+          onClick={() => setActiveTab('myFeed')}
           className={`flex-1 py-2.5 px-4 rounded-md font-medium transition-all duration-200 ${
-            activeTab === 'friends'
-              ? 'bg-blue-600 text-white shadow-sm'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+            activeTab === 'myFeed'
+              ? 'bg-blue-500 text-white shadow-sm'
+              : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
           }`}
         >
           <span className="flex items-center justify-center gap-2">
@@ -29,7 +27,7 @@ const PostFeedToggle = () => {
                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
               />
             </svg>
-            Friends
+            My Feed
           </span>
         </button>
 
@@ -37,8 +35,8 @@ const PostFeedToggle = () => {
           onClick={() => setActiveTab('community')}
           className={`flex-1 py-2.5 px-4 rounded-md font-medium transition-all duration-200 ${
             activeTab === 'community'
-              ? 'bg-blue-600 text-white shadow-sm'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+              ? 'bg-blue-500 text-white shadow-sm'
+              : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
           }`}
         >
           <span className="flex items-center justify-center gap-2">
@@ -65,7 +63,7 @@ const PostFeedToggle = () => {
         <p className="text-sm text-gray-600">
           Currently viewing:{' '}
           <span className="font-semibold text-gray-900">
-            {activeTab === 'friends' ? 'Friends Posts' : 'Community Posts'}
+            {activeTab === 'myFeed' ? 'My Feed' : 'Community Posts'}
           </span>
         </p>
       </div>

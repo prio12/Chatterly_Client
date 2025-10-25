@@ -1,5 +1,6 @@
+/* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { IoVideocamOffOutline } from 'react-icons/io5';
 import { MdOutlineInsertPhoto } from 'react-icons/md';
 import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
@@ -10,7 +11,7 @@ import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
 import toast from 'react-hot-toast';
 import { FcIdea } from 'react-icons/fc';
 
-const CreatePost = ({ user }) => {
+const CreatePost = forwardRef(({ user }, ref) => {
   //hooks
   const [text, setText] = useState('');
   const [createPost] = useCreateAPostMutation();
@@ -48,7 +49,7 @@ const CreatePost = ({ user }) => {
   };
 
   return (
-    <div className="my-5 border p-5 ">
+    <div className="my-5 border p-5 " ref={ref}>
       {/* Avatar and Textarea */}
       <div className="flex items-center gap-3">
         <div className="avatar mt-[-24px]">
@@ -137,6 +138,6 @@ const CreatePost = ({ user }) => {
       </div>
     </div>
   );
-};
+});
 
 export default CreatePost;
