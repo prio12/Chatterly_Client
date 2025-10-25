@@ -72,7 +72,10 @@ const AvatarDropDownContent = ({ user }) => {
         <IoBookOutline className="text-lg" />
         <p className="text-sm leading-none">Guide</p>
       </Link>
-      <Link className="flex items-center hover:text-blue-600 gap-2 my-3">
+      <Link
+        to="faq"
+        className="flex items-center hover:text-blue-600 gap-2 my-3"
+      >
         <BsQuestionOctagon className="text-lg" />
         <p className="text-sm leading-none">F&A</p>
       </Link>
