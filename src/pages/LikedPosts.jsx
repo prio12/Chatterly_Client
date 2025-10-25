@@ -25,8 +25,6 @@ const LikedPosts = () => {
 
   const likedPosts = user?.likedPosts;
 
-  console.log(likedPosts, 'likedPosts');
-
   let content;
 
   if (likedPosts?.length === 0) {

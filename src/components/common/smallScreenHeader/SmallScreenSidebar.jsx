@@ -1,17 +1,35 @@
+import { useEffect, useRef } from 'react';
 import { CiViewTimeline } from 'react-icons/ci';
 import { FaHeart } from 'react-icons/fa6';
 import { IoMdClose } from 'react-icons/io';
 import { IoPeopleOutline } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 
 const SmallScreenDropdown = () => {
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const drawerRef = useRef(null);
+  const location = useLocation();
+
+  const closeDrawer = () => {
+    if (drawerRef.current) {
+      drawerRef.current.checked = false;
+    }
+  };
+
+  useEffect(() => {
+    closeDrawer();
+  }, [location?.pathname]);
 
   return (
     <div className="drawer">
-      <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+      <input
+        id="my-drawer"
+        type="checkbox"
+        className="drawer-toggle"
+        ref={drawerRef}
+      />
       <div className="drawer-content">{/* Page content here */}</div>
 
       <div className="drawer-side">
