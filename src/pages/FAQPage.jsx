@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BiHelpCircle, BiSearch, BiChevronDown } from 'react-icons/bi';
+import { Link } from 'react-router';
 
 const FAQPage = () => {
   const faqs = [
@@ -187,9 +188,12 @@ const FAQPage = () => {
           </div>
           <p className="text-slate-600 text-lg">
             Check out our{' '}
-            <span className="font-semibold text-blue-600 cursor-pointer hover:text-blue-700">
-              Guidelines
-            </span>{' '}
+            <Link to="/guidelines">
+              {' '}
+              <span className="font-semibold text-blue-600 cursor-pointer hover:text-blue-700">
+                Guidelines
+              </span>{' '}
+            </Link>
             page for more detailed information
           </p>
         </div>
