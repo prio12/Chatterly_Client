@@ -14,6 +14,7 @@ const ChatMessages = ({ message }) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedMessage, setEditedMessage] = useState('');
+  const [isDeleteDropdownOpen, setIsDeleteDropdownOpen] = useState(false);
 
   const [editMessage] = useEditMessageMutation();
 
@@ -52,6 +53,20 @@ const ChatMessages = ({ message }) => {
     } catch (error) {
       toast.error(error.message);
     }
+  };
+
+  const handleDeleteForMe = () => {
+    // Add your delete for me logic here
+    console.log('Delete for me:', message);
+    setIsDeleteDropdownOpen(false);
+    setIsOptionsOpen(false);
+  };
+
+  const handleDeleteForEveryone = () => {
+    // Add your delete for everyone logic here
+    console.log('Delete for everyone:', message);
+    setIsDeleteDropdownOpen(false);
+    setIsOptionsOpen(false);
   };
 
   return (
@@ -136,7 +151,6 @@ const ChatMessages = ({ message }) => {
             </div>
             {isOptionsOpen && (
               <div className="absolute top-1/2 -translate-y-1/2 -left-20 flex items-center gap-2 z-10">
-                {/* CHANGED: Added onClick to open edit modal */}
                 <button
                   onClick={() => {
                     setIsEditModalOpen(true);
@@ -146,16 +160,41 @@ const ChatMessages = ({ message }) => {
                 >
                   <MdModeEditOutline className="text-blue-500 text-xl" />
                 </button>
-                <button className="p-1 hover:scale-125 transition-transform">
-                  <MdDelete className="text-red-500 text-xl" />
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() =>
+                      setIsDeleteDropdownOpen(!isDeleteDropdownOpen)
+                    }
+                    className="p-1 hover:scale-125 transition-transform OwnMessage"
+                  >
+                    <MdDelete className="text-red-500 text-xl" />
+                  </button>
+
+                  {/* Delete Options Dropdown */}
+                  {isDeleteDropdownOpen && (
+                    <div className="absolute right-0 top-8 bg-white rounded-lg shadow-lg border border-gray-200 py-1 w-48 z-20">
+                      <button
+                        onClick={handleDeleteForMe}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-gray-700 text-sm"
+                      >
+                        Delete for me
+                      </button>
+                      <button
+                        onClick={handleDeleteForEveryone}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-red-600 text-sm"
+                      >
+                        Delete for everyone
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
         </div>
       )}
 
-      {/* ADDED: Edit Message Modal */}
+      {/* Edit Message Modal */}
       {isEditModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-md mx-4 animate-fadeIn">
