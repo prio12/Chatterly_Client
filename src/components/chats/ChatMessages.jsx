@@ -5,6 +5,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
 import { LiaCheckDoubleSolid, LiaCheckSolid } from 'react-icons/lia';
 import { MdDelete, MdModeEditOutline, MdClose } from 'react-icons/md';
+import { useEditMessageMutation } from '../../redux/api/messaging/messagingApi';
+import toast from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
 const ChatMessages = ({ message }) => {
@@ -12,6 +14,8 @@ const ChatMessages = ({ message }) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedMessage, setEditedMessage] = useState('');
+
+  const [editMessage] = useEditMessageMutation();
 
   const isMe = message?.sender?.uid === currentUser;
   const seenStatus = message?.seenBy.some((user) => user?.uid !== currentUser);
@@ -28,12 +32,25 @@ const ChatMessages = ({ message }) => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [message]);
 
-  const handleEditMessage = (message) => {
+  const handleEditMessage = async (message) => {
     if (message?.sender?.uid !== currentUser) return;
 
     const trimmedEditedMessage = editedMessage.trim();
     if (trimmedEditedMessage === message?.text) {
       return setIsEditModalOpen(false);
+    }
+
+    try {
+      const response = await editMessage({
+        message,
+        editedMessage: trimmedEditedMessage,
+      }).unwrap();
+
+      if (response?.success) {
+        setIsEditModalOpen(false);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 

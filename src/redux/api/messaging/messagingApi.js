@@ -41,6 +41,17 @@ const messaging = baseApi.injectEndpoints({
         };
       },
     }),
+
+    //edit a message
+    editMessage: builder.mutation({
+      query: ({ message, editedMessage }) => {
+        return {
+          url: '/conversations/message/edit',
+          method: 'PATCH',
+          body: { message, editedMessage },
+        };
+      },
+    }),
   }),
 });
 
@@ -49,4 +60,5 @@ export const {
   useGetUserConversationQuery,
   useGetMessagesQuery,
   useMarkConversationAsReadMutation,
+  useEditMessageMutation,
 } = messaging;
