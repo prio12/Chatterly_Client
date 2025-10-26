@@ -74,6 +74,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     setMessages(data?.messages);
   }, [data?.messages]);
 
+  //listen to the event newMessage by socket.io and update the Ui
   useEffect(() => {
     const handleNewMessage = (newMessage) => {
       setMessages((prev) => [...prev, newMessage]);
@@ -85,6 +86,19 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       socket.off('newMessage', handleNewMessage);
     };
   }, [socket, messages]);
+
+  //listen to the editedEvent by socket.io and update the ui
+  useEffect(() => {
+    if (!socket) return;
+    const updateMessageUi = ({ updatedMessage }) => {
+      setMessages((prev) =>
+        prev.map((m) => (m._id === updatedMessage._id ? updatedMessage : m))
+      );
+    };
+
+    socket.on('messageEdited', updateMessageUi);
+    return () => socket.off('messageEdited', updateMessageUi);
+  }, [socket]);
 
   //listen to messagesReadUpdate event by socket.io and update messages's seenBy
   useEffect(() => {
