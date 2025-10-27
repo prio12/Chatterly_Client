@@ -98,24 +98,32 @@ const ChatMessages = ({ message }) => {
               {timeAgo(message?.updatedAt)}
             </time>
           </div>
-          <div className="relative group">
-            <div
-              onClick={() => setIsOptionsOpen(!isOptionsOpen)}
-              className="chat-bubble bg-gray-200 text-black cursor-pointer hover:bg-gray-300 transition-colors"
-            >
-              <p>{message?.text}</p>
+          {message?.isDeletedForEveryone ? (
+            <div className="bg-slate-200 p-5 rounded-lg">
+              <p className="text-sm text-slate-600 italic">
+                This message was removed
+              </p>
             </div>
-            {isOptionsOpen && (
-              <div className="absolute top-1/2 -translate-y-1/2 -right-10 flex items-center gap-2 z-10">
-                <button
-                  onClick={() => handleDeleteSingleMessage('deleteForMe')}
-                  className="p-1 hover:scale-125 transition-transform"
-                >
-                  <MdDelete className="text-red-500 text-xl" />
-                </button>
+          ) : (
+            <div className="relative group">
+              <div
+                onClick={() => setIsOptionsOpen(!isOptionsOpen)}
+                className="chat-bubble bg-gray-200 text-black cursor-pointer hover:bg-gray-300 transition-colors"
+              >
+                <p>{message?.text}</p>
               </div>
-            )}
-          </div>
+              {isOptionsOpen && (
+                <div className="absolute top-full mt-2 left-0 flex items-center gap-2 z-10">
+                  <button
+                    onClick={() => handleDeleteSingleMessage('deleteForMe')}
+                    className="p-1 hover:scale-125 transition-transform"
+                  >
+                    <MdDelete className="text-red-500 text-xl" />
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       ) : (
         <div className="chat chat-end">
@@ -133,80 +141,90 @@ const ChatMessages = ({ message }) => {
               {timeAgo(message?.updatedAt)}
             </time>
           </div>
-          <div className="relative group">
-            <div className="chat-bubble bg-blue-500 text-white flex items-end gap-2">
-              <p
-                onClick={() => setIsOptionsOpen(!isOptionsOpen)}
-                className="cursor-pointer flex-1"
-              >
-                {message?.text}
+          {message?.isDeletedForEveryone ? (
+            <div className="bg-slate-200 p-5 rounded-lg">
+              <p className="text-sm text-slate-600 italic">
+                This message was removed
               </p>
+            </div>
+          ) : (
+            <div className="relative group">
+              <div className="chat-bubble bg-blue-500 text-white flex items-end gap-2">
+                <p
+                  onClick={() => setIsOptionsOpen(!isOptionsOpen)}
+                  className="cursor-pointer flex-1"
+                >
+                  {message?.text}
+                </p>
 
-              {/* Sent */}
-              {!seenStatus && message?.status === 'sent' && (
-                <span className="flex-shrink-0">
-                  <LiaCheckSolid />
-                </span>
-              )}
+                {/* Sent */}
+                {!seenStatus && message?.status === 'sent' && (
+                  <span className="flex-shrink-0">
+                    <LiaCheckSolid />
+                  </span>
+                )}
 
-              {/* Delivered */}
-              {!seenStatus && message?.status === 'delivered' && (
-                <span className="flex-shrink-0">
-                  <LiaCheckDoubleSolid />
-                </span>
-              )}
+                {/* Delivered */}
+                {!seenStatus && message?.status === 'delivered' && (
+                  <span className="flex-shrink-0">
+                    <LiaCheckDoubleSolid />
+                  </span>
+                )}
 
-              {/* Seen */}
-              {seenStatus && (
-                <span className="flex-shrink-0">
-                  <LiaCheckDoubleSolid className="text-cyan-200" />
-                </span>
+                {/* Seen */}
+                {seenStatus && (
+                  <span className="flex-shrink-0">
+                    <LiaCheckDoubleSolid className="text-cyan-200" />
+                  </span>
+                )}
+              </div>
+              {isOptionsOpen && (
+                <div className="absolute top-full mt-2 right-0 flex items-center gap-2 z-10">
+                  <button
+                    onClick={() => {
+                      setIsEditModalOpen(true);
+                      setIsOptionsOpen(false);
+                    }}
+                    className="p-1 hover:scale-125 transition-transform"
+                  >
+                    <MdModeEditOutline className="text-blue-500 text-xl" />
+                  </button>
+                  <div className="relative">
+                    <button
+                      onClick={() =>
+                        setIsDeleteDropdownOpen(!isDeleteDropdownOpen)
+                      }
+                      className="p-1 hover:scale-125 transition-transform OwnMessage"
+                    >
+                      <MdDelete className="text-red-500 text-xl" />
+                    </button>
+
+                    {/* Delete Options Dropdown */}
+                    {isDeleteDropdownOpen && (
+                      <div className="absolute right-0 bottom-full mb-2 bg-white rounded-lg shadow-lg border border-gray-200 py-1 w-48 z-20">
+                        <button
+                          onClick={() =>
+                            handleDeleteSingleMessage('deleteForMe')
+                          }
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-gray-700 text-sm"
+                        >
+                          Delete for me
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleDeleteSingleMessage('deleteForEveryone')
+                          }
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-red-600 text-sm"
+                        >
+                          Delete for everyone
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
-            {isOptionsOpen && (
-              <div className="absolute top-1/2 -translate-y-1/2 -left-20 flex items-center gap-2 z-10">
-                <button
-                  onClick={() => {
-                    setIsEditModalOpen(true);
-                    setIsOptionsOpen(false);
-                  }}
-                  className="p-1 hover:scale-125 transition-transform"
-                >
-                  <MdModeEditOutline className="text-blue-500 text-xl" />
-                </button>
-                <div className="relative">
-                  <button
-                    onClick={() =>
-                      setIsDeleteDropdownOpen(!isDeleteDropdownOpen)
-                    }
-                    className="p-1 hover:scale-125 transition-transform OwnMessage"
-                  >
-                    <MdDelete className="text-red-500 text-xl" />
-                  </button>
-
-                  {/* Delete Options Dropdown */}
-                  {isDeleteDropdownOpen && (
-                    <div className="absolute right-0 top-8 bg-white rounded-lg shadow-lg border border-gray-200 py-1 w-48 z-20">
-                      <button
-                        onClick={() => handleDeleteSingleMessage('deleteForMe')}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-gray-700 text-sm"
-                      >
-                        Delete for me
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleDeleteSingleMessage('deleteForEveryone')
-                        }
-                        className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-red-600 text-sm"
-                      >
-                        Delete for everyone
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
+          )}
         </div>
       )}
 

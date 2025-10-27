@@ -173,11 +173,9 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
   useEffect(() => {
     socket.on('userTyping', ({ userId }) => {
-      console.log('typing..');
       const isTypingIndicatorReceiver =
         (selectedUserData?._id || clickedUser?._id) === userId;
 
-      console.log('true or false?', isTypingIndicatorReceiver);
       if (isTypingIndicatorReceiver) {
         setIsTyping(true);
       }
