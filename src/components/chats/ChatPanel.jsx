@@ -70,9 +70,14 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     return () => socket.emit('leaveRoom', conversationId);
   }, [conversationId, socket, loggedInUserId, userProfile?.payload._id]);
 
+  //initially setting all messages
   useEffect(() => {
-    setMessages(data?.messages);
-  }, [data?.messages]);
+    const filteredMessages = data?.messages?.filter(
+      (m) => !m?.deletedBy.includes(userProfile?.payload._id)
+    );
+
+    setMessages(filteredMessages);
+  }, [data?.messages, userProfile?.payload._id]);
 
   //listen to the event newMessage by socket.io and update the Ui
   useEffect(() => {
@@ -99,6 +104,29 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     socket.on('messageEdited', updateMessageUi);
     return () => socket.off('messageEdited', updateMessageUi);
   }, [socket]);
+
+  //listen to messageDeleted event  and update the Ui
+  useEffect(() => {
+    if (!socket) return;
+
+    const updateMessageUi = ({ updatedMessage }) => {
+      //set the updated message first after deleting
+      setMessages((prev) =>
+        prev?.map((m) => (m?._id === updatedMessage?._id ? updatedMessage : m))
+      );
+
+      //now after update the  message , filter out based on the deletedBy
+      setMessages((prev) =>
+        prev?.filter((m) => !m?.deletedBy?.includes(userProfile?.payload._id))
+      );
+    };
+
+    socket.on('messageDeleted', updateMessageUi);
+
+    return () => {
+      socket.off('messageDeleted', updateMessageUi);
+    };
+  }, [socket, userProfile?.payload._id]);
 
   //listen to messagesReadUpdate event by socket.io and update messages's seenBy
   useEffect(() => {
@@ -236,7 +264,11 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
   if (!isLoading && !isError && messages?.length > 0) {
     messageContent = messages.map((message) => (
-      <ChatMessages key={message?._id} message={message} />
+      <ChatMessages
+        key={message?._id}
+        message={message}
+        loggedInUserId={loggedInUserId}
+      />
     ));
   }
 

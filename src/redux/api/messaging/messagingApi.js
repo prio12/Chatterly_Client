@@ -52,6 +52,17 @@ const messaging = baseApi.injectEndpoints({
         };
       },
     }),
+
+    //delete single message
+    deleteSingleMessage: builder.mutation({
+      query: ({ messageId, userId, status }) => {
+        return {
+          url: `/conversations/message/delete/${messageId}`,
+          method: 'PATCH',
+          body: { userId, status },
+        };
+      },
+    }),
   }),
 });
 
@@ -61,4 +72,5 @@ export const {
   useGetMessagesQuery,
   useMarkConversationAsReadMutation,
   useEditMessageMutation,
+  useDeleteSingleMessageMutation,
 } = messaging;

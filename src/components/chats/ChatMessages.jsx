@@ -5,18 +5,24 @@ import { formatDistanceToNow } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
 import { LiaCheckDoubleSolid, LiaCheckSolid } from 'react-icons/lia';
 import { MdDelete, MdModeEditOutline, MdClose } from 'react-icons/md';
-import { useEditMessageMutation } from '../../redux/api/messaging/messagingApi';
+import {
+  useDeleteSingleMessageMutation,
+  useEditMessageMutation,
+} from '../../redux/api/messaging/messagingApi';
 import toast from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
 const ChatMessages = ({ message }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { userProfile } = useSelector((state) => state.chat);
+
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedMessage, setEditedMessage] = useState('');
   const [isDeleteDropdownOpen, setIsDeleteDropdownOpen] = useState(false);
 
   const [editMessage] = useEditMessageMutation();
+  const [deleteSingleMessage] = useDeleteSingleMessageMutation();
 
   const isMe = message?.sender?.uid === currentUser;
   const seenStatus = message?.seenBy.some((user) => user?.uid !== currentUser);
@@ -55,18 +61,23 @@ const ChatMessages = ({ message }) => {
     }
   };
 
-  const handleDeleteForMe = () => {
-    // Add your delete for me logic here
-    console.log('Delete for me:', message);
-    setIsDeleteDropdownOpen(false);
-    setIsOptionsOpen(false);
-  };
+  const handleDeleteSingleMessage = async (status) => {
+    try {
+      const response = await deleteSingleMessage({
+        status,
+        userId: userProfile?.payload?._id,
+        messageId: message?._id,
+      }).unwrap();
 
-  const handleDeleteForEveryone = () => {
-    // Add your delete for everyone logic here
-    console.log('Delete for everyone:', message);
-    setIsDeleteDropdownOpen(false);
-    setIsOptionsOpen(false);
+      if (response?.success) {
+        setIsDeleteDropdownOpen(false);
+        setIsOptionsOpen(false);
+      }
+    } catch (error) {
+      toast.error(error?.message);
+      setIsDeleteDropdownOpen(false);
+      setIsOptionsOpen(false);
+    }
   };
 
   return (
@@ -96,7 +107,10 @@ const ChatMessages = ({ message }) => {
             </div>
             {isOptionsOpen && (
               <div className="absolute top-1/2 -translate-y-1/2 -right-10 flex items-center gap-2 z-10">
-                <button className="p-1 hover:scale-125 transition-transform">
+                <button
+                  onClick={() => handleDeleteSingleMessage('deleteForMe')}
+                  className="p-1 hover:scale-125 transition-transform"
+                >
                   <MdDelete className="text-red-500 text-xl" />
                 </button>
               </div>
@@ -174,13 +188,15 @@ const ChatMessages = ({ message }) => {
                   {isDeleteDropdownOpen && (
                     <div className="absolute right-0 top-8 bg-white rounded-lg shadow-lg border border-gray-200 py-1 w-48 z-20">
                       <button
-                        onClick={handleDeleteForMe}
+                        onClick={() => handleDeleteSingleMessage('deleteForMe')}
                         className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-gray-700 text-sm"
                       >
                         Delete for me
                       </button>
                       <button
-                        onClick={handleDeleteForEveryone}
+                        onClick={() =>
+                          handleDeleteSingleMessage('deleteForEveryone')
+                        }
                         className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-red-600 text-sm"
                       >
                         Delete for everyone
