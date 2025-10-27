@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
 import { IoIosCall, IoIosVideocam, IoMdMore } from 'react-icons/io';
+import { MdDelete } from 'react-icons/md';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
+import { useState } from 'react';
 
 const ChatBoxHeader = ({ selectedUserData, activeConnections }) => {
+  const [isMoreOptionsOpen, setIsMoreOptionsOpen] = useState(false);
+
   //figuring out if the selected user is online
   let onlineStatus = activeConnections?.some((connection) =>
     connection?.myConnection?.uid.includes(selectedUserData?.uid)
@@ -42,8 +46,26 @@ const ChatBoxHeader = ({ selectedUserData, activeConnections }) => {
         <div className="flex items-center justify-center text-xl bg-blue-100 rounded-full w-10 h-10 text-blue-500 hover:bg-blue-500 hover:text-white">
           <IoIosVideocam />
         </div>
-        <div className="flex items-center justify-center text-xl bg-blue-100 rounded-full w-10 h-10 text-blue-500 hover:bg-blue-500 hover:text-white">
-          <IoMdMore />
+        <div className="relative">
+          <div
+            onClick={() => setIsMoreOptionsOpen(!isMoreOptionsOpen)}
+            className="flex items-center justify-center text-xl bg-blue-100 rounded-full w-10 h-10 text-blue-500 hover:bg-blue-500 hover:text-white"
+          >
+            <IoMdMore />
+          </div>
+
+          {/* Delete All Messages Option */}
+          {isMoreOptionsOpen && (
+            <div
+              className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-2
+             px-3 w-48 z-20 cursor-pointer"
+            >
+              <button className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors">
+                <MdDelete className="text-xl" />
+                <span className="text-sm font-medium">Delete all messages</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
