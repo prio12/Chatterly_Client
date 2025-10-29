@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { IoIosSend, IoMdAttach } from 'react-icons/io';
 import { MdEmojiEmotions } from 'react-icons/md';
 import { useSelector } from 'react-redux';
@@ -17,6 +17,26 @@ const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
   const emojiPickerRef = useRef(null);
 
   let typingTimeout = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if click was outside the emoji picker
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target)
+      ) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    if (showEmojiPicker) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showEmojiPicker]);
 
   const handleOnChange = (e) => {
     setText(e.target.value);
@@ -61,6 +81,7 @@ const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
       const result = await sendText(messageData).unwrap();
       if (result.success) {
         setText('');
+        setShowEmojiPicker(false);
       }
     } catch (error) {
       toast.error(error.data.error);
@@ -70,7 +91,6 @@ const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
 
   return (
     <div className="relative w-full bg-slate-100 p-5 rounded-lg">
-      {/* Emoji Picker - Positioned absolutely above the footer */}
       {showEmojiPicker && (
         <div
           ref={emojiPickerRef}
@@ -80,6 +100,7 @@ const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
             onEmojiClick={handleEmojiClick}
             width={300}
             height={400}
+            emojiStyle="google"
           />
         </div>
       )}
