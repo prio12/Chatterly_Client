@@ -128,6 +128,20 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     };
   }, [socket, userProfile?.payload._id]);
 
+  //listen to deletedAllMessages event by socket.io and  set the message array to empty
+  useEffect(() => {
+    if (!socket) return;
+    const updateMessageUi = (conversation) => {
+      if (conversation?._id !== conversationId) return;
+      setMessages([]);
+    };
+    socket.on('deletedAllMessages', updateMessageUi);
+
+    return () => {
+      socket.off('deletedAllMessages', updateMessageUi);
+    };
+  }, [socket, conversationId]);
+
   //listen to messagesReadUpdate event by socket.io and update messages's seenBy
   useEffect(() => {
     const handleMessagesReadUpdate = ({
@@ -278,6 +292,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     >
       <div className="h-20 bg-white  p-4">
         <ChatBoxHeader
+          conversationId={conversationId}
           selectedUserData={selectedUserData || clickedUser}
           activeConnections={activeConnections}
         />

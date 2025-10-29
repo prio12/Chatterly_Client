@@ -3,9 +3,46 @@ import { IoIosCall, IoIosVideocam, IoMdMore } from 'react-icons/io';
 import { MdDelete } from 'react-icons/md';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useDeleteAllMessagesMutation } from '../../redux/api/messaging/messagingApi';
+import toast from 'react-hot-toast';
 
-const ChatBoxHeader = ({ selectedUserData, activeConnections }) => {
+const ChatBoxHeader = ({
+  selectedUserData,
+  activeConnections,
+  conversationId,
+}) => {
   const [isMoreOptionsOpen, setIsMoreOptionsOpen] = useState(false);
+  const [deleteAllMessages] = useDeleteAllMessagesMutation();
+
+  const { userProfile } = useSelector((state) => state.chat);
+
+  // console.log(userProfile?.payload, 'from chat header');
+
+  const handleDeleteAllMessages = async () => {
+    const confirmed = window.confirm(
+      "Are you sure to deleted all messages? It can't be undone"
+    );
+
+    if (confirmed) {
+      //here send the api request
+      try {
+        const response = await deleteAllMessages({
+          userId: userProfile?.payload?._id,
+          uid: userProfile?.payload?.uid,
+          conversationId: conversationId,
+        });
+
+        if (response?.data?.success) {
+          setIsMoreOptionsOpen(false);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error?.message);
+        setIsMoreOptionsOpen(false);
+      }
+    }
+  };
 
   //figuring out if the selected user is online
   let onlineStatus = activeConnections?.some((connection) =>
@@ -60,7 +97,10 @@ const ChatBoxHeader = ({ selectedUserData, activeConnections }) => {
               className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-lg border border-gray-200 py-2
              px-3 w-48 z-20 cursor-pointer"
             >
-              <button className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors">
+              <button
+                onClick={handleDeleteAllMessages}
+                className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors"
+              >
                 <MdDelete className="text-xl" />
                 <span className="text-sm font-medium">Delete all messages</span>
               </button>

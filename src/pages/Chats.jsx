@@ -119,6 +119,21 @@ const Chats = () => {
     setSelectedUserData(userData);
   };
 
+  //handle chatList Ui after listening to deletedAllMessages event by socket
+  useEffect(() => {
+    if (!socket) return;
+
+    const updateChatListUi = (conversation) => {
+      setChatLists((prev) => prev?.filter((c) => c?._id !== conversation?._id));
+    };
+
+    socket.on('deletedAllMessages', updateChatListUi);
+
+    return () => {
+      socket.off('deletedAllMessages', updateChatListUi);
+    };
+  }, [socket]);
+
   //handle SearchLists
   const handleSearch = (filteredUsers) => {
     // console.log(filteredUsers.length, 'checking filteredUsers length');
