@@ -6,13 +6,15 @@ import { useSelector } from 'react-redux';
 import { useSendMessageMutation } from '../../redux/api/messaging/messagingApi';
 import toast from 'react-hot-toast';
 import SocketContext from '../../context/SocketContext';
+import EmojiPicker from 'emoji-picker-react';
 
 const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
-  //hooks
   const { userProfile } = useSelector((state) => state.chat);
   const [text, setText] = useState('');
   const [sendText] = useSendMessageMutation();
   const socket = useContext(SocketContext);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef(null);
 
   let typingTimeout = useRef(null);
 
@@ -37,10 +39,13 @@ const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
     }, 2000);
   };
 
+  const handleEmojiClick = (emojiData) => {
+    setText((prev) => prev + emojiData.emoji);
+  };
+
   const handleSubmit = async () => {
     if (!text.trim()) return;
 
-    //preparing message data to send to the server
     const messageData = {
       participants: [
         selectedUserData?._id,
@@ -64,28 +69,47 @@ const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
   };
 
   return (
-    <div className="w-full bg-slate-100 p-5 rounded-lg">
+    <div className="relative w-full bg-slate-100 p-5 rounded-lg">
+      {/* Emoji Picker - Positioned absolutely above the footer */}
+      {showEmojiPicker && (
+        <div
+          ref={emojiPickerRef}
+          className="absolute bottom-full left-0 mb-2 z-50"
+        >
+          <EmojiPicker
+            onEmojiClick={handleEmojiClick}
+            width={300}
+            height={400}
+          />
+        </div>
+      )}
+
       <textarea
         onChange={handleOnChange}
         value={text}
-        className="w-full h-10 p-2 pr-10 resize-none  rounded-md focus:outline-none   overflow-y-scroll no-scrollbar"
+        className="w-full h-10 p-2 pr-10 resize-none rounded-md focus:outline-none overflow-y-scroll no-scrollbar"
         placeholder="Type a message..."
         style={{
-          scrollbarWidth: 'none', // For Firefox
-          msOverflowStyle: 'none', // For IE and Edge
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
         }}
       ></textarea>
-      <div className=" flex items-center justify-between my-3">
+
+      <div className="flex items-center justify-between my-3">
         <div className="flex items-center gap-5 text-xl">
-          {' '}
-          <MdEmojiEmotions />
-          <IoMdAttach />
+          <MdEmojiEmotions
+            className="cursor-pointer hover:text-blue-500 transition-colors"
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          />
+          <IoMdAttach className="cursor-pointer hover:text-blue-500 transition-colors" />
         </div>
         <div>
           <IoIosSend
             onClick={text ? handleSubmit : undefined}
             className={`text-2xl ${
-              text ? 'text-blue-600 cursor-pointer' : 'text-gray-400'
+              text
+                ? 'text-blue-600 cursor-pointer hover:text-blue-700'
+                : 'text-gray-400'
             }`}
           />
         </div>
