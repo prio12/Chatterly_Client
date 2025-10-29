@@ -24,6 +24,14 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   const { userProfile } = useSelector((state) => state.chat);
   const socket = useContext(SocketContext);
 
+  const { currentUser } = useSelector((state) => state.loggedInUser);
+
+  //fetching loggedInUser data
+  const { data: loggedInUserData } = useUserInfoByUidQuery(currentUser, {
+    skip: !currentUser,
+  });
+  const loggedInUser = loggedInUserData?.user;
+
   //fetching the data of the user who was clicked to chat
   const { data: clickedUserData } = useUserInfoByUidQuery(uid, { skip: !uid });
 
@@ -31,7 +39,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
   const { data, isLoading, isError } = useGetMessagesQuery(
     {
-      user1: userProfile?.payload._id || loggedInUserId,
+      user1: loggedInUser?._id || loggedInUserId,
       user2: selectedUserData?._id || clickedUser?._id,
     },
     {
