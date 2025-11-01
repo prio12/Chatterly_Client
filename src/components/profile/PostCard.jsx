@@ -145,11 +145,24 @@ const PostCard = ({ post }) => {
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
                   Thought
                 </span>
+                {author.uid === currentUser && pathname !== '/' && (
+                  <div onClick={() => setIsOpen(true)}>
+                    <HiOutlineDotsHorizontal className="cursor-pointer" />
+                  </div>
+                )}
               </div>
               <span className="text-xs text-gray-500">
                 {timeAgo(createdAt)}
               </span>
             </div>
+            <UpdatePostModal
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              img={img}
+              video={video}
+              content={content}
+              id={_id}
+            />
           </div>
 
           {/* Content section */}
