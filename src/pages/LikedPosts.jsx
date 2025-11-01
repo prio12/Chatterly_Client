@@ -6,6 +6,8 @@ import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/con
 import { FaHandPointRight, FaHeart } from 'react-icons/fa6';
 import { Link } from 'react-router';
 import PostCard from '../components/profile/PostCard';
+import { useContext, useEffect, useState } from 'react';
+import SocketContext from '../context/SocketContext';
 
 const LikedPosts = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -14,6 +16,7 @@ const LikedPosts = () => {
   });
 
   const user = userData?.user;
+  const socket = useContext(SocketContext);
 
   const {
     data: suggestedConnectionsData,
@@ -23,7 +26,28 @@ const LikedPosts = () => {
     skip: !user?._id,
   });
 
-  const likedPosts = user?.likedPosts;
+  //using local state to keep the like posts
+  const [likedPosts, setLikedPosts] = useState([]);
+
+  // const likedPosts = user?.likedPosts;
+
+  useEffect(() => {
+    if (user?.likedPosts?.length === 0) {
+      setLikedPosts([]);
+    }
+    setLikedPosts(user?.likedPosts);
+  }, [user?.likedPosts]);
+
+  useEffect(() => {
+    socket.on('postInteraction', ({ success, updatedPost, isDeleted }) => {
+      if (!success) return;
+
+      if (!isDeleted) return;
+      else {
+        setLikedPosts((prev) => prev.filter((p) => p._id !== updatedPost._id));
+      }
+    });
+  }, [socket]);
 
   let content;
 
