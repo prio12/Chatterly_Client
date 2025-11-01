@@ -8,6 +8,7 @@ import TypingIndicator from './TypingIndicator';
 
 /* eslint-disable react/prop-types */
 const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
+  console.log(conversation, 'conversation from chatList');
   //hooks
   const { userProfile } = useSelector((state) => state.chat);
   const [setMarkAsRead] = useMarkConversationAsReadMutation();
@@ -45,10 +46,14 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
         {isOwnMessage ? (
           <>
             <span className="font-medium">You:</span>{' '}
-            {conversation?.lastMessage?.text}
+            {conversation?.lastMessage?.text
+              ? conversation?.lastMessage?.text
+              : 'Sent an image'}
           </>
-        ) : (
+        ) : conversation?.lastMessage?.text ? (
           conversation?.lastMessage?.text
+        ) : (
+          'Sent an image'
         )}
       </p>
     );

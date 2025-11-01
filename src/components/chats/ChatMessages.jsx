@@ -108,9 +108,20 @@ const ChatMessages = ({ message }) => {
             <div className="relative group">
               <div
                 onClick={() => setIsOptionsOpen(!isOptionsOpen)}
-                className="chat-bubble bg-gray-200 text-black cursor-pointer hover:bg-gray-300 transition-colors"
+                className="chat-bubble bg-gray-200 text-black cursor-pointer hover:bg-gray-300 
+                transition-colors"
               >
-                <p>{message?.text}</p>
+                {/* <p>{message?.text}</p> */}
+                {message?.image && (
+                  <div>
+                    <img className="w-96" src={message?.image} alt="" />
+                  </div>
+                )}
+                {message?.text && (
+                  <div>
+                    <p>{message?.text}</p>
+                  </div>
+                )}
               </div>
               {isOptionsOpen && (
                 <div className="absolute top-full mt-2 left-0 flex items-center gap-2 z-10">
@@ -150,12 +161,28 @@ const ChatMessages = ({ message }) => {
           ) : (
             <div className="relative group">
               <div className="chat-bubble bg-blue-500 text-white flex items-end gap-2">
-                <p
+                {/* <p
                   onClick={() => setIsOptionsOpen(!isOptionsOpen)}
                   className="cursor-pointer flex-1"
                 >
                   {message?.text}
-                </p>
+                </p> */}
+
+                <div
+                  onClick={() => setIsOptionsOpen(!isOptionsOpen)}
+                  className="cursor-pointer flex-1"
+                >
+                  {message?.image && (
+                    <div>
+                      <img className="w-96" src={message?.image} alt="" />
+                    </div>
+                  )}
+                  {message?.text && (
+                    <div>
+                      <p>{message?.text}</p>
+                    </div>
+                  )}
+                </div>
 
                 {/* Sent */}
                 {!seenStatus && message?.status === 'sent' && (
@@ -201,12 +228,16 @@ const ChatMessages = ({ message }) => {
 
                     {/* Delete Options Dropdown */}
                     {isDeleteDropdownOpen && (
-                      <div className="absolute right-0 bottom-full mb-2 bg-white rounded-lg shadow-lg border border-gray-200 py-1 w-48 z-20">
+                      <div
+                        className="absolute right-0 bottom-full mb-2 bg-white rounded-lg shadow-lg border
+                       border-gray-200 py-1 w-48 z-20"
+                      >
                         <button
                           onClick={() =>
                             handleDeleteSingleMessage('deleteForMe')
                           }
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-gray-700 text-sm"
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors
+                           text-gray-700 text-sm"
                         >
                           Delete for me
                         </button>
@@ -214,7 +245,8 @@ const ChatMessages = ({ message }) => {
                           onClick={() =>
                             handleDeleteSingleMessage('deleteForEveryone')
                           }
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-red-600 text-sm"
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors
+                           text-red-600 text-sm"
                         >
                           Delete for everyone
                         </button>
@@ -250,7 +282,8 @@ const ChatMessages = ({ message }) => {
               <textarea
                 onChange={(e) => setEditedMessage(e.target.value)}
                 defaultValue={message?.text}
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2
+                 focus:ring-blue-500 focus:border-transparent resize-none"
                 rows="4"
                 placeholder="Edit your message..."
               />
