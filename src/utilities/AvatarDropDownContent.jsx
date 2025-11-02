@@ -14,6 +14,7 @@ import {
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { useContext } from 'react';
 import SocketContext from '../context/SocketContext';
+import { RiAdminLine } from 'react-icons/ri';
 
 const AvatarDropDownContent = ({ user }) => {
   //hooks
@@ -81,6 +82,15 @@ const AvatarDropDownContent = ({ user }) => {
         <BsQuestionOctagon className="text-lg" />
         <p className="text-sm leading-none">F&A</p>
       </Link>
+      {user?.role === 'admin' && (
+        <Link
+          to="/admin"
+          className="flex items-center hover:text-blue-600 gap-2 my-3"
+        >
+          <RiAdminLine className="text-lg" />
+          <p className="text-sm leading-none">Admin Dashboard</p>
+        </Link>
+      )}
       <div className="divider my-2"></div>
       <div
         onClick={handleSignOut}
