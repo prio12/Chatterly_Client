@@ -65,7 +65,7 @@ const Notifications = () => {
 
   if (!isLoading && !isError && notifications?.response?.length > 0) {
     content = (
-      <div className="sticky top-24">
+      <div className="sticky top-24 md:top-28 lg:top-28">
         <div className="w-full">
           <h3 className="text-3xl font-semibold  border-b-2 border-blue-400 pb-2 z-50 bg-gray-50 mb-5 p-2">
             Notifications
@@ -76,7 +76,7 @@ const Notifications = () => {
             return (
               <div
                 onClick={() => handleMarkAsRead({ _id: notification?._id })}
-                className={`flex items-center gap-5 p-5 rounded-lg ${
+                className={`flex items-center gap-5 shadow-sm hover:shadow-md p-5 rounded-lg ${
                   notification?.read ? 'bg-slate-100' : 'bg-slate-200'
                 } mb-5`}
                 key={notification._id}

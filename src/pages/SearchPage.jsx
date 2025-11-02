@@ -83,7 +83,7 @@ const SearchPage = () => {
       </div>
 
       {/* Main Search Area */}
-      <div className="col-span-1 md:col-span-7 bg-white flex justify-center md:px-5">
+      <div className="col-span-1 md:col-span-9 bg-white flex justify-center md:px-5">
         <div className="w-full py-0 px-5 relative">
           {/* Search input */}
           <div className="flex items-center gap-0 sticky top-24 md:top-28 z-10 bg-white">

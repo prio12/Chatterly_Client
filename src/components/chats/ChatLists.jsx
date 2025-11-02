@@ -107,7 +107,7 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
     <div>
       <div
         onClick={handleOpenConversation}
-        className={`flex items-center gap-5 my-3 rounded-md  p-5 cursor-pointer ${
+        className={`flex items-center gap-5 my-3 rounded-md  shadow-sm hover:shadow-md p-5 cursor-pointer ${
           unreadCount > 0 ? 'bg-slate-200' : 'bg-slate-50'
         }`}
       >

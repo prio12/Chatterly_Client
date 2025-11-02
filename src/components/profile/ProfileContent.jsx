@@ -42,12 +42,14 @@ const ProfileContent = ({ user, currentUserData }) => {
   if (!isLoading && myConnections?.length > 0) {
     connectionsContent = (
       <div className="mb-12">
-        <h4 className="font-bold text-xl mb-4">
-          Connections{' '}
-          <span className="text-green-600  font-bold">
-            {myConnections?.length}
-          </span>
-        </h4>
+        <div className="p-5">
+          <h4 className="inline-block  font-bold text-xl mb-4 border-b-4 border-blue-500 pb-2">
+            Connections{' '}
+            <span className="text-green-600 font-bold">
+              {myConnections?.length}
+            </span>
+          </h4>
+        </div>
         {myConnections?.map((connection) => (
           <MyConnections
             currentUserData={currentUserData}

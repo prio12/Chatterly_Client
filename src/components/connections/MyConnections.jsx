@@ -194,8 +194,8 @@ const MyConnections = ({ connection, currentUserData }) => {
   }
 
   return (
-    <div className="max-h-[600px] overflow-y-scroll border-b-2  p-2 no-scrollbar">
-      <div className="flex items-center justify-between ">
+    <div className="max-h-[600px] overflow-y-scroll   p-2 no-scrollbar">
+      <div className="flex items-center flex-wrap gap-5 justify-between shadow-sm hover:shadow-md p-5">
         <Link to={`/profile/${connection?.myConnection?.uid}`}>
           <div className="flex items-center gap-5">
             <div className="avatar">
@@ -212,6 +212,7 @@ const MyConnections = ({ connection, currentUserData }) => {
         </Link>
         {buttons}
       </div>
+
       {isOpen && (
         <ChatModal selectedUser={selectedUser} chatHandler={chatHandler} />
       )}

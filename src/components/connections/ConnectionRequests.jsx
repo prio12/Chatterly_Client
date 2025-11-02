@@ -42,7 +42,7 @@ const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
   };
   return (
     <div className="max-h-[600px] overflow-y-scroll no-scrollbar">
-      <div className="flex items-center justify-between border border-gray-200 p-2 my-5">
+      <div className="flex items-center flex-wrap gap-5 justify-between border border-gray-200 shadow-sm hover:shadow-md p-5 my-5">
         <div className="flex items-center gap-5">
           <Link to={`/profile/${request?.requester?.uid}`}>
             <div className="avatar">
@@ -65,7 +65,7 @@ const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 ">
           <button
             onClick={handleAcceptRequest}
             className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "

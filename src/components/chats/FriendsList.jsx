@@ -47,7 +47,7 @@ const FriendsList = ({
   };
 
   return (
-    <div className="w-full flex items-center gap-5 overflow-x-auto my-5 p-5 no-scrollbar bg-slate-100 ">
+    <div className="w-full flex items-center gap-5 overflow-x-auto my-5 shadow-sm hover:shadow-md p-5 no-scrollbar bg-slate-100 ">
       {margedConnections?.map((conn) => (
         <div key={conn?.myConnection?._id}>
           <div

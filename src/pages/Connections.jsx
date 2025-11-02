@@ -217,7 +217,7 @@ const Connections = () => {
 
       <div className="col-span-1 relative  md:col-span-7 bg-white p-2 md:py-2 md:px-5">
         {/* {content} */}
-        <div className="sticky top-24">
+        <div className="sticky top-28">
           <div>
             <div>
               <h4 className="text-2xl font-semibold relative inline-block after:content-[''] after:block after:w-full after:h-[3px] after:bg-blue-400 after:mt-1">

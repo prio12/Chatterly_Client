@@ -42,8 +42,8 @@ const ConnectionSuggestions = ({
   };
   return (
     <div className="max-h-[600px] overflow-y-scroll no-scrollbar">
-      <div className="flex items-center justify-between border border-gray-200 p-2 my-5">
-        <div className="flex items-center gap-5">
+      <div className="flex items-center flex-wrap gap-5 justify-between border shadow-sm hover:shadow-md p-5 my-5">
+        <div className="flex items-center gap-5 ">
           <Link to={`/profile/${user?.uid}`}>
             <div className="avatar">
               <div className="rounded-full w-16">
@@ -62,7 +62,7 @@ const ConnectionSuggestions = ({
             {/* showing mutual connections */}
           </div>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center  gap-5">
           <button
             onClick={handleConnect}
             className="btn  rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white "
