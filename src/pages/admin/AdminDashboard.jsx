@@ -3,11 +3,15 @@ import {
   useGetAllUsersQuery,
   useUserInfoByUidQuery,
 } from '../../redux/api/users/usersApi';
-import { useGetAllPostsQuery } from '../../redux/api/posts/postsApi';
+import {
+  useDeleteAPostMutation,
+  useGetAllPostsQuery,
+} from '../../redux/api/posts/postsApi';
 import { useEffect, useState } from 'react';
 import { MdDelete, MdPostAdd } from 'react-icons/md';
 import { FaUsers } from 'react-icons/fa';
 import DefaultProfilePIcture from '../../components/profile/DefaultProfilePIcture';
+import toast from 'react-hot-toast';
 
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -15,6 +19,7 @@ const AdminDashboard = () => {
 
   //rtk hooks
   const { data, isLoading } = useUserInfoByUidQuery(currentUser);
+  const [deletePost] = useDeleteAPostMutation();
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const page = 0;
@@ -69,9 +74,16 @@ const AdminDashboard = () => {
     setUsers(filteredUsers);
   }, [allUserdata?.success, allUserdata?.response]);
 
-  const handleDeletePost = (postId) => {
-    // TODO: Add delete post logic
-    console.log('Delete post:', postId);
+  const handleDeletePost = async (postId) => {
+    try {
+      const response = await deletePost({ _id: postId });
+      if (response?.data?.success) {
+        toast.success('Post Deleted from admin!');
+        setPosts((prev) => prev?.filter((p) => p?._id !== postId));
+      }
+    } catch (error) {
+      toast.error(error?.message);
+    }
   };
 
   const handleDeleteUser = (userId) => {
