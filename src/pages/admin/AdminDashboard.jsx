@@ -12,6 +12,7 @@ import { MdDelete, MdPostAdd } from 'react-icons/md';
 import { FaUsers } from 'react-icons/fa';
 import DefaultProfilePIcture from '../../components/profile/DefaultProfilePIcture';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
 
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -24,6 +25,7 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const page = 0;
   const limit = 0;
+  const navigate = useNavigate();
 
   const user = data?.user;
 
@@ -86,9 +88,8 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteUser = (userId) => {
-    // TODO: Add delete user logic
-    console.log('Delete user:', userId);
+  const handleVisitProfile = (uid) => {
+    navigate(`/profile/${uid}`);
   };
 
   if (isLoading) {
@@ -221,11 +222,10 @@ const AdminDashboard = () => {
 
             {/* Delete Button */}
             <button
-              onClick={() => handleDeleteUser(user._id)}
-              className="flex items-center gap-2 w-full bg-red-500 text-white py-2.5 px-4 rounded-lg hover:bg-red-600 transition-colors justify-center text-sm font-medium"
+              onClick={() => handleVisitProfile(user?.uid)}
+              className="flex items-center gap-2 w-full bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors justify-center text-sm font-medium"
             >
-              <MdDelete size={18} />
-              Delete User
+              Visit Profile
             </button>
           </div>
         ))}
