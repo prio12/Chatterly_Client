@@ -1,33 +1,44 @@
 import { useSelector } from 'react-redux';
-import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
+import {
+  useGetAllUsersQuery,
+  useUserInfoByUidQuery,
+} from '../../redux/api/users/usersApi';
 import { useGetAllPostsQuery } from '../../redux/api/posts/postsApi';
-import { useEffect, useRef, useState } from 'react';
-import PostCard from '../../components/profile/PostCard';
+import { useEffect, useState } from 'react';
+import { MdDelete, MdPostAdd } from 'react-icons/md';
+import { FaUsers } from 'react-icons/fa';
+import DefaultProfilePIcture from '../../components/profile/DefaultProfilePIcture';
 
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
+  const [activeTab, setActiveTab] = useState('posts'); // 'posts' or 'users'
 
   //rtk hooks
   const { data, isLoading } = useUserInfoByUidQuery(currentUser);
   const [posts, setPosts] = useState([]);
-
-  const loaderRef = useRef(null);
-  const [page, setPage] = useState(1);
-  const limit = 5;
+  const [users, setUsers] = useState([]);
+  const page = 0;
+  const limit = 0;
 
   const user = data?.user;
 
+  //fetch all posts
   const {
     data: postData,
     error,
     isLoading: postsLoading,
     isError,
-    isFetching,
   } = useGetAllPostsQuery(
     { page, limit },
     {
       refetchOnMountOrArgChange: true,
     }
+  );
+
+  //fetch all users
+  const { data: allUserdata, isLoading: usersLoading } = useGetAllUsersQuery(
+    null,
+    { refetchOnMountOrArgChange: true }
   );
 
   //  load & paginate posts safely
@@ -45,6 +56,28 @@ const AdminDashboard = () => {
       });
     }
   }, [postData?.result, page]);
+
+  //setting all users , removing the admin from all users
+  useEffect(() => {
+    if (!allUserdata?.success) {
+      setUsers([]);
+    }
+    const filteredUsers = allUserdata?.response?.filter(
+      (u) => u?.role !== 'admin'
+    );
+
+    setUsers(filteredUsers);
+  }, [allUserdata?.success, allUserdata?.response]);
+
+  const handleDeletePost = (postId) => {
+    // TODO: Add delete post logic
+    console.log('Delete post:', postId);
+  };
+
+  const handleDeleteUser = (userId) => {
+    // TODO: Add delete user logic
+    console.log('Delete user:', userId);
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -66,27 +99,197 @@ const AdminDashboard = () => {
   let postsContent;
 
   if (postsLoading) {
-    postsContent = <div>Loading...</div>;
+    postsContent = <div className="text-center py-8">Loading posts...</div>;
   }
   if (!postsLoading && isError) {
     postsContent = (
-      <div className="text-center font-semibold mt-16">{error}</div>
+      <div className="text-center font-semibold mt-16 text-red-600">
+        {error}
+      </div>
     );
   }
   if (!postsLoading && !isError && posts?.length === 0) {
     postsContent = (
-      <div className="text-center font-semibold mt-16">No posts available</div>
+      <div className="text-center font-semibold py-16 text-gray-500">
+        No posts available
+      </div>
     );
   }
   if (!postsLoading && !isError && posts?.length > 0) {
-    postsContent = posts.map((post) => (
-      <PostCard id={user?._id} key={post._id} post={post} />
-    ));
+    postsContent = (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <div
+            key={post._id}
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100"
+          >
+            {/* Media Section */}
+            {post?.img && (
+              <div className="w-full h-56 bg-gray-100">
+                <img
+                  src={post.img}
+                  alt="Post"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            {post?.video && (
+              <div className="w-full h-56 bg-gray-100">
+                <video
+                  src={post.video}
+                  controls
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Content Section */}
+            <div className="p-5">
+              {post?.content && (
+                <p className="text-gray-700 text-sm mb-4 line-clamp-4 leading-relaxed">
+                  {post.content}
+                </p>
+              )}
+
+              {/* Delete Button */}
+              <button
+                onClick={() => handleDeletePost(post._id)}
+                className="flex items-center gap-2 w-full bg-red-500 text-white py-2.5 px-4 rounded-lg hover:bg-red-600 transition-colors justify-center font-medium"
+              >
+                <MdDelete size={20} />
+                Delete Post
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
+
+  let usersContent;
+
+  if (usersLoading) {
+    usersContent = <div className="text-center py-8">Loading users...</div>;
+  }
+  if (!usersLoading && users?.length === 0) {
+    usersContent = (
+      <div className="text-center font-semibold py-16 text-gray-500">
+        No users available
+      </div>
+    );
+  }
+  if (!usersLoading && users?.length > 0) {
+    usersContent = (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        {users.map((user) => (
+          <div
+            key={user._id}
+            className="bg-white rounded-xl shadow-md p-5 hover:shadow-xl transition-all duration-300 border border-gray-100"
+          >
+            {/* Profile Picture */}
+            <div className="flex justify-center mb-4">
+              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-200 shadow-sm">
+                {user?.profilePicture ? (
+                  <img
+                    src={user.profilePicture}
+                    alt={user.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <DefaultProfilePIcture />
+                )}
+              </div>
+            </div>
+
+            {/* User Info */}
+            <h3 className="text-center font-semibold text-gray-800 mb-4 truncate text-base">
+              {user?.name}
+            </h3>
+
+            {/* Delete Button */}
+            <button
+              onClick={() => handleDeleteUser(user._id)}
+              className="flex items-center gap-2 w-full bg-red-500 text-white py-2.5 px-4 rounded-lg hover:bg-red-600 transition-colors justify-center text-sm font-medium"
+            >
+              <MdDelete size={18} />
+              Delete User
+            </button>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <p>this is admin Dashboard page </p>
-      {postsContent}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header with Tabs */}
+      <div className="bg-white shadow-md border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <h1 className="text-3xl font-bold text-gray-800 mb-1">
+            Admin Dashboard
+          </h1>
+          <p className="text-gray-600 mb-6">
+            Manage your platform content and users
+          </p>
+
+          {/* Tab Navigation */}
+          <div className="flex gap-3">
+            <button
+              onClick={() => setActiveTab('posts')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                activeTab === 'posts'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <MdPostAdd size={20} />
+              Posts
+              <span
+                className={`ml-1 px-2.5 py-0.5 rounded-full text-sm font-semibold ${
+                  activeTab === 'posts'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-300 text-gray-700'
+                }`}
+              >
+                {posts?.length || 0}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('users')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                activeTab === 'users'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <FaUsers size={20} />
+              Users
+              <span
+                className={`ml-1 px-2.5 py-0.5 rounded-full text-sm font-semibold ${
+                  activeTab === 'users'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-300 text-gray-700'
+                }`}
+              >
+                {users?.length || 0}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Content Area */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {activeTab === 'posts' && (
+          <div className="animate-fadeIn">{postsContent}</div>
+        )}
+
+        {activeTab === 'users' && (
+          <div className="animate-fadeIn">{usersContent}</div>
+        )}
+      </div>
     </div>
   );
 };
