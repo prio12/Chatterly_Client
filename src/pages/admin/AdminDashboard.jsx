@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router';
 
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
-  const [activeTab, setActiveTab] = useState('posts'); // 'posts' or 'users'
+  const [activeTab, setActiveTab] = useState('posts');
 
   //rtk hooks
   const { data, isLoading } = useUserInfoByUidQuery(currentUser);

@@ -9,11 +9,13 @@ import toast from 'react-hot-toast';
 import { Link } from 'react-router';
 
 /* eslint-disable react/prop-types */
-const CommentBox = ({ comment, author, postId }) => {
+const CommentBox = ({ comment, author, postId, loggedInUser }) => {
   //mutation hook
   const [deleteComment] = useDeleteACommentMutation();
   const { user, text, createdAt } = comment;
   const [isOpen, setIsOpen] = useState(false);
+
+  console.log(user, 'from comment box');
 
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -77,7 +79,9 @@ const CommentBox = ({ comment, author, postId }) => {
             comment={comment}
           />
 
-          {(currentUser === user?.uid || currentUser === author?.uid) && (
+          {(currentUser === user?.uid ||
+            currentUser === author?.uid ||
+            loggedInUser?.role === 'admin') && (
             <MdDelete
               onClick={handleDelete}
               className="cursor-pointer hover:text-red-500 transition"
