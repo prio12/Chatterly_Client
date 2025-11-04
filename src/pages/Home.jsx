@@ -161,7 +161,7 @@ const Home = () => {
   //  render logic
   let content;
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) return <div>Loading...haha</div>;
 
   if (isLoading && isMyConnectionsDataLoading) {
     content = <div>Loading...</div>;
