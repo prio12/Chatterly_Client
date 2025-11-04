@@ -21,9 +21,12 @@ const Notifications = () => {
     data: notifications,
     isLoading,
     isError,
-  } = useGetUserSpecificNotificationsQuery({
-    _id: id,
-  });
+  } = useGetUserSpecificNotificationsQuery(
+    {
+      _id: id,
+    },
+    { refetchOnMountOrArgChange: true, skip: !id }
+  );
 
   const {
     data: suggestedConnectionsData,

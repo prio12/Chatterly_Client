@@ -117,6 +117,7 @@ const MyConnections = ({ connection, currentUserData }) => {
          hover:text-white"
         >
           <SiImessage className="text-xl font-semibold text-blue-600" />
+          <span className="text-blue-500"> Send Message</span>
         </button>
         <button
           onClick={() => handleRemoveConnection(true)}
@@ -172,6 +173,7 @@ const MyConnections = ({ connection, currentUserData }) => {
          hover:text-white"
           >
             <SiImessage className="text-xl font-semibold text-blue-600" />
+            <span className="text-blue-500"> Send Message</span>
           </button>
           <button
             onClick={() => handleRemoveConnection(false)}

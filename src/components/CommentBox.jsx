@@ -15,8 +15,6 @@ const CommentBox = ({ comment, author, postId, loggedInUser }) => {
   const { user, text, createdAt } = comment;
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(user, 'from comment box');
-
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
 

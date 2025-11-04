@@ -3,7 +3,7 @@ import { FaHeart } from 'react-icons/fa6';
 import { FiPlus } from 'react-icons/fi';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { useSelector } from 'react-redux';
-import { Link, useLocation, useParams } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import VideoUploadModal from '../../utilities/VideoUploadModal';
 import { useState } from 'react';
 
@@ -14,11 +14,14 @@ const Videos = ({ user, currentUserData }) => {
 
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
-  const { uid } = useParams();
   const [isOpen, setIsOpen] = useState(false);
 
   const postsWithVideos = posts?.filter(
     (post) => typeof post?.video === 'string' && post?.video.trim() !== ''
+  );
+
+  const isMyVideos = postsWithVideos?.some(
+    (v) => v?.author?.uid === currentUser
   );
 
   const generateThumbnail = (videoUrl) => {
@@ -88,7 +91,7 @@ const Videos = ({ user, currentUserData }) => {
       {/* Header */}
       <div className="flex items-center mb-5 justify-between">
         <h5 className="font-bold text-xl">Videos</h5>
-        {currentUser === uid && (
+        {isMyVideos && (
           <button
             onClick={() => setIsOpen(true)}
             className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"

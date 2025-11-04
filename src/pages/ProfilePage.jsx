@@ -192,7 +192,7 @@ const ProfilePage = () => {
             )}
           </div>
         </div>
-        <div className="p-5 border my-5 sticky top-[19.85rem]">
+        <div className="p-5 border my-5 sticky top-[20.85rem]">
           <h4 className="font-bold my-5">Suggested Connections</h4>
           {suggestedConnections}
           <div className="text-sm font-semibold text-blue-600 mt-5">

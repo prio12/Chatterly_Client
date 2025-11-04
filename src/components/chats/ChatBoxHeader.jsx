@@ -17,15 +17,12 @@ const ChatBoxHeader = ({
 
   const { userProfile } = useSelector((state) => state.chat);
 
-  // console.log(userProfile?.payload, 'from chat header');
-
   const handleDeleteAllMessages = async () => {
     const confirmed = window.confirm(
       "Are you sure to deleted all messages? It can't be undone"
     );
 
     if (confirmed) {
-      //here send the api request
       try {
         const response = await deleteAllMessages({
           userId: userProfile?.payload?._id,
@@ -42,6 +39,13 @@ const ChatBoxHeader = ({
         setIsMoreOptionsOpen(false);
       }
     }
+  };
+
+  const handleComingSoonFeature = (featureName) => {
+    toast(`${featureName} feature coming soon! 🚀`, {
+      icon: '⏳',
+      duration: 2000,
+    });
   };
 
   //figuring out if the selected user is online
@@ -77,12 +81,30 @@ const ChatBoxHeader = ({
         </div>
       </div>
       <div className="flex items-center gap-2 cursor-pointer">
-        <div className="flex items-center justify-center text-xl bg-blue-100 rounded-full w-10 h-10 text-blue-500 hover:bg-blue-500 hover:text-white">
+        {/* Audio Call - Coming Soon */}
+        <div
+          onClick={() => handleComingSoonFeature('Audio Call')}
+          className="relative flex items-center justify-center text-xl bg-gray-100 rounded-full w-10 h-10 text-gray-400 cursor-not-allowed opacity-60"
+          title="Coming Soon"
+        >
           <IoIosCall />
+          <span className="absolute -top-1 -right-1 bg-yellow-400 text-xs px-1.5 py-0.5 rounded-full text-gray-800 font-semibold text-[10px]">
+            Soon
+          </span>
         </div>
-        <div className="flex items-center justify-center text-xl bg-blue-100 rounded-full w-10 h-10 text-blue-500 hover:bg-blue-500 hover:text-white">
+
+        {/* Video Call - Coming Soon */}
+        <div
+          onClick={() => handleComingSoonFeature('Video Call')}
+          className="relative flex items-center justify-center text-xl bg-gray-100 rounded-full w-10 h-10 text-gray-400 cursor-not-allowed opacity-60"
+          title="Coming Soon"
+        >
           <IoIosVideocam />
+          <span className="absolute -top-1 -right-1 bg-yellow-400 text-xs px-1.5 py-0.5 rounded-full text-gray-800 font-semibold text-[10px]">
+            Soon
+          </span>
         </div>
+
         <div className="relative">
           <div
             onClick={() => setIsMoreOptionsOpen(!isMoreOptionsOpen)}
