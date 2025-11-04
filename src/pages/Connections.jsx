@@ -13,6 +13,7 @@ import {
 } from '../redux/api/connections/connectionsApi';
 import MyConnections from '../components/connections/MyConnections';
 import SentConnections from '../components/connections/SentConnections';
+import ConnectionsSkeletonLoader from '../components/loaders/ConnectionsSkeletonLoader';
 
 const Connections = () => {
   const [content, setContent] = useState('request');
@@ -126,7 +127,13 @@ const Connections = () => {
   let connectionRequestsContent;
 
   if (isConnectionDataLoading) {
-    connectionRequestsContent = <div>Loading.... data</div>;
+    connectionRequestsContent = (
+      <div>
+        {[...Array(5)].map((_, i) => (
+          <ConnectionsSkeletonLoader key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (!isConnectionDataLoading && connectionRequests?.length === 0) {
@@ -148,7 +155,13 @@ const Connections = () => {
   let suggestedConnectionsContent;
 
   if (isSuggestedConnectionDataLoading) {
-    suggestedConnectionsContent = <div>Loading.... data</div>;
+    suggestedConnectionsContent = (
+      <div>
+        {[...Array(5)].map((_, i) => (
+          <ConnectionsSkeletonLoader key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (!isSuggestedConnectionDataLoading && suggestedConnections?.length === 0) {
@@ -172,7 +185,13 @@ const Connections = () => {
   let myConnectionsContent;
 
   if (isMyConnectionsDataLoading) {
-    myConnectionsContent = <div>Loading....</div>;
+    myConnectionsContent = (
+      <div>
+        {[...Array(5)].map((_, i) => (
+          <ConnectionsSkeletonLoader key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (!isMyConnectionsDataLoading && myConnections?.length === 0) {
@@ -191,7 +210,13 @@ const Connections = () => {
   let sentRequestsContent;
 
   if (isSentRequestDataLoading) {
-    sentRequestsContent = <div>Loading...</div>;
+    sentRequestsContent = (
+      <div>
+        {[...Array(5)].map((_, i) => (
+          <ConnectionsSkeletonLoader key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (!isSentRequestDataLoading && sentRequests?.length === 0) {
