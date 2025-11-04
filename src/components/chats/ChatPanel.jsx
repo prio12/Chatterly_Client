@@ -11,6 +11,9 @@ import { CiLock } from 'react-icons/ci';
 import { useContext, useEffect, useRef, useState } from 'react';
 import SocketContext from '../../context/SocketContext';
 import TypingIndicator from './TypingIndicator';
+import ChatMessagesSkeletonLoader from '../loaders/ChatMessagesSkeletonLoader';
+import ChatBoxHeaderSkeletonLoader from '../loaders/ChatBoxHeaderSkeletonLoader';
+import ChatFooterSkeletonLoader from '../loaders/ChatFooterSkeletonLoader';
 
 const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   //getting the uid from url
@@ -27,17 +30,23 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
   //fetching loggedInUser data
-  const { data: loggedInUserData } = useUserInfoByUidQuery(currentUser, {
-    skip: !currentUser,
-  });
+  const { data: loggedInUserData, isLoading: isLoggedInUserDataLoading } =
+    useUserInfoByUidQuery(currentUser, {
+      skip: !currentUser,
+    });
   const loggedInUser = loggedInUserData?.user;
 
   //fetching the data of the user who was clicked to chat
-  const { data: clickedUserData } = useUserInfoByUidQuery(uid, { skip: !uid });
+  const { data: clickedUserData, isLoading: isClickedUserDataLoading } =
+    useUserInfoByUidQuery(uid, { skip: !uid });
 
   const clickedUser = clickedUserData?.user;
 
-  const { data, isLoading, isError } = useGetMessagesQuery(
+  const {
+    data,
+    isLoading: isLoadingMessages,
+    isError,
+  } = useGetMessagesQuery(
     {
       user1: loggedInUser?._id || loggedInUserId,
       user2: selectedUserData?._id || clickedUser?._id,
@@ -222,17 +231,17 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
   let messageContent;
 
-  if (isLoading) {
-    messageContent = <div>Loading...</div>;
+  if (isLoadingMessages) {
+    messageContent = <ChatMessagesSkeletonLoader count={5} />;
   }
 
-  if (!isLoading && isError) {
+  if (!isLoadingMessages && isError) {
     <div>
       <h5>Something Went wrong!!</h5>
     </div>;
   }
 
-  if (!isLoading && !isError && messages?.length === 0) {
+  if (!isLoadingMessages && !isError && messages?.length === 0) {
     messageContent = (
       <div className=" mt-24 text-center">
         <div>
@@ -282,7 +291,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     );
   }
 
-  if (!isLoading && !isError && messages?.length > 0) {
+  if (!isLoadingMessages && !isError && messages?.length > 0) {
     messageContent = messages.map((message) => (
       <ChatMessages
         key={message?._id}
@@ -299,11 +308,15 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       }   flex flex-col`}
     >
       <div className="h-20 bg-white  p-4">
-        <ChatBoxHeader
-          conversationId={conversationId}
-          selectedUserData={selectedUserData || clickedUser}
-          activeConnections={activeConnections}
-        />
+        {isLoggedInUserDataLoading && isClickedUserDataLoading ? (
+          <ChatBoxHeaderSkeletonLoader />
+        ) : (
+          <ChatBoxHeader
+            conversationId={conversationId}
+            selectedUserData={selectedUserData || clickedUser}
+            activeConnections={activeConnections}
+          />
+        )}
       </div>
       <div className="flex-1 overflow-y-auto bg-white p-4">
         {messageContent}
@@ -318,10 +331,14 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
         <div ref={messageEndRef} />
       </div>
       <div className="h-20 bg-white  p-4">
-        <ChatFooter
-          selectedUserData={selectedUserData || clickedUser}
-          loggedInUserId={loggedInUserId || userProfile?.payload._id}
-        />
+        {isLoggedInUserDataLoading && isClickedUserDataLoading ? (
+          <ChatFooterSkeletonLoader />
+        ) : (
+          <ChatFooter
+            selectedUserData={selectedUserData || clickedUser}
+            loggedInUserId={loggedInUserId || userProfile?.payload._id}
+          />
+        )}
       </div>
     </div>
   );
