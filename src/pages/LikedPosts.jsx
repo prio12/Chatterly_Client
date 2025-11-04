@@ -8,12 +8,14 @@ import { Link } from 'react-router';
 import PostCard from '../components/profile/PostCard';
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../context/SocketContext';
+import PostSkeletonLoader from '../components/loaders/PostSkeletonLoader';
 
 const LikedPosts = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
-  const { data: userData } = useUserInfoByUidQuery(currentUser, {
-    skip: !currentUser,
-  });
+  const { data: userData, isLoading: isUserDataLoading } =
+    useUserInfoByUidQuery(currentUser, {
+      skip: !currentUser,
+    });
 
   const user = userData?.user;
   const socket = useContext(SocketContext);
@@ -51,7 +53,9 @@ const LikedPosts = () => {
 
   let content;
 
-  if (likedPosts?.length === 0) {
+  if (isUserDataLoading) {
+    content = <PostSkeletonLoader />;
+  } else if (likedPosts?.length === 0) {
     content = (
       <div className="flex flex-col items-center justify-center py-16 px-4">
         <div className="relative mb-6">

@@ -22,7 +22,23 @@ const RightSideBar = ({
   let content;
 
   if (suggestedCOnnectionsDataIsLoading) {
-    content = <div>Loading....</div>;
+    content = (
+      <div className="hidden md:block col-span-2 bg-white dark:bg-slate-900">
+        <div className="w-16 fixed right-0 h-full bg-white shadow-lg">
+          <div className="flex flex-col justify-start gap-5 p-3 pt-5">
+            {/* Menu Toggle Icon Skeleton */}
+            <div className="w-6 h-6 bg-gray-200 rounded animate-pulse"></div>
+
+            {/* Suggested Users Skeleton */}
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (
