@@ -16,10 +16,12 @@ import {
 import PostFeedToggle from '../components/home/PostFeedToggle';
 import { FiFileText } from 'react-icons/fi';
 import { BiPlus } from 'react-icons/bi';
+import HomePageSkeletonLoader from '../components/loaders/HomePageSkeletonLoader';
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
-  const { data } = useUserInfoByUidQuery(currentUser);
+  const { data, isLoading: isUserDataLoading } =
+    useUserInfoByUidQuery(currentUser);
   const user = data?.user;
 
   //  two states — one for all posts, one for filtered ones
@@ -142,7 +144,6 @@ const Home = () => {
 
   //  filter logic fixed
   useEffect(() => {
-    // if (!user) return;
     if (!user) return;
 
     let friendsAndMyPosts = allPosts?.filter(
@@ -161,7 +162,7 @@ const Home = () => {
   //  render logic
   let content;
 
-  if (!user) return <div>Loading...haha</div>;
+  if (isUserDataLoading) return <HomePageSkeletonLoader />;
 
   if (isLoading && isMyConnectionsDataLoading) {
     content = <div>Loading...</div>;

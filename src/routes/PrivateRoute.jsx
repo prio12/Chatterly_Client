@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types'; // Import PropTypes
 import { onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import auth from '../firebase/firebase.cofig';
-import Icon from '../assets/icon/letter-c (1).png';
 import {
   setUser,
   toggleLoading,

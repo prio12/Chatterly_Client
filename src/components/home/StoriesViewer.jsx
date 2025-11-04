@@ -7,6 +7,7 @@ import StoriesModal from '../profile/modals/StoriesModal';
 import { formatDistanceToNow } from 'date-fns';
 import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 import { Link } from 'react-router';
+import StoriesSkeletonLoader from '../loaders/StoriesSkeletonLoader';
 
 const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   //hooks
@@ -81,7 +82,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   let content;
 
   if (isLoading) {
-    content = <div>Loading...</div>;
+    content = <StoriesSkeletonLoader />;
   }
 
   if (activeStories?.length === 0) {
@@ -91,9 +92,9 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
             to={`/profile/${connection?.myConnection?.uid}`}
             key={connection?._id}
           >
-            <div className="flex-shrink-0 cursor-pointer">
+            <div className="flex-shrink-0 cursor-pointer flex flex-col items-center">
               <div className="avatar">
-                <div className=" w-12 md:w-[70px] rounded-full ">
+                <div className="w-12 md:w-[70px] rounded-full">
                   {connection?.myConnection?.profilePicture ? (
                     <img src={connection?.myConnection?.profilePicture} />
                   ) : (
@@ -101,7 +102,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
                   )}
                 </div>
               </div>
-              <p className="text-sm font-semibold mt-2">
+              <p className="text-sm font-semibold mt-2 text-center">
                 {connection?.myConnection?.name}
               </p>
             </div>
@@ -113,7 +114,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
       <div
         onClick={() => openStoryViewer(index)}
         key={story._id}
-        className="flex-shrink-0 cursor-pointer"
+        className="flex-shrink-0 cursor-pointer flex flex-col items-center"
       >
         <div className="avatar">
           <div className="ring-blue-500 ring-offset-base-100 w-12 md:w-[70px] rounded-full ring ring-offset-2">
@@ -124,28 +125,30 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
             )}
           </div>
         </div>
-        <p className="text-sm font-semibold mt-2">{story?.author?.name}</p>
+        <p className="text-sm font-semibold mt-2 text-center">
+          {story?.author?.name}
+        </p>
       </div>
     ));
   }
 
   if (isStoryLoading) {
-    return <div>Loading...</div>;
+    content = <StoriesSkeletonLoader />;
   }
 
   return (
-    <div className="flex items-center gap-5">
-      {/* Fixed Div */}
-      <div className="fixed_div mb-4 md:mb-0">
+    <div className="flex items-start gap-3 md:gap-5">
+      {/* Fixed Div - Post A Story */}
+      <div className="flex-shrink-0 flex flex-col items-center">
         <div
           onClick={() => setIsOpen(true)}
           className="avatar placeholder cursor-pointer"
         >
-          <div className="bg-neutral text-neutral-content w-[55px] md:w-[80px] rounded-full">
-            <FaPlus className="font-bold text-xl" />
+          <div className="bg-neutral text-neutral-content w-12 md:w-[70px] rounded-full">
+            <FaPlus className="font-bold text-base md:text-xl" />
           </div>
         </div>
-        <p className="text-sm hidden md:block font-semibold mt-2">
+        <p className="text-sm font-semibold mt-2 text-center whitespace-nowrap">
           Post A Story
         </p>
       </div>
@@ -157,7 +160,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
       />
 
       {/* Scrollable Map Part */}
-      <div className="flex gap-3 md:gap-5 overflow-x-auto md:pt-1 pt-2 ps-1 w-full  md:ps-1 no-scrollbar">
+      <div className="flex gap-3 md:gap-5 overflow-x-auto w-full no-scrollbar">
         {content}
       </div>
       <StoriesModal
