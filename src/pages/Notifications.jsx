@@ -13,6 +13,7 @@ import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
 import { FaCommentAlt, FaUserFriends } from 'react-icons/fa';
 import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
+import NotificationsSkeletonLoader from '../components/loaders/NotificationsSkeletonLoader';
 
 const Notifications = () => {
   //hooks
@@ -59,7 +60,7 @@ const Notifications = () => {
     navigate(`/posts/${id}`);
   };
   if (isLoading) {
-    content = <div>Loading...</div>;
+    content = <NotificationsSkeletonLoader count={10} />;
   }
 
   if (!isLoading && isError) {
