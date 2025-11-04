@@ -33,19 +33,18 @@ const Chats = () => {
   const currentlyLoggedInUserData = data?.user;
 
   //fetch all connections of the loggedInUser
-  const { data: myConnectionsData } = useGetMyConnectionsQuery(
-    currentlyLoggedInUserData?._id,
-    {
+  const { data: myConnectionsData, isLoading: isMyConnectionsDataLoading } =
+    useGetMyConnectionsQuery(currentlyLoggedInUserData?._id, {
       refetchOnMountOrArgChange: true,
       skip: !currentlyLoggedInUserData?._id,
-    }
-  );
+    });
 
   //fetching chatList
-  const { data: userConversations } = useGetUserConversationQuery(
-    { id: currentlyLoggedInUserData?._id },
-    { skip: !currentlyLoggedInUserData?._id, refetchOnMountOrArgChange: true }
-  );
+  const { data: userConversations, isLoading: isChatListLoading } =
+    useGetUserConversationQuery(
+      { id: currentlyLoggedInUserData?._id },
+      { skip: !currentlyLoggedInUserData?._id, refetchOnMountOrArgChange: true }
+    );
 
   useEffect(() => {
     if (userConversations?.conversations?.length > 0) {
@@ -148,6 +147,7 @@ const Chats = () => {
       <div>
         <ChatsSmallScreenFallback
           chatLists={chatLists}
+          isChatListLoading={isChatListLoading}
           myConnections={myConnections}
           activeConnections={activeConnections}
           isSmall={isSmall}
@@ -177,12 +177,14 @@ const Chats = () => {
           />
         )}
         <ChatConnectionsContent
+          isChatListLoading={isChatListLoading}
           chatLists={chatLists}
           myConnections={myConnections}
           activeConnections={activeConnections}
           handleInitiateChat={handleInitiateChat}
           isSmall={isSmall}
           filteredFriendsList={filteredFriendsList}
+          isMyConnectionsDataLoading={isMyConnectionsDataLoading}
         />
         {/* left side Content ends here */}
       </div>

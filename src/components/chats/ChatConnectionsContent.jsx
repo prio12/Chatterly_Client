@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import ChatLists from './ChatLists';
 import { FaHandPointRight } from 'react-icons/fa6';
 import FriendsList from './FriendsList';
+import ChatListSkeletonLoader from '../loaders/ChatListSkeletonLoader';
+import StoriesSkeletonLoader from '../loaders/StoriesSkeletonLoader';
 
 const ChatConnectionsContent = ({
   chatLists,
@@ -11,7 +13,23 @@ const ChatConnectionsContent = ({
   handleInitiateChat,
   isSmall,
   filteredFriendsList,
+  isChatListLoading,
+  isMyConnectionsDataLoading,
 }) => {
+  if (isChatListLoading || isMyConnectionsDataLoading) {
+    return (
+      <div>
+        <div className="mb-5">
+          <StoriesSkeletonLoader isChatConnections={true} />
+        </div>
+        <div className="mb-5">
+          {' '}
+          <ChatListSkeletonLoader />
+        </div>
+      </div>
+    );
+  }
+
   if (chatLists?.length === 0 && myConnections?.length === 0) {
     return (
       <div className="my-8">

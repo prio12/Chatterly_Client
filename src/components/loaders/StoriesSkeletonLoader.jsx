@@ -1,8 +1,11 @@
-const StoriesSkeletonLoader = () => {
+/* eslint-disable react/prop-types */
+const StoriesSkeletonLoader = ({ isChatConnections }) => {
   return (
     <div className="flex items-center gap-5">
       {/* Fixed "Post A Story" Skeleton */}
-      <div className="fixed_div mb-4 md:mb-0">
+      <div
+        className={`fixed_div mb-4 md:mb-0 ${isChatConnections && 'hidden'}`}
+      >
         <div className="w-[55px] h-[55px] md:w-[80px] md:h-[80px] rounded-full bg-gray-200 animate-pulse"></div>
         <div className="h-3 w-16 bg-gray-200 rounded mt-2 animate-pulse hidden md:block"></div>
       </div>

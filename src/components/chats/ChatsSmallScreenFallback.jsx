@@ -9,6 +9,7 @@ const ChatsSmallScreenFallback = ({
   isSmall,
   handleSearch,
   filteredFriendsList,
+  isChatListLoading,
 }) => {
   return (
     <div className="p-3">
@@ -21,6 +22,7 @@ const ChatsSmallScreenFallback = ({
       </div>
       {/* <div>{chatContentType}</div> */}
       <ChatConnectionsContent
+        isChatListLoading={isChatListLoading}
         chatLists={chatLists}
         myConnections={myConnections}
         activeConnections={activeConnections}
