@@ -5,6 +5,7 @@ import RightSideBar from '../components/common/RightSideBar';
 import Videos from '../components/profile/Videos';
 import { MdOndemandVideo } from 'react-icons/md';
 import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
+import MyVideosSkeletonLoader from '../components/loaders/MyVideosSkeletonLoader';
 
 const MyVideos = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -45,9 +46,7 @@ const MyVideos = () => {
 
           {/* Main Media Content */}
           {isLoading ? (
-            <div className="text-center text-gray-500 py-20">
-              Loading your photos...
-            </div>
+            <MyVideosSkeletonLoader count={4} showAddButton={true} />
           ) : (
             <div className="bg-white  ">
               <Videos currentUserData={user} user={user} />
