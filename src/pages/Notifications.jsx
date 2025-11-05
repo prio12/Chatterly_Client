@@ -60,7 +60,7 @@ const Notifications = () => {
     navigate(`/posts/${id}`);
   };
   if (isLoading) {
-    content = <NotificationsSkeletonLoader count={10} />;
+    content = <NotificationsSkeletonLoader count={6} />;
   }
 
   if (!isLoading && isError) {

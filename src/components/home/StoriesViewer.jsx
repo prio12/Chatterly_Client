@@ -90,7 +90,7 @@ const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
       ? myConnections?.map((connection) => (
           <Link
             to={`/profile/${connection?.myConnection?.uid}`}
-            key={connection?._id}
+            key={connection?.myConnection?.uid}
           >
             <div className="flex-shrink-0 cursor-pointer flex flex-col items-center">
               <div className="avatar">
