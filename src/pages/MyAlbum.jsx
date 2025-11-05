@@ -5,6 +5,7 @@ import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import Media from '../components/profile/Media';
 import { FaImages } from 'react-icons/fa';
 import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
+import MediaSkeletonLoader from '../components/loaders/MediaSkeletonLoader';
 
 const MyAlbum = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -46,7 +47,7 @@ const MyAlbum = () => {
           {/* Main Media Content */}
           {isLoading ? (
             <div className="text-center text-gray-500 py-20">
-              Loading your photos...
+              <MediaSkeletonLoader count={4} showAddButton={true} />
             </div>
           ) : (
             <div className="bg-white  ">
