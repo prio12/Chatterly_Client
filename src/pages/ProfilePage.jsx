@@ -17,6 +17,10 @@ import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import toast from 'react-hot-toast';
 import FloatingChatButton from '../components/common/FloatingChatButton';
 import ChatModal from '../components/chats/ChatModal';
+import ProfileSkeletonLoader from '../components/loaders/ProfileSkeletonLoader';
+import ProfileContentSkeletonLoader from '../components/loaders/ProfileContentSkeletonLoader';
+import ProfilePageRightSideContentSkeleton from '../components/loaders/ProfilePageRightSideContentSkeleton';
+import ConnectionsSkeletonLoader from '../components/loaders/ConnectionsSkeletonLoader';
 
 const ProfilePage = () => {
   //hooks
@@ -36,7 +40,11 @@ const ProfilePage = () => {
   const { data: suggestedConnectionsData, isLoading } =
     useFetchConnectionSuggestionsQuery(currentUser?.user?._id);
 
-  const { data, refetch } = useUserInfoByUidQuery(uid, {
+  const {
+    data,
+    refetch,
+    isLoading: isUserDataLoading,
+  } = useUserInfoByUidQuery(uid, {
     refetchOnMountOrArgChange: true,
   });
 
@@ -86,7 +94,13 @@ const ProfilePage = () => {
   let suggestedConnections;
 
   if (isLoading) {
-    suggestedConnections = <div>Loading...</div>;
+    suggestedConnections = (
+      <div>
+        {[...Array(3)].map((_, i) => (
+          <ConnectionsSkeletonLoader key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (!isLoading && limitedSuggestions?.length === 0) {
@@ -133,8 +147,16 @@ const ProfilePage = () => {
     ));
   }
 
-  if (!user) {
-    return <div>Loading...</div>;
+  if (!user || isUserDataLoading) {
+    return (
+      <div className="grid md:grid-cols-3 bg-gray-100 gap-8">
+        <div className="col-span-2 space-y-5">
+          <ProfileSkeletonLoader />
+          <ProfileContentSkeletonLoader />
+        </div>
+        <ProfilePageRightSideContentSkeleton />
+      </div>
+    );
   }
 
   const { bio, birthDate, relationshipStatus, email } = user;

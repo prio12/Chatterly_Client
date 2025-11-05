@@ -91,14 +91,6 @@ const About = ({ user }) => {
             <p className="text-gray-500 italic">Not added yet.</p>
           )}
         </div>
-        {/* <div className="flex flex-col items-center cursor-pointer hover:text-blue-600 border w-full p-3 text-sm rounded-lg">
-          <MdOutlineWorkOutline className="text-xl mb-1" />
-          <span>Add a workplace</span>
-        </div> */}
-        {/* <div className="flex flex-col items-center cursor-pointer hover:text-blue-600 border w-full p-3 text-sm rounded-lg">
-          <IoBookOutline className="text-xl mb-1" />
-          <span>Add Education</span>
-        </div> */}
       </div>
     </div>
   );

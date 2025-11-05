@@ -6,6 +6,7 @@ import Media from './Media';
 import Videos from './Videos';
 import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 import MyConnections from '../connections/MyConnections';
+import ProfileContentSkeletonLoader from '../loaders/ProfileContentSkeletonLoader';
 
 const ProfileContent = ({ user, currentUserData }) => {
   //hooks
@@ -21,7 +22,7 @@ const ProfileContent = ({ user, currentUserData }) => {
   let connectionsContent;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <ProfileContentSkeletonLoader />;
   }
 
   if (!isLoading && myConnections?.length === 0) {
