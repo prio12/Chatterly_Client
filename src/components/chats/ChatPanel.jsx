@@ -42,6 +42,9 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
   const clickedUser = clickedUserData?.user;
 
+  const shouldFetchMessages =
+    !!loggedInUser?._id && (!!selectedUserData?._id || !!clickedUser?._id);
+
   const {
     data,
     isLoading: isLoadingMessages,
@@ -52,7 +55,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
       user2: selectedUserData?._id || clickedUser?._id,
     },
     {
-      skip: !selectedUserData?._id && !clickedUser?._id,
+      skip: !shouldFetchMessages,
       refetchOnMountOrArgChange: true,
       refetchOnFocus: true,
     }
