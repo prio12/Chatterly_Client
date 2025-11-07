@@ -9,6 +9,7 @@ import { PiSuitcaseSimple } from 'react-icons/pi';
 import UpdateProfileModal from './modals/UpdateProfileModal';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import { formatDistanceToNow } from 'date-fns';
 
 const About = ({ user }) => {
   const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
@@ -18,8 +19,20 @@ const About = ({ user }) => {
   const { uid } = useParams();
 
   //user object destructuring
-  const { bio, location, birthDate, profession, relationshipStatus, email } =
-    user;
+  const {
+    bio,
+    location,
+    birthDate,
+    profession,
+    relationshipStatus,
+    email,
+    createdAt,
+  } = user;
+
+  // Converts createdAt timestamp into a human-readable relative time format.
+  const timeAgo = (timestamp) => {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  };
 
   return (
     <div className="p-5 border bg-white my-5">
@@ -81,8 +94,9 @@ const About = ({ user }) => {
         </div>
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <FaRegCalendar className="text-xl mb-1" />
-          <span className="font-semibold">Since : Nov 26, 2019</span>
+          <span className="font-semibold">Joined {timeAgo(createdAt)}</span>
         </div>
+
         <div className="flex flex-col items-center border w-full p-3 text-sm rounded-lg">
           <MdOutlineEmail className="text-xl mb-1" />
           {email ? (
