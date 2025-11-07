@@ -80,7 +80,7 @@ const Notifications = () => {
             return (
               <div
                 onClick={() => handleMarkAsRead({ _id: notification?._id })}
-                className={`flex items-center gap-5 shadow-sm hover:shadow-md p-5 rounded-lg ${
+                className={`flex items-center gap-5 shadow-sm hover:shadow-md p-5 rounded-lg w-full ${
                   notification?.read ? 'bg-slate-100' : 'bg-slate-200'
                 } mb-5`}
                 key={notification._id}
@@ -190,7 +190,7 @@ const Notifications = () => {
         <LeftSideBar />
       </div>
 
-      <div className="col-span-1  md:col-span-7 bg-white p-2 md:py-2 md:px-5 relative">
+      <div className="col-span-1  md:col-span-7 bg-white p-2 md:py-2 md:px-5 relative ">
         {content}
       </div>
 
