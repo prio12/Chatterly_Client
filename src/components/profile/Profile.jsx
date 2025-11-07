@@ -39,6 +39,9 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { uid } = useParams();
 
+  console.log(user, 'user');
+  console.log(currentUserData, 'currentUserData');
+
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
   const [error, setError] = useState(null);
@@ -151,6 +154,9 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
     <div className="bg-white border">
       <div
         onClick={() => {
+          if (user?.uid !== currentUser) {
+            return;
+          }
           setType('Cover_Photo');
           setIsOpen(true);
         }}
@@ -171,6 +177,9 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
         <div className="flex items-center gap-5">
           <div
             onClick={() => {
+              if (user?.uid !== currentUser) {
+                return;
+              }
               setType('Profile_Pic');
               setIsOpen(true);
             }}
