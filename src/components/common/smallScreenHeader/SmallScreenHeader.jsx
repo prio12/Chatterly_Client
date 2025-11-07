@@ -70,7 +70,7 @@ const SmallScreenHeader = ({
     <div className=" md:hidden  flex items-center sticky top-0  justify-between lg:hidden  w-full ">
       {/* small screen left side drawer */}
       <label htmlFor="my-drawer">
-        <RiMenu2Fill className="text-xl" />
+        <RiMenu2Fill className="text-xl cursor-pointer" />
       </label>
       <Link to="/">
         <div className="w-12">
