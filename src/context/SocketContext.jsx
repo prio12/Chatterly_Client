@@ -11,14 +11,13 @@ export const SocketProvider = ({ children }) => {
 
   // socket connection
   useEffect(() => {
-    // Create the socket connection
-    const newSocket = io('http://localhost:5000', {
+    const newSocket = io(import.meta.env.VITE_SOCKET_URL, {
       path: '/socket.io/',
       transports: ['websocket'],
-      reconnection: false, // Enable auto reconnection
-      reconnectionAttempts: 5, // Max attempts for reconnection
-      reconnectionDelay: 1000, // Time between reconnection attempts in ms
-      reconnectionDelayMax: 5000, // Max delay between reconnections
+      reconnection: false,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
     });
 
     // Set the socket instance
