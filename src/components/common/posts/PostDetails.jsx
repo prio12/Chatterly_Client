@@ -5,6 +5,7 @@ import { useGetAPostQuery } from '../../../redux/api/posts/postsApi';
 import PostCard from '../../profile/PostCard';
 import { useSelector } from 'react-redux';
 import { useUserInfoByUidQuery } from '../../../redux/api/users/usersApi';
+import PostSkeletonLoader from '../../loaders/PostSkeletonLoader';
 
 const PostDetails = () => {
   //hooks
@@ -19,7 +20,7 @@ const PostDetails = () => {
   const _id = user?.user?._id;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <PostSkeletonLoader />;
   }
 
   if (!isLoading && !post) {
