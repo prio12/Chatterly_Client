@@ -254,9 +254,11 @@ firebase login
 firebase deploy
 ```
 
-**Viewing:** This app is optimized for light theme displays.
+
 
 ---
+
+**Viewing:** This app is optimized for light theme displays.
 
 ## 🔗 Related Repositories
 
