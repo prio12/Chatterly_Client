@@ -8,6 +8,10 @@
 
 Chatterly is a modern social networking platform designed to connect people, share thoughts, and chat in real-time. Users can interact freely, post images and videos, see online friends, and engage through stories and posts—all with a clean and intuitive interface.
 
+### Demo Accounts (No signup required):
+- **User 1:** eren@gmail.com / 123456
+- **User 2:** mikasa@gmail.com / 123456
+
 ---
 
 ## ✨ Features
