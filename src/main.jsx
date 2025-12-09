@@ -4,7 +4,7 @@ import './index.css';
 import App from './App.jsx';
 import { BrowserRouter } from 'react-router';
 import { Provider } from 'react-redux';
-import store from './redux/app/store.js';
+import store from './redux/app/store';
 import { SocketProvider } from './context/SocketContext.jsx';
 import { Toaster } from 'react-hot-toast'; // ✅ import this here
 

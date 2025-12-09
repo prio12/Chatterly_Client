@@ -13,6 +13,12 @@ import {
   useAddNewUserMutation,
   useGenerateJwtMutation,
 } from '../../redux/api/users/usersApi';
+import { AppDispatch } from '../../redux/app/store';
+
+type EmailPassword = {
+  email: string;
+  password: string;
+};
 
 const SignIn = () => {
   //hooks
@@ -23,12 +29,12 @@ const SignIn = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const dispatch = useDispatch();
+  } = useForm<EmailPassword>();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: EmailPassword) => {
     //userinfo for firebase auth
     try {
       const payload = await dispatch(
@@ -61,11 +67,11 @@ const SignIn = () => {
             }, 1000);
           }
         } catch (error) {
-          setError(error.message);
+          setError((error as Error).message);
         }
       }
     } catch (error) {
-      setError(error.message);
+      setError((error as Error).message);
     }
   };
 
@@ -89,12 +95,17 @@ const SignIn = () => {
           }
         } catch (error) {
           console.log(error);
-          setError(error.message);
+          setError((error as Error).message);
         }
 
         try {
           const response = await addNewUser(userInfo);
-          if (response?.error?.status === 409) {
+          // response?.error?.status === 409
+          if (
+            response?.error &&
+            'status' in response?.error &&
+            response?.error?.status === 409
+          ) {
             toast.success('Welcome Back! 🎉', {
               duration: 5000, // Toast stays visible for 5 seconds
               style: {
@@ -131,11 +142,11 @@ const SignIn = () => {
           }
         } catch (error) {
           console.log(error);
-          setError(error.message);
+          setError((error as Error).message);
         }
       }
     } catch (error) {
-      setError(error.message);
+      setError((error as Error).message);
     }
   };
   return (

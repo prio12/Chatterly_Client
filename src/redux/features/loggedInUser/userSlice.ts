@@ -49,7 +49,7 @@ export const createUserWithGoogle = createAsyncThunk(
 );
 
 //async thunk to sign in a existing user with email and pass
-export const signInUserWithEmail = createAsyncThunk(
+export const signInUserWithEmail = createAsyncThunk <{currentUser: string},EmailPasswordPayload> (
   'signIn/withEmailPass',
   async ({ email, password }) => {
     const response = await signInWithEmailAndPassword(auth, email, password);
