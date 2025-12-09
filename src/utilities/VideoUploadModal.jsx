@@ -6,9 +6,6 @@ import LoadingButton from './btn/LoadingButton';
 import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 
 const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
-  //destructuring
-  const { profilePicture, name } = user;
-
   //hooks
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -110,10 +107,10 @@ const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
       <div className="md:w-1/2 md:mx-auto mt-5 p-2 md:p-5 shadow-md">
         <div className="flex items-center gap-5">
           <div>
-            {profilePicture ? (
+            {user?.profilePicture ? (
               <div className="avatar">
                 <div className="w-12 rounded-full">
-                  <img src={profilePicture} />
+                  <img src={user?.profilePicture} />
                 </div>
               </div>
             ) : (
@@ -123,7 +120,7 @@ const VideoUploadModal = ({ isModalOpen, setIsModalOpen, user }) => {
             )}
           </div>
           <div>
-            <h5 className="text-sm font-semibold">{name}</h5>
+            <h5 className="text-sm font-semibold">{user?.name}</h5>
           </div>
         </div>
         <div className="divider "></div>

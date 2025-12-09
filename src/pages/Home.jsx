@@ -247,12 +247,12 @@ const Home = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-5 bg-gray-100 min-h-screen">
       {/* Left Sidebar */}
-      <div className="hidden md:block col-span-3 bg-white dark:bg-slate-900 dark:text-white">
+      <div className="hidden md:block col-span-3 bg-white">
         <LeftSideBar />
       </div>
 
       {/* Middle Section */}
-      <div className="col-span-1 md:col-span-7 bg-white flex justify-center md:py-2 md:px-5 dark:bg-slate-900 dark:text-white">
+      <div className="col-span-1 md:col-span-7 bg-white flex justify-center md:py-2 md:px-5 ">
         <div className="w-full max-w-5xl md:px-5 px-0 py-2">
           <Stories
             user={user}
@@ -275,7 +275,7 @@ const Home = () => {
       </div>
 
       {/* Right Sidebar */}
-      <div className="hidden md:block col-span-2 bg-white dark:bg-slate-900 dark:text-white">
+      <div className="hidden md:block col-span-2 bg-white ">
         <RightSideBar
           suggestedConnectionsData={suggestedConnectionsData}
           suggestedCOnnectionsDataIsLoading={suggestedCOnnectionsDataIsLoading}

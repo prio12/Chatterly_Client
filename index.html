@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/public/letter-c (1).png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" type="image/png" href="/public/letter-c (1).png" />
     <title>Chatterly</title>
+
+    <!-- Force light mode globally -->
+    <style>
+      html[data-theme='light'],
+      body {
+        background-color: white !important;
+        color: black !important;
+      }
+
+      /* Force light even if OS/browser prefers dark */
+      @media (prefers-color-scheme: dark) {
+        html[data-theme='light'],
+        body {
+          background-color: white !important;
+          color: black !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
