@@ -7,13 +7,19 @@ import {
 import auth from '../../../firebase/firebase.cofig';
 import { GoogleAuthProvider } from 'firebase/auth';
 
+type UserState = {
+  currentUser : string | null;
+  isLoading: boolean;
+  isError: boolean;
+  error: string | null
+}
 
 type EmailPasswordPayload = {
   email: string;
   password:string
 }
 
-const initialState = {
+const initialState:UserState = {
   currentUser: null,
   isLoading: true,
   isError: false,
@@ -91,7 +97,7 @@ export const userSlice = createSlice({
         (state.currentUser = null),
           (state.isLoading = false),
           (state.isError = true),
-          (state.error = action.error.message);
+          (state.error = action.error.message ?? null);
       })
       .addCase(createUserWithGoogle.pending, (state) => {
         (state.currentUser = null),
@@ -109,7 +115,7 @@ export const userSlice = createSlice({
         (state.currentUser = null),
           (state.isLoading = true),
           (state.isError = false),
-          (state.error = action.error.message);
+          (state.error = action.error.message ?? null);
       })
       .addCase(signInUserWithEmail.pending, (state) => {
         (state.currentUser = null),
@@ -127,7 +133,7 @@ export const userSlice = createSlice({
         (state.currentUser = null),
           (state.isLoading = false),
           (state.isError = true),
-          (state.error = action.error.message);
+          (state.error = action.error.message ?? null);
       });
   },
 });
