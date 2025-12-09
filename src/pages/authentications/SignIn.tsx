@@ -14,6 +14,7 @@ import {
   useGenerateJwtMutation,
 } from '../../redux/api/users/usersApi';
 import { AppDispatch } from '../../redux/app/store';
+import { useAppDispatch } from '../../hooks/hooks';
 
 type EmailPassword = {
   email: string;
@@ -30,7 +31,7 @@ const SignIn = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<EmailPassword>();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
 

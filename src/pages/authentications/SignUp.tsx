@@ -13,7 +13,7 @@ import {
   useGenerateJwtMutation,
 } from '../../redux/api/users/usersApi';
 import toast from 'react-hot-toast';
-import { AppDispatch } from '../../redux/app/store';
+import { useAppDispatch } from '../../hooks/hooks';
 
 //types
 
@@ -26,7 +26,7 @@ type SignUpFormData = {
 
 const SignUp = () => {
   //hooks
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
   const [addNewUser] = useAddNewUserMutation();
