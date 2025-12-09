@@ -13,12 +13,22 @@ import {
   useGenerateJwtMutation,
 } from '../../redux/api/users/usersApi';
 import toast from 'react-hot-toast';
+import { AppDispatch } from '../../redux/app/store';
+
+//types
+
+type SignUpFormData = {
+  fname: string;
+  lname: string;
+  email: string;
+  password: string;
+};
 
 const SignUp = () => {
   //hooks
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
   const [addNewUser] = useAddNewUserMutation();
   const [generateJwt] = useGenerateJwtMutation();
 
@@ -26,10 +36,10 @@ const SignUp = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<SignUpFormData>();
 
   //with email pass sign up handler
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: SignUpFormData) => {
     //userinfo for firebase auth
     const userInfo = {
       fname: data.fname,
@@ -77,16 +87,16 @@ const SignUp = () => {
                 }, 1000);
               }
             } catch (error) {
-              setError(error.message);
+              setError((error as Error).message);
             }
           }
         } catch (error) {
-          setError(error.message);
+          setError((error as Error).message);
         }
       }
     } catch (error) {
       console.log(error);
-      setError(error.message);
+      setError((error as Error).message);
     }
   };
 
@@ -111,12 +121,16 @@ const SignUp = () => {
           }
         } catch (error) {
           console.log(error);
-          setError(error.message);
+          setError((error as Error).message);
         }
 
         try {
           const response = await addNewUser(userInfo);
-          if (response?.error?.status === 409) {
+          if (
+            response.error &&
+            'status' in response.error &&
+            response.error.status === 409
+          ) {
             toast.success('Welcome Back! 🎉', {
               duration: 5000, // Toast stays visible for 5 seconds
               style: {
@@ -153,11 +167,11 @@ const SignUp = () => {
           }
         } catch (error) {
           console.log(error);
-          setError(error.message);
+          setError((error as Error).message);
         }
       }
     } catch (error) {
-      setError(error.message);
+      setError((error as Error).message);
     }
   };
 

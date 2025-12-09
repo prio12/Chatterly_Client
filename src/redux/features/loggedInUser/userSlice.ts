@@ -7,6 +7,12 @@ import {
 import auth from '../../../firebase/firebase.cofig';
 import { GoogleAuthProvider } from 'firebase/auth';
 
+
+type EmailPasswordPayload = {
+  email: string;
+  password:string
+}
+
 const initialState = {
   currentUser: null,
   isLoading: true,
@@ -15,7 +21,7 @@ const initialState = {
 };
 
 // async thunk to create user with email pass
-export const createUserWithEmail = createAsyncThunk(
+export const createUserWithEmail = createAsyncThunk<{currentUser: string}, EmailPasswordPayload>(
   'createUser/withEmailPass',
   async ({ email, password }) => {
     const response = await createUserWithEmailAndPassword(

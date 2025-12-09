@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router';
-import SignUp from '../pages/authentications/SignUp';
 import Home from '../pages/Home';
 import UserLayout from '../outlet/UserLayout';
 import SignIn from '../pages/authentications/SignIn';
@@ -18,6 +17,7 @@ import Settings from '../pages/Settings';
 import FAQPage from '../pages/FAQPage';
 import GuidelinesPage from '../pages/GuidelinesPage';
 import AdminDashboard from '../pages/admin/AdminDashboard';
+import SignUp from '../pages/authentications/SignUp';
 
 const AppRoutes = () => {
   return (

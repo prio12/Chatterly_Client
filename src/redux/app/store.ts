@@ -13,4 +13,7 @@ const store = configureStore({
     getDefaultMiddleware().concat(baseApi.middleware),
 });
 
+// Infer the `AppDispatch` type from the store itself
+export type AppDispatch = typeof store.dispatch;
+
 export default store;
