@@ -103,6 +103,7 @@ React Insta Stories  → Instagram-style story viewer
 ```
 ESLint 9.17          → Code quality and consistency
 Vite Plugin React    → Fast refresh and JSX transform
+TypeScript 5.2 → Static type checking for reliability
 PostCSS + Autoprefixer → CSS processing
 ```
 
