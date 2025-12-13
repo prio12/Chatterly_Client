@@ -1,15 +1,10 @@
+import { NewUserData, UserWithPostIds } from '../../../types';
 import baseApi from '../baseApi';
 
-type NewUserData  = {
-  name: string;
-  email: string;
-  uid: string;
-  isGoogleSignIn:boolean
-}
 
 const usersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    addNewUser: builder.mutation({
+    addNewUser: builder.mutation<{result: UserWithPostIds},NewUserData>({
       query: (data) => ({
         url: '/users',
         method: 'POST',

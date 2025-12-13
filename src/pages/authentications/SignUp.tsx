@@ -14,7 +14,7 @@ import {
 } from '../../redux/api/users/usersApi';
 import toast from 'react-hot-toast';
 import { useAppDispatch } from '../../hooks/hooks';
-import { SignUpFormData } from '../../types';
+import { NewUserData, SignUpFormData } from '../../types';
 
 const SignUp = () => {
   //hooks
@@ -45,7 +45,7 @@ const SignUp = () => {
 
       if (payload.currentUser) {
         //gathering data of user to save in db
-        const userInfo = {
+        const userInfo: NewUserData = {
           name: `${data.fname} ${data.lname}`,
           email: data.email,
           uid: payload.currentUser,
@@ -98,9 +98,9 @@ const SignUp = () => {
       const payload = await dispatch(createUserWithGoogle()).unwrap();
       if (payload) {
         //gathering data of user to save in db
-        const userInfo = {
-          name: payload.currentUser.displayName,
-          email: payload.currentUser.email,
+        const userInfo: NewUserData = {
+          name: payload.currentUser.displayName || 'unknown',
+          email: payload.currentUser.email || 'unknown@gmail.com',
           uid: payload.currentUser.uid,
           isGoogleSignIn: true,
         };

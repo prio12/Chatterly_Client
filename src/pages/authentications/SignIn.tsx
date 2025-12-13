@@ -13,7 +13,7 @@ import {
   useGenerateJwtMutation,
 } from '../../redux/api/users/usersApi';
 import { useAppDispatch } from '../../hooks/hooks';
-import { SignInFormData } from '../../types';
+import { NewUserData, SignInFormData } from '../../types';
 
 const SignIn = () => {
   //hooks
@@ -75,9 +75,9 @@ const SignIn = () => {
       const payload = await dispatch(createUserWithGoogle()).unwrap();
       if (payload) {
         //gathering data of user to save in db
-        const userInfo = {
-          name: payload.currentUser.displayName,
-          email: payload.currentUser.email,
+        const userInfo: NewUserData = {
+          name: payload.currentUser.displayName || 'unknown',
+          email: payload.currentUser.email || 'unknown@gmail.com',
           uid: payload.currentUser.uid,
           isGoogleSignIn: true,
         };
