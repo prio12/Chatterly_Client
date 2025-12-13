@@ -14,15 +14,7 @@ import {
 } from '../../redux/api/users/usersApi';
 import toast from 'react-hot-toast';
 import { useAppDispatch } from '../../hooks/hooks';
-
-//types
-
-type SignUpFormData = {
-  fname: string;
-  lname: string;
-  email: string;
-  password: string;
-};
+import { SignUpFormData } from '../../types';
 
 const SignUp = () => {
   //hooks

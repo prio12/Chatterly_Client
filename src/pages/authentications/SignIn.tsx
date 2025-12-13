@@ -2,7 +2,6 @@ import { Link, useNavigate } from 'react-router';
 import Animation from '../../components/Animation';
 import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import {
   createUserWithGoogle,
   signInUserWithEmail,
@@ -13,13 +12,8 @@ import {
   useAddNewUserMutation,
   useGenerateJwtMutation,
 } from '../../redux/api/users/usersApi';
-import { AppDispatch } from '../../redux/app/store';
 import { useAppDispatch } from '../../hooks/hooks';
-
-type EmailPassword = {
-  email: string;
-  password: string;
-};
+import { SignInFormData } from '../../types';
 
 const SignIn = () => {
   //hooks
@@ -30,12 +24,12 @@ const SignIn = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<EmailPassword>();
+  } = useForm<SignInFormData>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
 
-  const onSubmit = async (data: EmailPassword) => {
+  const onSubmit = async (data: SignInFormData) => {
     //userinfo for firebase auth
     try {
       const payload = await dispatch(

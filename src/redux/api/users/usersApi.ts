@@ -1,5 +1,12 @@
 import baseApi from '../baseApi';
 
+type NewUserData  = {
+  name: string;
+  email: string;
+  uid: string;
+  isGoogleSignIn:boolean
+}
+
 const usersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addNewUser: builder.mutation({
