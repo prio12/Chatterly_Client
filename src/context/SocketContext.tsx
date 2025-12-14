@@ -1,13 +1,17 @@
 /* eslint-disable react/prop-types */
+import * as React from 'react';
 import { createContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
+
+interface SocketProviderProps {
+  children: React.ReactNode;
+}
 
 // Create a Context for the Socket
-const SocketContext = createContext(null);
-
+const SocketContext = createContext<Socket | null>(null);
 // Provider Component
-export const SocketProvider = ({ children }) => {
-  const [socket, setSocket] = useState(null);
+export const SocketProvider = ({ children }: SocketProviderProps) => {
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   // socket connection
   useEffect(() => {

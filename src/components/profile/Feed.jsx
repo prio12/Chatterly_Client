@@ -9,7 +9,6 @@ const Feed = ({ user }) => {
   //user object destructuring
   const { posts } = user;
 
-  console.log(user, 'from profile');
   //hooks
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { uid } = useParams();

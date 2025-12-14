@@ -1,4 +1,4 @@
-import { NewUserData, UserWithPostIds, UserWithPosts } from '../../../types';
+import { NewUserData, UpdatedUserDoc, UserWithPostIds, UserWithPosts } from '../../../types';
 import baseApi from '../baseApi';
 
 
@@ -28,7 +28,7 @@ const usersApi = baseApi.injectEndpoints({
     }),
 
     // Update user profile (profile pic, cover photo, bio, etc.)
-    updateUserProfile: builder.mutation({
+    updateUserProfile: builder.mutation<{message:string,user:UserWithPosts},UpdatedUserDoc>({
       query: ({ userUid, updates }) => ({
         url: `/users/${userUid}`,
         method: 'PATCH',

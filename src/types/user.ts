@@ -69,3 +69,18 @@ export interface LightUser {
     name:string;
     profilePicture?:string;
 }
+
+export interface UpdatedUserDoc  {
+    userUid:string;
+    updates:{
+        profilePicture?:string;
+        coverPhoto?:string;
+        name?:string;
+         bio?:string;
+        location?:string;
+        birthDate?:string;
+        profession?:string;
+        relationshipStatus?:string;
+        gender?:string
+    }
+}

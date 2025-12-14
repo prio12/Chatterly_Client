@@ -33,7 +33,6 @@ const PostCard = ({ post }) => {
     thoughtMode,
   } = post;
 
-  console.log(author, 'from postcard');
   //hooks
 
   const { currentUser } = useSelector((state) => state.loggedInUser);

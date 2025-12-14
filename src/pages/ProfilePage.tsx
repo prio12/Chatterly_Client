@@ -8,7 +8,6 @@ import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { Link, useParams } from 'react-router';
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../context/SocketContext';
-import { useSelector } from 'react-redux';
 import {
   useAddConnectionRequestMutation,
   useFetchConnectionSuggestionsQuery,
@@ -21,6 +20,18 @@ import ProfileSkeletonLoader from '../components/loaders/ProfileSkeletonLoader';
 import ProfileContentSkeletonLoader from '../components/loaders/ProfileContentSkeletonLoader';
 import ProfilePageRightSideContentSkeleton from '../components/loaders/ProfilePageRightSideContentSkeleton';
 import ConnectionsSkeletonLoader from '../components/loaders/ConnectionsSkeletonLoader';
+import { useAppSelector } from '../hooks/hooks';
+import { FetchBaseQueryError, skipToken } from '@reduxjs/toolkit/query';
+import { UserWithPostIds } from '../types';
+
+interface Recipient {
+  _id: string;
+  uid: string;
+}
+
+interface Success {
+  success: boolean;
+}
 
 const ProfilePage = () => {
   //hooks
@@ -28,7 +39,7 @@ const ProfilePage = () => {
   const socket = useContext(SocketContext);
 
   //getting currently loggedInUser Uid
-  const { currentUser: currentUserUid } = useSelector(
+  const { currentUser: currentUserUid } = useAppSelector(
     (state) => state.loggedInUser
   );
 
@@ -44,8 +55,9 @@ const ProfilePage = () => {
     data,
     refetch,
     isLoading: isUserDataLoading,
-  } = useUserInfoByUidQuery(uid, {
+  } = useUserInfoByUidQuery(uid ?? skipToken, {
     refetchOnMountOrArgChange: true,
+    skip: !uid,
   });
 
   //state to maintain chatModal
@@ -54,7 +66,7 @@ const ProfilePage = () => {
   const user = data?.user;
 
   //handle connection request
-  const handleConnect = async (recipient) => {
+  const handleConnect = async (recipient: Recipient) => {
     const connectionsInfo = {
       requester: currentUser?.user?._id,
       recipient: recipient?._id,
@@ -68,8 +80,17 @@ const ProfilePage = () => {
       if (response.success) {
         toast.success('Connection Request Sent!');
       }
-    } catch (error) {
-      toast.error(error?.data?.error);
+    } catch (err: unknown) {
+      if (err && typeof err === 'object' && 'data' in err) {
+        const error = err as FetchBaseQueryError;
+        const message =
+          (error.data as { error?: string })?.error || 'Something went wrong';
+        toast.error(message);
+      } else if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error('Something went wrong');
+      }
     }
   };
 
@@ -77,7 +98,7 @@ const ProfilePage = () => {
     suggestedConnectionsData?.suggestedConnections.slice(0, 3);
 
   useEffect(() => {
-    socket.on('postInteraction', ({ success }) => {
+    socket?.on('postInteraction', ({ success }: Success) => {
       if (success) {
         setTimeout(() => {
           refetch();
@@ -112,39 +133,41 @@ const ProfilePage = () => {
   }
 
   if (!isLoading && limitedSuggestions?.length > 0) {
-    suggestedConnections = limitedSuggestions?.map((connection) => (
-      <Link to={`/profile/${connection?.uid}`} key={connection?._id}>
-        {' '}
-        <div className="flex justify-between my-5 items-center">
-          <div className="flex items-center gap-5">
-            <div className="avatar cursor-pointer">
-              <div className="w-8 rounded-full">
-                {connection?.profilePicture ? (
-                  <img src={connection?.profilePicture} />
-                ) : (
-                  <DefaultProfilePIcture />
+    suggestedConnections = limitedSuggestions?.map(
+      (connection: UserWithPostIds) => (
+        <Link to={`/profile/${connection?.uid}`} key={connection?._id}>
+          {' '}
+          <div className="flex justify-between my-5 items-center">
+            <div className="flex items-center gap-5">
+              <div className="avatar cursor-pointer">
+                <div className="w-8 rounded-full">
+                  {connection?.profilePicture ? (
+                    <img src={connection?.profilePicture} />
+                  ) : (
+                    <DefaultProfilePIcture />
+                  )}
+                </div>
+              </div>
+              <div className="cursor-pointer">
+                <h5 className="font-bold">{connection?.name}</h5>
+                {connection?.bio && (
+                  <p className="text-sm ">
+                    {connection?.bio.slice(0, 20) + '...'}
+                  </p>
                 )}
               </div>
             </div>
-            <div className="cursor-pointer">
-              <h5 className="font-bold">{connection?.name}</h5>
-              {connection?.bio && (
-                <p className="text-sm ">
-                  {connection?.bio.slice(0, 20) + '...'}
-                </p>
-              )}
-            </div>
-          </div>
 
-          <button
-            onClick={() => handleConnect(connection)}
-            className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
-          >
-            Connect
-          </button>
-        </div>
-      </Link>
-    ));
+            <button
+              onClick={() => handleConnect(connection)}
+              className="btn btn-sm rounded bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
+            >
+              Connect
+            </button>
+          </div>
+        </Link>
+      )
+    );
   }
 
   if (!user || isUserDataLoading) {
@@ -169,11 +192,7 @@ const ProfilePage = () => {
           currentUserId={currentUser?.user?._id}
           currentUserData={currentUser?.user}
         />
-        <ProfileContent
-          currentUserId={currentUser?.user?._id}
-          currentUserData={currentUser?.user}
-          user={user}
-        />
+        <ProfileContent currentUserData={currentUser?.user} user={user} />
       </div>
       <div className="col-span-1 hidden md:block relative bg-white">
         <div className="p-5 border sticky top-[6.5rem]  ">

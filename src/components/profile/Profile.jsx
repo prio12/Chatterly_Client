@@ -39,9 +39,6 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
   const { uid } = useParams();
 
-  console.log(user, 'user');
-  console.log(currentUserData, 'currentUserData');
-
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
   const [error, setError] = useState(null);
