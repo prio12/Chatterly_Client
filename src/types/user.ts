@@ -1,3 +1,5 @@
+import {  ProfilePost,  } from "./posts";
+
 //typing signUp data 
 export interface SignUpFormData  {
   fname: string;
@@ -48,7 +50,22 @@ export interface BaseUser {
     updatedAt:string;
 }
 
+//typing user with only postIds
 export interface UserWithPostIds extends BaseUser {
     posts: string[];
     likedPosts:string[];
+}
+
+//typing user with the whole posts
+export interface UserWithPosts extends BaseUser {
+    posts: ProfilePost[];
+    likedPosts:ProfilePost[];
+}
+
+//typing the author for user's posts
+export interface LightUser {
+    _id:string;
+    uid:string;
+    name:string;
+    profilePicture?:string;
 }

@@ -1,4 +1,4 @@
-import { NewUserData, UserWithPostIds } from '../../../types';
+import { NewUserData, UserWithPostIds, UserWithPosts } from '../../../types';
 import baseApi from '../baseApi';
 
 
@@ -13,14 +13,14 @@ const usersApi = baseApi.injectEndpoints({
     }),
 
     //getAll Users
-    getAllUsers: builder.query({
+    getAllUsers: builder.query<{success:boolean,response:UserWithPostIds[]},void>({
       query: () => ({
         url: '/users',
       }),
     }),
 
     //fetch user specific info by uid
-    userInfoByUid: builder.query({
+    userInfoByUid: builder.query<{user:UserWithPosts},string | null>({
       query: (userUid) => ({
         url: `/users/${userUid}`,
       }),
