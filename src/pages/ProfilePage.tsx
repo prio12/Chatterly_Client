@@ -1,5 +1,4 @@
 import { MdOutlineEmail } from 'react-icons/md';
-import Profile from '../components/profile/Profile';
 import ProfileContent from '../components/profile/ProfileContent';
 import { CiHeart } from 'react-icons/ci';
 import { FaRegCalendarAlt } from 'react-icons/fa';
@@ -23,6 +22,7 @@ import ConnectionsSkeletonLoader from '../components/loaders/ConnectionsSkeleton
 import { useAppSelector } from '../hooks/hooks';
 import { FetchBaseQueryError, skipToken } from '@reduxjs/toolkit/query';
 import { UserWithPostIds } from '../types';
+import Profile from '../components/profile/Profile';
 
 interface Recipient {
   _id: string;

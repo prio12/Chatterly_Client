@@ -8,7 +8,6 @@ import DefaultCoverPhoto from './DefaultCoverPhoto';
 import DefaultProfilePIcture from './DefaultProfilePIcture';
 import UpdateNameModal from './modals/UpdateNameModal';
 import ProfileMediaModal from './modals/ProfileMediaModal';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import {
   useAcceptConnectionRequestMutation,
@@ -18,8 +17,17 @@ import {
 } from '../../redux/api/connections/connectionsApi';
 import toast from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
+import { UserWithPosts } from '../../types';
+import { useAppSelector } from '../../hooks/hooks';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-const Profile = ({ user, currentUserId, currentUserData }) => {
+interface ProfileProps {
+  user: UserWithPosts;
+  currentUserId?: string;
+  currentUserData?: UserWithPosts;
+}
+
+const Profile = ({ user, currentUserId, currentUserData }: ProfileProps) => {
   const { name, profilePicture, coverPhoto, location, profession, createdAt } =
     user;
 
@@ -36,7 +44,7 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
     },
     { refetchOnMountOrArgChange: true }
   );
-  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { currentUser } = useAppSelector((state) => state.loggedInUser);
   const { uid } = useParams();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +53,7 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
   const [isUpdateNameOpen, setIsUpdateNameOpen] = useState(false);
 
   // Converts createdAt timestamp into a human-readable relative time format.
-  const timeAgo = (timestamp) => {
+  const timeAgo = (timestamp: string) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
 
@@ -69,8 +77,17 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
       if (response.success) {
         toast.success('Connection Request Sent!');
       }
-    } catch (error) {
-      toast.error(error?.data?.error);
+    } catch (err: unknown) {
+      if (err && typeof err === 'object' && 'data' in err) {
+        const error = err as FetchBaseQueryError;
+        const message =
+          (error.data as { error?: string })?.error || 'Something went wrong';
+        toast.error(message);
+      } else if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error('Something went wrong');
+      }
     }
   };
 
@@ -87,7 +104,7 @@ const Profile = ({ user, currentUserId, currentUserData }) => {
         data: notificationInfo,
       });
     } catch (error) {
-      toast.error(error.message);
+      toast.error((error as Error).message);
     }
   };
 
