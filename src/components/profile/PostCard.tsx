@@ -17,8 +17,16 @@ import { useLocation } from 'react-router';
 import { Link } from 'react-router';
 import { useHandleLikeUnlikeMutation } from '../../redux/api/posts/postsApi';
 import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
+import { useAppSelector } from '../../hooks/hooks';
+import { FeedPost, ProfilePost } from '../../types';
 
-const PostCard = ({ post }) => {
+interface PostCardProps {
+  post: ProfilePost | FeedPost;
+}
+
+type LikeAction = 'like' | 'unLike';
+
+const PostCard = ({ post }: PostCardProps) => {
   const [handleLikeUnlike] = useHandleLikeUnlikeMutation();
   //post object destructuring
   const {
@@ -35,18 +43,18 @@ const PostCard = ({ post }) => {
 
   //hooks
 
-  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { currentUser } = useAppSelector((state) => state.loggedInUser);
   const { data } = useUserInfoByUidQuery(currentUser);
 
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   //getting location to for a css change of the postcard
   const PostDetailsPage = pathname.startsWith('/posts/');
 
   // Converts createdAt timestamp into a human-readable relative time format.
-  const timeAgo = (timestamp) => {
+  const timeAgo = (timestamp: string) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
 
@@ -71,7 +79,7 @@ const PostCard = ({ post }) => {
 
   const authorUid = author?.uid;
 
-  const handleLikeAndNotify = async ({ action }) => {
+  const handleLikeAndNotify = async ({ action }: { action: LikeAction }) => {
     const likePayload = {
       userId: data?.user?._id,
       postId: _id,
@@ -168,7 +176,7 @@ const PostCard = ({ post }) => {
           {/* Content section */}
           <div className="bg-white bg-opacity-50 rounded-md p-4 my-4 border-l-4 border-indigo-500">
             <p className="italic text-gray-700 text-[15px] leading-relaxed">
-              {content.split('\n').map((line, index) => (
+              {content?.split('\n').map((line, index) => (
                 <span key={index}>
                   {line}
                   <br />
@@ -310,7 +318,11 @@ const PostCard = ({ post }) => {
         <div className="max-h-64 overflow-y-scroll no-scrollbar">
           {comments.length > 0 &&
             [...comments]
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .sort(
+                (a, b) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
               .map((comment) => (
                 <CommentBox
                   comment={comment}

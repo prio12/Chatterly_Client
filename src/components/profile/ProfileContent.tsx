@@ -1,14 +1,20 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import Feed from './Feed';
 import About from './About';
 import Media from './Media';
 import Videos from './Videos';
 import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 import MyConnections from '../connections/MyConnections';
 import ProfileContentSkeletonLoader from '../loaders/ProfileContentSkeletonLoader';
+import { Connection, UserWithPostIds, UserWithPosts } from '../../types';
+import Feed from './Feed';
 
-const ProfileContent = ({ user, currentUserData }) => {
+interface ProfileContentProps {
+  user: UserWithPosts;
+  currentUserData?: UserWithPosts;
+}
+
+const ProfileContent = ({ user, currentUserData }: ProfileContentProps) => {
   //hooks
   const [activeTab, setActiveTab] = useState('feed');
 
@@ -51,13 +57,15 @@ const ProfileContent = ({ user, currentUserData }) => {
             </span>
           </h4>
         </div>
-        {myConnections?.map((connection) => (
-          <MyConnections
-            currentUserData={currentUserData}
-            connection={connection}
-            key={connection?.connectionId}
-          />
-        ))}
+        {myConnections?.map((connection: Connection) => {
+          return (
+            <MyConnections
+              currentUserData={currentUserData}
+              connection={connection}
+              key={connection?.connectionId}
+            />
+          );
+        })}
       </div>
     );
   }

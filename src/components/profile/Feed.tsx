@@ -1,16 +1,21 @@
 /* eslint-disable react/prop-types */
-import { useSelector } from 'react-redux';
-import CreatePost from '../CreatePost';
-import PostCard from './PostCard';
 import { BiNotepad } from 'react-icons/bi';
 import { useParams } from 'react-router';
+import { UserWithPosts } from '../../types';
+import { useAppSelector } from '../../hooks/hooks';
+import PostCard from './PostCard';
+import CreatePost from '../CreatePost';
 
-const Feed = ({ user }) => {
+interface FeedProps {
+  user: UserWithPosts;
+}
+
+const Feed = ({ user }: FeedProps) => {
   //user object destructuring
   const { posts } = user;
 
   //hooks
-  const { currentUser } = useSelector((state) => state.loggedInUser);
+  const { currentUser } = useAppSelector((state) => state.loggedInUser);
   const { uid } = useParams();
 
   let content;
@@ -26,9 +31,7 @@ const Feed = ({ user }) => {
       </div>
     );
   } else {
-    content = posts.map((post) => (
-      <PostCard id={user?._id} key={post._id} post={post} />
-    ));
+    content = posts.map((post) => <PostCard key={post._id} post={post} />);
   }
 
   return (

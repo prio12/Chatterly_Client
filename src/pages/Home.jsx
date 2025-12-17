@@ -1,9 +1,7 @@
 import { useSelector } from 'react-redux';
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
-import CreatePost from '../components/CreatePost';
 import Stories from '../components/home/StoriesViewer';
-import PostCard from '../components/profile/PostCard';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
 import { useContext, useEffect, useState, useRef } from 'react';
@@ -17,6 +15,8 @@ import PostFeedToggle from '../components/home/PostFeedToggle';
 import { FiFileText } from 'react-icons/fi';
 import { BiPlus } from 'react-icons/bi';
 import HomePageSkeletonLoader from '../components/loaders/HomePageSkeletonLoader';
+import PostCard from '../components/profile/PostCard';
+import CreatePost from '../components/CreatePost';
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
