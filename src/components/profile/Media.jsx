@@ -17,7 +17,7 @@ const Media = ({ user, currentUserData }) => {
     (post) => typeof post?.img === 'string' && post?.img.trim() !== ''
   );
 
-  const isOwner = currentUser === uid || currentUser === currentUserData?.uid;
+  const isOwner = currentUser === uid;
 
   return (
     <div className="p-5 bg-white border rounded-md shadow-sm my-5">
