@@ -5,7 +5,6 @@ import { CiSettings } from 'react-icons/ci';
 import { ImSwitch } from 'react-icons/im';
 import { IoBookOutline } from 'react-icons/io5';
 import { Link } from 'react-router';
-import auth from '../firebase/firebase.cofig';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setUser,
@@ -15,6 +14,7 @@ import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { useContext } from 'react';
 import SocketContext from '../context/SocketContext';
 import { RiAdminLine } from 'react-icons/ri';
+import auth from '../firebase/firebase.cofig';
 
 const AvatarDropDownContent = ({ user }) => {
   //hooks

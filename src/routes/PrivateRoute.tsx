@@ -1,7 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import auth from '../firebase/firebase.cofig';
 import {
   setUser,
   toggleLoading,
@@ -10,6 +9,7 @@ import { Navigate } from 'react-router';
 import AuthLoader from '../components/loaders/AuthLoader';
 import * as React from 'react';
 import { useAppSelector } from '../hooks/hooks';
+import auth from '../firebase/firebase.cofig';
 
 type PrivateRouteProps = {
   children: React.ReactNode;

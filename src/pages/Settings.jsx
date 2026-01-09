@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import UpdateNameModal from '../components/profile/modals/UpdateNameModal';
 import { useState } from 'react';
-import auth from '../firebase/firebase.cofig';
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
 } from 'firebase/auth';
 import toast from 'react-hot-toast';
+import auth from '../firebase/firebase.cofig';
 
 export default function Settings() {
   const { currentUser } = useSelector((state) => state.loggedInUser);

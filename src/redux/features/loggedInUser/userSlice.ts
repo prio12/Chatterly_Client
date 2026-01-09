@@ -4,9 +4,9 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from 'firebase/auth';
-import auth from '../../../firebase/firebase.cofig';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { SignInFormData, UserState } from '../../../types';
+import auth from '../../../firebase/firebase.cofig';
 
 const initialState:UserState = {
   currentUser: null,
