@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBox from '../components/chats/SearchBox';
-import useBreakpoint from '../hooks/useBreakpoint';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useGetMyConnectionsQuery } from '../redux/api/connections/connectionsApi';
 import { useContext, useEffect, useState } from 'react';
@@ -14,6 +13,7 @@ import {
   setUserProfile,
 } from '../redux/features/chat/chatSlice';
 import { useGetUserConversationQuery } from '../redux/api/messaging/messagingApi';
+import useBreakpoint from '../hooks/useBreakpoint';
 
 const Chats = () => {
   //checking screen size with manual hook

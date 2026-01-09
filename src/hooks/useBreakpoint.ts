@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const useBreakpoint = () => {
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
 
   //checking with useEffect
   useEffect(() => {
