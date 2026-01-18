@@ -24,8 +24,11 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   const { activeConnections, myConnections } = useSelector(
     (state) => state.chat
   );
+
   const { userProfile } = useSelector((state) => state.chat);
   const socket = useContext(SocketContext);
+
+  console.log(userProfile, 'from chat pannel');
 
   const { currentUser } = useSelector((state) => state.loggedInUser);
 
@@ -84,20 +87,20 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     //emitting event to let server know that messages are read
     socket.emit('messagesRead', {
       conversationId,
-      userId: userProfile?.payload._id || loggedInUserId,
+      userId: userProfile?._id || loggedInUserId,
     });
 
     return () => socket.emit('leaveRoom', conversationId);
-  }, [conversationId, socket, loggedInUserId, userProfile?.payload._id]);
+  }, [conversationId, socket, loggedInUserId, userProfile?._id]);
 
   //initially setting all messages
   useEffect(() => {
     const filteredMessages = data?.messages?.filter(
-      (m) => !m?.deletedBy.includes(userProfile?.payload._id)
+      (m) => !m?.deletedBy.includes(userProfile?._id)
     );
 
     setMessages(filteredMessages);
-  }, [data?.messages, userProfile?.payload._id]);
+  }, [data?.messages, userProfile?._id]);
 
   //listen to the event newMessage by socket.io and update the Ui
   useEffect(() => {
@@ -137,7 +140,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
       //now after update the  message , filter out based on the deletedBy
       setMessages((prev) =>
-        prev?.filter((m) => !m?.deletedBy?.includes(userProfile?.payload._id))
+        prev?.filter((m) => !m?.deletedBy?.includes(userProfile?._id))
       );
     };
 
@@ -146,7 +149,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
     return () => {
       socket.off('messageDeleted', updateMessageUi);
     };
-  }, [socket, userProfile?.payload._id]);
+  }, [socket, userProfile?._id]);
 
   //listen to deletedAllMessages event by socket.io and  set the message array to empty
   useEffect(() => {
@@ -189,7 +192,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
       if (
         !myConversationIsExit ||
-        userId === userProfile?.payload._id ||
+        userId === userProfile?._id ||
         loggedInUserId
       ) {
         return;
@@ -201,7 +204,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
         )
       );
     });
-  }, [socket, conversationId, userProfile?.payload._id, loggedInUserId]);
+  }, [socket, conversationId, userProfile?._id, loggedInUserId]);
 
   selectedUserData?._id || clickedUser?._id;
 
@@ -339,7 +342,7 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
         ) : (
           <ChatFooter
             selectedUserData={selectedUserData || clickedUser}
-            loggedInUserId={loggedInUserId || userProfile?.payload._id}
+            loggedInUserId={loggedInUserId || userProfile?._id}
           />
         )}
       </div>

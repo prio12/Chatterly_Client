@@ -65,7 +65,7 @@ const ChatMessages = ({ message }) => {
     try {
       const response = await deleteSingleMessage({
         status,
-        userId: userProfile?.payload?._id,
+        userId: userProfile?._id,
         messageId: message?._id,
       }).unwrap();
 

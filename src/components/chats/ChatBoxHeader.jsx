@@ -25,8 +25,8 @@ const ChatBoxHeader = ({
     if (confirmed) {
       try {
         const response = await deleteAllMessages({
-          userId: userProfile?.payload?._id,
-          uid: userProfile?.payload?.uid,
+          userId: userProfile?._id,
+          uid: userProfile?.uid,
           conversationId: conversationId,
         });
 

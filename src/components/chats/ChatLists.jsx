@@ -18,12 +18,14 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
   const [isTyping, setIsTyping] = useState(false);
 
   const otherParticipant = conversation?.participants.find(
-    (participant) => participant?._id !== userProfile?.payload._id
+    (participant) => participant?._id !== userProfile?._id
   );
 
+  console.log(userProfile, 'from chatList');
+
   useEffect(() => {
-    setUnreadCount(conversation.unreadCounts[userProfile?.payload._id]);
-  }, [conversation.unreadCounts, userProfile?.payload._id]);
+    setUnreadCount(conversation.unreadCounts[userProfile?._id]);
+  }, [conversation.unreadCounts, userProfile?._id]);
 
   let lastMessageContent;
 
@@ -38,7 +40,7 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
     // check if the last message was sent by the logged-in user
     const isOwnMessage =
       conversation?.lastMessage?.sender?._id?.toString() ===
-      userProfile?.payload?._id?.toString();
+      userProfile?._id?.toString();
 
     lastMessageContent = (
       <p className="text-xs text-gray-600">
@@ -67,7 +69,7 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
     try {
       const response = await setMarkAsRead({
         conversationId: conversation._id,
-        userId: userProfile?.payload?._id,
+        userId: userProfile?._id,
       }).unwrap();
 
       if (response?.success) {

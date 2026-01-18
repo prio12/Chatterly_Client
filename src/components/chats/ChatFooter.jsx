@@ -111,12 +111,9 @@ const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
     }
 
     const messageData = {
-      participants: [
-        selectedUserData?._id,
-        userProfile?.payload?._id || loggedInUserId,
-      ],
-      sender: userProfile?.payload?._id || loggedInUserId,
-      senderUid: userProfile?.payload?.uid,
+      participants: [selectedUserData?._id, userProfile?._id || loggedInUserId],
+      sender: userProfile?._id || loggedInUserId,
+      senderUid: userProfile?.uid,
       receiverUid: selectedUserData?.uid,
       text,
       image: textImageUrl?.image ? textImageUrl?.image : '',
