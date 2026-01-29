@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseApi = createApi({
+export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_SERVER_URL,
-    prepareHeaders: (headers) => {
+    prepareHeaders: (headers): Headers => {
       const token = localStorage.getItem('token');
+
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -20,7 +21,7 @@ const baseApi = createApi({
     'notifications',
     'connections',
     'stories',
-  ],
+  ] as const,
   endpoints: () => ({}),
 });
 

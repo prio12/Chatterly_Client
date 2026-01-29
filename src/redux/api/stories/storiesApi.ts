@@ -1,9 +1,13 @@
+import { ActiveStory, CreateStoryPayload, Story } from '../../../types';
 import baseApi from '../baseApi';
 
 const stories = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     //create a story
-    createAStory: builder.mutation({
+    createAStory: builder.mutation<
+      { success: boolean; story: Story },
+      CreateStoryPayload
+    >({
       query: (data) => {
         return {
           url: '/stories',
@@ -15,7 +19,10 @@ const stories = baseApi.injectEndpoints({
     }),
 
     //get stories
-    fetchStories: builder.query({
+    fetchStories: builder.query<
+      { success: boolean; activeStories: ActiveStory[] },
+      string
+    >({
       query: (id) => {
         return {
           url: `/stories/${id}`,
@@ -25,7 +32,10 @@ const stories = baseApi.injectEndpoints({
     }),
 
     //delete a user specific story
-    deleteAStory: builder.mutation({
+    deleteAStory: builder.mutation<
+      { success: boolean; message: string },
+      string
+    >({
       query: (id) => {
         console.log(id);
         return {

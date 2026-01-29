@@ -1,6 +1,6 @@
 import { FaTrash } from 'react-icons/fa6';
-import { useDeleteAStoryMutation } from '../../redux/api/stories/storiesApi';
 import toast from 'react-hot-toast';
+import { useDeleteAStoryMutation } from '../../redux/api/stories/storiesApi';
 
 /* eslint-disable react/prop-types */
 const WithDeleteButton = (props) => {

@@ -6,7 +6,6 @@ import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
 import { useContext, useEffect, useState, useRef } from 'react';
 import SocketContext from '../context/SocketContext';
-import { useFetchStoriesQuery } from '../redux/api/stories/storiesApi';
 import {
   useFetchConnectionSuggestionsQuery,
   useGetMyConnectionsQuery,
@@ -17,6 +16,7 @@ import { BiPlus } from 'react-icons/bi';
 import HomePageSkeletonLoader from '../components/loaders/HomePageSkeletonLoader';
 import PostCard from '../components/profile/PostCard';
 import CreatePost from '../components/CreatePost';
+import { useFetchStoriesQuery } from '../redux/api/stories/storiesApi';
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -125,6 +125,8 @@ const Home = () => {
   );
 
   const stories = storiesData?.activeStories;
+
+  console.log(stories, 'From home page');
 
   const {
     data: suggestedConnectionsData,
