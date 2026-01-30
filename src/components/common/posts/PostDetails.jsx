@@ -1,11 +1,11 @@
 import { useParams } from 'react-router';
 import LeftSideBar from '../LeftSideBar';
 import RightSideBar from '../RightSideBar';
-import { useGetAPostQuery } from '../../../redux/api/posts/postsApi';
 import { useSelector } from 'react-redux';
 import { useUserInfoByUidQuery } from '../../../redux/api/users/usersApi';
 import PostSkeletonLoader from '../../loaders/PostSkeletonLoader';
 import PostCard from '../../profile/PostCard';
+import { useGetAPostQuery } from '../../../redux/api/posts/postsApi';
 
 const PostDetails = () => {
   //hooks

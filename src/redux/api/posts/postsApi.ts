@@ -1,9 +1,13 @@
+import { CreatePostPayload, FeedPost, UserWithPostIds } from '../../../types';
 import baseApi from '../baseApi';
 
 const postsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     //creating a post
-    createAPost: builder.mutation({
+    createAPost: builder.mutation<
+      { success: boolean; result: FeedPost },
+      CreatePostPayload
+    >({
       query: (post) => ({
         url: '/posts',
         method: 'POST',
@@ -13,7 +17,10 @@ const postsApi = baseApi.injectEndpoints({
     }),
 
     //fetching all posts
-    getAllPosts: builder.query({
+    getAllPosts: builder.query<
+      { result: FeedPost[]; hasMore: boolean },
+      { page: number; limit: number }
+    >({
       query: ({ page = 1, limit = 5 }) => ({
         url: `/posts?page=${page}&limit=${limit}`,
       }),
@@ -21,7 +28,7 @@ const postsApi = baseApi.injectEndpoints({
     }),
 
     //fetching a specific post details
-    getAPost: builder.query({
+    getAPost: builder.query<{ success: boolean; response: FeedPost }, string>({
       query: (id) => {
         return { url: `/posts/${id}` };
       },
@@ -29,7 +36,10 @@ const postsApi = baseApi.injectEndpoints({
     }),
 
     //updating a post
-    updateAPost: builder.mutation({
+    updateAPost: builder.mutation<
+      { success: boolean; response: FeedPost },
+      { id: string; content: string }
+    >({
       query: ({ id, content }) => ({
         url: `/posts/${id}`,
         method: 'PATCH',
@@ -39,7 +49,23 @@ const postsApi = baseApi.injectEndpoints({
     }),
 
     //update likes unLikes
-    handleLikeUnlike: builder.mutation({
+    handleLikeUnlike: builder.mutation<
+      {
+        success: boolean;
+        liked: boolean;
+        likes: UserWithPostIds[];
+        post: FeedPost;
+      },
+      {
+        postId: string;
+        data: {
+          userId: string | undefined;
+          postId: string;
+          authorUid: string;
+          action: 'like' | 'unLike';
+        };
+      }
+    >({
       query: ({ postId, data }) => {
         return {
           url: `/posts/likes/${postId}`,
@@ -51,7 +77,18 @@ const postsApi = baseApi.injectEndpoints({
     }),
 
     //adding a comment to the specific post
-    handleAddComment: builder.mutation({
+    handleAddComment: builder.mutation<
+      { success: boolean; updatedPost: FeedPost },
+      {
+        id: string;
+        comment: {
+          user: string;
+          authorId: string;
+          authorUid: string;
+          text: string;
+        };
+      }
+    >({
       query: ({ id, comment }) => {
         return {
           url: `/posts/comments/${id}`,
@@ -63,7 +100,7 @@ const postsApi = baseApi.injectEndpoints({
     }),
 
     //deleting a post
-    deleteAPost: builder.mutation({
+    deleteAPost: builder.mutation<{ success: boolean }, { _id: string }>({
       query: ({ _id }) => ({
         url: `/posts/${_id}`,
         method: 'DELETE',
@@ -72,7 +109,10 @@ const postsApi = baseApi.injectEndpoints({
     }),
 
     //update a user's comment to a specific post
-    updateComment: builder.mutation({
+    updateComment: builder.mutation<
+      { success: boolean; response: FeedPost },
+      { id: string; text: { comment_id: string; text: string } }
+    >({
       query: ({ id, text }) => {
         return {
           url: `/posts/comments/update/${id}`,
@@ -84,7 +124,10 @@ const postsApi = baseApi.injectEndpoints({
     }),
 
     //delete a comment of a user to a specific post
-    deleteAComment: builder.mutation({
+    deleteAComment: builder.mutation<
+      { success: boolean },
+      { postId: string; commentId: string }
+    >({
       query: ({ postId, commentId }) => {
         return {
           url: `/posts/comments/delete/${postId}/${commentId}`,

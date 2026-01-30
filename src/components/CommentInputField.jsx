@@ -2,8 +2,8 @@
 import { FaPaperPlane } from 'react-icons/fa';
 import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
 import { useState } from 'react';
-import { useHandleAddCommentMutation } from '../redux/api/posts/postsApi';
 import toast from 'react-hot-toast';
+import { useHandleAddCommentMutation } from '../redux/api/posts/postsApi';
 
 const CommentInputField = ({ post, user, userId }) => {
   //hooks

@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import Modal from './Modal';
-import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 import LoadingButton from './btn/LoadingButton';
 import { useCreateAStoryMutation } from '../redux/api/stories/storiesApi';
+import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 
 const ContentUploadModal = ({ isOpen, setIsOpen, user, type }) => {
   //hooks

@@ -1,10 +1,10 @@
 import { CiSearch } from 'react-icons/ci';
 import LeftSideBar from '../components/common/LeftSideBar';
 import { useEffect, useMemo, useState } from 'react';
-import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
 import { useGetAllUsersQuery } from '../redux/api/users/usersApi';
 import SearchUsersList from '../components/search/SearchUsersList';
 import SearchPostsList from '../components/search/SearchPostsList';
+import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
 
 // Helper: escape regex special chars
 function escapeRegex(str) {

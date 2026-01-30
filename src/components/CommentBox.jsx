@@ -3,10 +3,10 @@ import DefaultProfilePIcture from './profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import EditCommentModal from '../utilities/editCommentModal';
-import { useDeleteACommentMutation } from '../redux/api/posts/postsApi';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router';
+import EditCommentModal from '../utilities/EditCommentModal';
+import { useDeleteACommentMutation } from '../redux/api/posts/postsApi';
 
 /* eslint-disable react/prop-types */
 const CommentBox = ({ comment, author, postId, loggedInUser }) => {

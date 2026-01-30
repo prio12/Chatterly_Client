@@ -15,10 +15,10 @@ import { useEffect, useRef, useState } from 'react';
 import UpdatePostModal from '../../utilities/UpdatePostModal';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router';
-import { useHandleLikeUnlikeMutation } from '../../redux/api/posts/postsApi';
 import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 import { useAppSelector } from '../../hooks/hooks';
 import { FeedPost, ProfilePost } from '../../types';
+import { useHandleLikeUnlikeMutation } from '../../redux/api/posts/postsApi';
 
 interface PostCardProps {
   post: ProfilePost | FeedPost;

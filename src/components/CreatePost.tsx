@@ -3,7 +3,6 @@
 import { forwardRef, useState } from 'react';
 import { IoVideocamOffOutline } from 'react-icons/io5';
 import { MdOutlineInsertPhoto } from 'react-icons/md';
-import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 import ContentUploadModal from '../utilities/ContentUploadModal ';
 import LoadingButton from '../utilities/btn/LoadingButton';
 import VideoUploadModal from '../utilities/VideoUploadModal';
@@ -14,6 +13,7 @@ import { UserWithPosts } from '../types';
 import * as React from 'react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
+import { useCreateAPostMutation } from '../redux/api/posts/postsApi';
 
 interface CreatePostPropsType {
   user: UserWithPosts;

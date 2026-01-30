@@ -3,16 +3,17 @@ import {
   useGetAllUsersQuery,
   useUserInfoByUidQuery,
 } from '../../redux/api/users/usersApi';
-import {
-  useDeleteAPostMutation,
-  useGetAllPostsQuery,
-} from '../../redux/api/posts/postsApi';
+
 import { useEffect, useState } from 'react';
 import { MdDelete, MdPostAdd } from 'react-icons/md';
 import { FaUsers } from 'react-icons/fa';
 import DefaultProfilePIcture from '../../components/profile/DefaultProfilePIcture';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
+import {
+  useDeleteAPostMutation,
+  useGetAllPostsQuery,
+} from '../../redux/api/posts/postsApi';
 
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);

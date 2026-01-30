@@ -3,7 +3,6 @@ import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
 import Stories from '../components/home/StoriesViewer';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
-import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
 import { useContext, useEffect, useState, useRef } from 'react';
 import SocketContext from '../context/SocketContext';
 import {
@@ -17,6 +16,7 @@ import HomePageSkeletonLoader from '../components/loaders/HomePageSkeletonLoader
 import PostCard from '../components/profile/PostCard';
 import CreatePost from '../components/CreatePost';
 import { useFetchStoriesQuery } from '../redux/api/stories/storiesApi';
+import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);
@@ -125,8 +125,6 @@ const Home = () => {
   );
 
   const stories = storiesData?.activeStories;
-
-  console.log(stories, 'From home page');
 
   const {
     data: suggestedConnectionsData,

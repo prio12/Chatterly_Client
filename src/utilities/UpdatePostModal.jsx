@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useForm } from 'react-hook-form';
 import Modal from './Modal';
+
+import { useEffect, useState } from 'react';
+import LoadingButton from './btn/LoadingButton';
+import toast from 'react-hot-toast';
 import {
   useDeleteAPostMutation,
   useUpdateAPostMutation,
 } from '../redux/api/posts/postsApi';
-import { useEffect, useState } from 'react';
-import LoadingButton from './btn/LoadingButton';
-import toast from 'react-hot-toast';
 
 const UpdatePostModal = ({ isOpen, setIsOpen, img, video, content, id }) => {
   // hooks

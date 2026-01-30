@@ -4,8 +4,8 @@ import Modal from './Modal';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { FaPaperPlane } from 'react-icons/fa6';
 import { useState } from 'react';
-import { useUpdateCommentMutation } from '../redux/api/posts/postsApi';
 import toast from 'react-hot-toast';
+import { useUpdateCommentMutation } from '../redux/api/posts/postsApi';
 
 const EditCommentModal = ({ isOpen, setIsOpen, comment, postId }) => {
   //hooks
