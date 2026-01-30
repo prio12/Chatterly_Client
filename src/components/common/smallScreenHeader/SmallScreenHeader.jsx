@@ -6,10 +6,7 @@ import { RiMenu2Fill } from 'react-icons/ri';
 import { Link, NavLink } from 'react-router';
 import DefaultProfilePIcture from '../../profile/DefaultProfilePIcture';
 import AvatarDropDownContent from '../../../utilities/AvatarDropDownContent';
-import {
-  useGetUserSpecificNotificationsQuery,
-  useHandleMarkAsSeenMutation,
-} from '../../../redux/api/notifications/notificationsApi';
+
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../../../context/SocketContext';
 import {
@@ -18,6 +15,10 @@ import {
 } from 'react-icons/md';
 import { CiSettings } from 'react-icons/ci';
 import { FaRegMessage } from 'react-icons/fa6';
+import {
+  useGetUserSpecificNotificationsQuery,
+  useHandleMarkAsSeenMutation,
+} from '../../../redux/api/notifications/notificationsApi';
 
 const SmallScreenHeader = ({
   setIsOpen,

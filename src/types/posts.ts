@@ -10,18 +10,25 @@ export interface CreatePostPayload {
 }
 
 // typing comment
-export interface Comment {
+export interface BaseComment {
   _id: string;
   text: string;
-  user: UserWithPostIds;
   createdAt: string;
+}
+
+export interface FeedPostComment extends BaseComment {
+  user: UserWithPostIds;
+}
+
+export interface NotificationPostComment extends BaseComment {
+  user: string;
 }
 
 // typing post
 export interface Post {
   _id: string;
   // author: UserWithPostIds;
-  comments: Comment[];
+  comments: FeedPostComment[];
   content?: string;
   img?: string;
   video?: string;

@@ -1,11 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router';
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
-import {
-  useGetUserSpecificNotificationsQuery,
-  useHandleDeleteMutation,
-  useHandleMarkAsReadMutation,
-} from '../redux/api/notifications/notificationsApi';
+
 import { IoNotificationsOffOutline } from 'react-icons/io5';
 import { FaHeart } from 'react-icons/fa6';
 import { MdDelete } from 'react-icons/md';
@@ -14,6 +10,11 @@ import { formatDistanceToNow } from 'date-fns';
 import { FaCommentAlt, FaUserFriends } from 'react-icons/fa';
 import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 import NotificationsSkeletonLoader from '../components/loaders/NotificationsSkeletonLoader';
+import {
+  useGetUserSpecificNotificationsQuery,
+  useHandleDeleteMutation,
+  useHandleMarkAsReadMutation,
+} from '../redux/api/notifications/notificationsApi';
 
 const Notifications = () => {
   //hooks

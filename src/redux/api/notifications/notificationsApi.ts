@@ -3,7 +3,13 @@ import baseApi from '../baseApi';
 const notifications = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // fetching a user-specific notifications
-    getUserSpecificNotifications: builder.query({
+    getUserSpecificNotifications: builder.query<
+      {
+        success: boolean;
+        response: Notification[];
+      },
+      { _id: string }
+    >({
       query: ({ _id }) => {
         return {
           url: `/notifications/${_id}`,
@@ -14,7 +20,10 @@ const notifications = baseApi.injectEndpoints({
     }),
 
     //handle mark as seen
-    handleMarkAsSeen: builder.mutation({
+    handleMarkAsSeen: builder.mutation<
+      { success: boolean; message: string },
+      { _id: string }
+    >({
       query: ({ _id }) => {
         return {
           url: `/notifications/${_id}`,
@@ -25,7 +34,10 @@ const notifications = baseApi.injectEndpoints({
     }),
 
     //handle mark as read
-    handleMarkAsRead: builder.mutation({
+    handleMarkAsRead: builder.mutation<
+      { success: boolean; response: Notification },
+      { _id: string }
+    >({
       query: ({ _id }) => {
         return {
           url: `/notifications/${_id}/mark-as-read`,
@@ -36,7 +48,10 @@ const notifications = baseApi.injectEndpoints({
     }),
 
     //handle delete a notification
-    handleDelete: builder.mutation({
+    handleDelete: builder.mutation<
+      { success: boolean; message: string },
+      { _id: string }
+    >({
       query: ({ _id }) => ({
         url: `/notifications/${_id}`,
         method: 'DELETE',
