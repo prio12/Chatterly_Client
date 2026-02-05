@@ -5,10 +5,6 @@ import Stories from '../components/home/StoriesViewer';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useContext, useEffect, useState, useRef } from 'react';
 import SocketContext from '../context/SocketContext';
-import {
-  useFetchConnectionSuggestionsQuery,
-  useGetMyConnectionsQuery,
-} from '../redux/api/connections/connectionsApi';
 import PostFeedToggle from '../components/home/PostFeedToggle';
 import { FiFileText } from 'react-icons/fi';
 import { BiPlus } from 'react-icons/bi';
@@ -17,6 +13,10 @@ import PostCard from '../components/profile/PostCard';
 import CreatePost from '../components/CreatePost';
 import { useFetchStoriesQuery } from '../redux/api/stories/storiesApi';
 import { useGetAllPostsQuery } from '../redux/api/posts/postsApi';
+import {
+  useFetchConnectionSuggestionsQuery,
+  useGetMyConnectionsQuery,
+} from '../redux/api/connections/connectionsApi';
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);

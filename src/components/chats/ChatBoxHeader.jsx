@@ -4,8 +4,8 @@ import { MdDelete } from 'react-icons/md';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useDeleteAllMessagesMutation } from '../../redux/api/messaging/messagingApi';
 import toast from 'react-hot-toast';
+import { useDeleteAllMessagesMutation } from '../../redux/api/messaging/messagingApi';
 
 const ChatBoxHeader = ({
   selectedUserData,

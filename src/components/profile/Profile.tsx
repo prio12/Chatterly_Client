@@ -9,17 +9,18 @@ import DefaultProfilePIcture from './DefaultProfilePIcture';
 import UpdateNameModal from './modals/UpdateNameModal';
 import ProfileMediaModal from './modals/ProfileMediaModal';
 import { useParams } from 'react-router';
+
+import toast from 'react-hot-toast';
+import { formatDistanceToNow } from 'date-fns';
+import { UserWithPosts } from '../../types';
+import { useAppSelector } from '../../hooks/hooks';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import {
   useAcceptConnectionRequestMutation,
   useAddConnectionRequestMutation,
   useGetConnectionStatusQuery,
   useIgnoreAConnectionRequestMutation,
 } from '../../redux/api/connections/connectionsApi';
-import toast from 'react-hot-toast';
-import { formatDistanceToNow } from 'date-fns';
-import { UserWithPosts } from '../../types';
-import { useAppSelector } from '../../hooks/hooks';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 interface ProfileProps {
   user: UserWithPosts;

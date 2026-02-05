@@ -5,9 +5,9 @@ import ContentUploadModal from '../../utilities/ContentUploadModal ';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import StoriesModal from '../profile/modals/StoriesModal';
 import { formatDistanceToNow } from 'date-fns';
-import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 import { Link } from 'react-router';
 import StoriesSkeletonLoader from '../loaders/StoriesSkeletonLoader';
+import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 
 const StoriesViewer = ({ user, activeStories, isStoryLoading }) => {
   //hooks

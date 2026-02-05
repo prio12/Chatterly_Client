@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
+
+import toast from 'react-hot-toast';
+import { formatDistanceToNow } from 'date-fns';
 import {
   useAcceptConnectionRequestMutation,
   useIgnoreAConnectionRequestMutation,
 } from '../../redux/api/connections/connectionsApi';
-import toast from 'react-hot-toast';
-import { formatDistanceToNow } from 'date-fns';
 
 const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
   //hooks
@@ -16,9 +17,11 @@ const ConnectionRequests = ({ request, currentlyLoggedInUserData }) => {
   const handleAcceptRequest = async () => {
     const notificationInfo = {
       // notificationSender: request?.requester?.uid,
-      notificationSender: currentlyLoggedInUserData,
-      notificationRecipient: request?.requester,
+      notificationSender: currentlyLoggedInUserData, //user with posts
+      notificationRecipient: request?.requester, // user with post ids
     };
+
+    console.log(notificationInfo, 'from ConnectionRequests');
 
     try {
       await acceptRequest({

@@ -4,8 +4,8 @@ import RightSideBar from '../components/common/RightSideBar';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import Media from '../components/profile/Media';
 import { FaImages } from 'react-icons/fa';
-import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 import MediaSkeletonLoader from '../components/loaders/MediaSkeletonLoader';
+import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 
 const MyAlbum = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);

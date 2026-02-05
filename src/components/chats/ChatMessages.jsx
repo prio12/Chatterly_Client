@@ -5,11 +5,12 @@ import { formatDistanceToNow } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
 import { LiaCheckDoubleSolid, LiaCheckSolid } from 'react-icons/lia';
 import { MdDelete, MdModeEditOutline, MdClose } from 'react-icons/md';
+
+import toast from 'react-hot-toast';
 import {
   useDeleteSingleMessageMutation,
   useEditMessageMutation,
 } from '../../redux/api/messaging/messagingApi';
-import toast from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
 const ChatMessages = ({ message }) => {

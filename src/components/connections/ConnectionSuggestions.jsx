@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import toast from 'react-hot-toast';
-import { useAddConnectionRequestMutation } from '../../redux/api/connections/connectionsApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { Link } from 'react-router';
+import { useAddConnectionRequestMutation } from '../../redux/api/connections/connectionsApi';
 
 const ConnectionSuggestions = ({
   user,

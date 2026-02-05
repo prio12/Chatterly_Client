@@ -1,16 +1,17 @@
 import { SiImessage } from 'react-icons/si';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
+
+import toast from 'react-hot-toast';
+import { Link, useLocation, useParams } from 'react-router';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import ChatModal from '../chats/ChatModal';
 import {
   useAcceptConnectionRequestMutation,
   useAddConnectionRequestMutation,
   useGetConnectionStatusQuery,
   useIgnoreAConnectionRequestMutation,
 } from '../../redux/api/connections/connectionsApi';
-import toast from 'react-hot-toast';
-import { Link, useLocation, useParams } from 'react-router';
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
-import ChatModal from '../chats/ChatModal';
 
 /* eslint-disable react/prop-types */
 const MyConnections = ({ connection, currentUserData }) => {

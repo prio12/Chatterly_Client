@@ -5,15 +5,15 @@ import { useEffect, useState } from 'react';
 import ConnectionSuggestions from '../components/connections/ConnectionSuggestions';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
+import MyConnections from '../components/connections/MyConnections';
+import SentConnections from '../components/connections/SentConnections';
+import ConnectionsSkeletonLoader from '../components/loaders/ConnectionsSkeletonLoader';
 import {
   useFetchConnectionRequestsQuery,
   useFetchConnectionSuggestionsQuery,
   useGetMyConnectionsQuery,
   useGetSentRequestsQuery,
 } from '../redux/api/connections/connectionsApi';
-import MyConnections from '../components/connections/MyConnections';
-import SentConnections from '../components/connections/SentConnections';
-import ConnectionsSkeletonLoader from '../components/loaders/ConnectionsSkeletonLoader';
 
 const Connections = () => {
   const [content, setContent] = useState('request');

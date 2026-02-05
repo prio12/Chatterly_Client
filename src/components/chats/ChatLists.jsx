@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
-import { useMarkConversationAsReadMutation } from '../../redux/api/messaging/messagingApi';
 import { useNavigate } from 'react-router';
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../../context/SocketContext';
 import TypingIndicator from './TypingIndicator';
+import { useMarkConversationAsReadMutation } from '../../redux/api/messaging/messagingApi';
 
 /* eslint-disable react/prop-types */
 const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
@@ -20,8 +20,6 @@ const ChatLists = ({ chatList: conversation, handleInitiateChat, isSmall }) => {
   const otherParticipant = conversation?.participants.find(
     (participant) => participant?._id !== userProfile?._id
   );
-
-  console.log(userProfile, 'from chatList');
 
   useEffect(() => {
     setUnreadCount(conversation.unreadCounts[userProfile?._id]);

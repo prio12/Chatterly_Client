@@ -5,7 +5,6 @@ import ChatFooter from './ChatFooter';
 import ChatMessages from './ChatMessages';
 import { useUserInfoByUidQuery } from '../../redux/api/users/usersApi';
 import { useSelector } from 'react-redux';
-import { useGetMessagesQuery } from '../../redux/api/messaging/messagingApi';
 import DefaultProfilePIcture from '../profile/DefaultProfilePIcture';
 import { CiLock } from 'react-icons/ci';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -14,6 +13,7 @@ import TypingIndicator from './TypingIndicator';
 import ChatMessagesSkeletonLoader from '../loaders/ChatMessagesSkeletonLoader';
 import ChatBoxHeaderSkeletonLoader from '../loaders/ChatBoxHeaderSkeletonLoader';
 import ChatFooterSkeletonLoader from '../loaders/ChatFooterSkeletonLoader';
+import { useGetMessagesQuery } from '../../redux/api/messaging/messagingApi';
 
 const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
   //getting the uid from url
@@ -27,8 +27,6 @@ const ChatPanel = ({ selectedUserData, loggedInUserId }) => {
 
   const { userProfile } = useSelector((state) => state.chat);
   const socket = useContext(SocketContext);
-
-  console.log(userProfile, 'from chat pannel');
 
   const { currentUser } = useSelector((state) => state.loggedInUser);
 

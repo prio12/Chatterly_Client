@@ -13,11 +13,11 @@ import SocketContext from '../../context/SocketContext';
 
 import SmallScreenHeader from './smallScreenHeader/SmallScreenHeader';
 import SmallScreenDropdown from './smallScreenHeader/SmallScreenSidebar';
-import { useGetUserConversationQuery } from '../../redux/api/messaging/messagingApi';
 import {
   useGetUserSpecificNotificationsQuery,
   useHandleMarkAsSeenMutation,
 } from '../../redux/api/notifications/notificationsApi';
+import { useGetUserConversationQuery } from '../../redux/api/messaging/messagingApi';
 
 const Header = () => {
   //hooks

@@ -6,10 +6,7 @@ import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
 import { Link, useParams } from 'react-router';
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../context/SocketContext';
-import {
-  useAddConnectionRequestMutation,
-  useFetchConnectionSuggestionsQuery,
-} from '../redux/api/connections/connectionsApi';
+
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import toast from 'react-hot-toast';
 import FloatingChatButton from '../components/common/FloatingChatButton';
@@ -23,6 +20,10 @@ import { FetchBaseQueryError, skipToken } from '@reduxjs/toolkit/query';
 import { UserWithPostIds } from '../types';
 import Profile from '../components/profile/Profile';
 import ProfileContent from '../components/profile/ProfileContent';
+import {
+  useAddConnectionRequestMutation,
+  useFetchConnectionSuggestionsQuery,
+} from '../redux/api/connections/connectionsApi';
 
 interface Recipient {
   _id: string;

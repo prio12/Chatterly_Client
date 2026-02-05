@@ -1,9 +1,21 @@
+import {
+  AddConnectionServerResponse,
+  Connection,
+  ConnectionRequestPayload,
+  fetchConnectionRequestsResponse,
+  SentRequestResponse,
+  UserWithPostIds,
+  UserWithPosts,
+} from '../../../types';
 import baseApi from '../baseApi';
 
 const connectionsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     //sending connection requests to the server
-    addConnectionRequest: builder.mutation({
+    addConnectionRequest: builder.mutation<
+      { success: boolean; response: AddConnectionServerResponse },
+      { data: ConnectionRequestPayload }
+    >({
       query: ({ data }) => {
         return {
           url: '/connections',
@@ -15,7 +27,10 @@ const connectionsApi = baseApi.injectEndpoints({
     }),
 
     //fetching all connection requests of a specific user
-    fetchConnectionRequests: builder.query({
+    fetchConnectionRequests: builder.query<
+      { success: boolean; response: fetchConnectionRequestsResponse[] },
+      string
+    >({
       query: (id) => {
         return {
           url: `/connections/${id}`,
@@ -25,7 +40,10 @@ const connectionsApi = baseApi.injectEndpoints({
     }),
 
     //fetching connection Suggestions
-    fetchConnectionSuggestions: builder.query({
+    fetchConnectionSuggestions: builder.query<
+      { success: boolean; suggestedConnections: UserWithPostIds[] },
+      string
+    >({
       query: (id) => {
         return {
           url: `/connections/suggestions/${id}`,
@@ -35,7 +53,16 @@ const connectionsApi = baseApi.injectEndpoints({
     }),
 
     //accept connection request
-    acceptConnectionRequest: builder.mutation({
+    acceptConnectionRequest: builder.mutation<
+      { success: boolean; response: AddConnectionServerResponse },
+      {
+        id: string;
+        data: {
+          notificationSender: UserWithPosts;
+          notificationRecipient: UserWithPostIds;
+        };
+      }
+    >({
       query: ({ id, data }) => {
         return {
           url: `/connections/${id}`,
@@ -47,7 +74,10 @@ const connectionsApi = baseApi.injectEndpoints({
     }),
 
     //ignore/decline a connection request
-    ignoreAConnectionRequest: builder.mutation({
+    ignoreAConnectionRequest: builder.mutation<
+      { success: boolean; response: AddConnectionServerResponse },
+      string
+    >({
       query: (id) => {
         return {
           url: `/connections/${id}`,
@@ -58,7 +88,10 @@ const connectionsApi = baseApi.injectEndpoints({
     }),
 
     //get myConnections (A user's all friends/connections)
-    getMyConnections: builder.query({
+    getMyConnections: builder.query<
+      { success: boolean; myConnections: Connection[] },
+      string
+    >({
       query: (id) => {
         return {
           url: `/connections/myConnections/${id}`,
@@ -68,7 +101,10 @@ const connectionsApi = baseApi.injectEndpoints({
     }),
 
     //get all sent Requests of a individual user
-    getSentRequests: builder.query({
+    getSentRequests: builder.query<
+      { success: boolean; response: SentRequestResponse[] },
+      string
+    >({
       query: (id) => {
         return {
           url: `/connections/sentRequests/${id}`,
@@ -78,7 +114,15 @@ const connectionsApi = baseApi.injectEndpoints({
     }),
 
     //get connection status between two users for the profile section to show disconnect,connect,cancel,accept
-    getConnectionStatus: builder.query({
+    getConnectionStatus: builder.query<
+      {
+        connection: boolean;
+        connectionId: string;
+        status: string;
+        action: string;
+      },
+      { userId: string; targetId: string }
+    >({
       query: ({ userId, targetId }) => {
         return {
           url: `/connections/status/${userId}/${targetId}`,

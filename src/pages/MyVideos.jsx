@@ -4,8 +4,8 @@ import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
 import Videos from '../components/profile/Videos';
 import { MdOndemandVideo } from 'react-icons/md';
-import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 import MyVideosSkeletonLoader from '../components/loaders/MyVideosSkeletonLoader';
+import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 
 const MyVideos = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);

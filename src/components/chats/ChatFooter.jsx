@@ -3,11 +3,11 @@ import { useContext, useRef, useState, useEffect } from 'react';
 import { IoIosSend, IoMdClose } from 'react-icons/io';
 import { MdEmojiEmotions } from 'react-icons/md';
 import { useSelector } from 'react-redux';
-import { useSendMessageMutation } from '../../redux/api/messaging/messagingApi';
 import toast from 'react-hot-toast';
 import SocketContext from '../../context/SocketContext';
 import EmojiPicker from 'emoji-picker-react';
 import { FaRegFileImage } from 'react-icons/fa6';
+import { useSendMessageMutation } from '../../redux/api/messaging/messagingApi';
 
 const ChatFooter = ({ selectedUserData, loggedInUserId }) => {
   const { userProfile } = useSelector((state) => state.chat);

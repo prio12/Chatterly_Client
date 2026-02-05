@@ -3,11 +3,11 @@ import { useState } from 'react';
 import About from './About';
 import Media from './Media';
 import Videos from './Videos';
-import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 import MyConnections from '../connections/MyConnections';
 import ProfileContentSkeletonLoader from '../loaders/ProfileContentSkeletonLoader';
 import { Connection, UserWithPostIds, UserWithPosts } from '../../types';
 import Feed from './Feed';
+import { useGetMyConnectionsQuery } from '../../redux/api/connections/connectionsApi';
 
 interface ProfileContentProps {
   user: UserWithPosts;

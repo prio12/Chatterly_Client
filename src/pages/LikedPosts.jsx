@@ -2,13 +2,13 @@ import { useSelector } from 'react-redux';
 import LeftSideBar from '../components/common/LeftSideBar';
 import RightSideBar from '../components/common/RightSideBar';
 import { useUserInfoByUidQuery } from '../redux/api/users/usersApi';
-import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 import { FaHandPointRight, FaHeart } from 'react-icons/fa6';
 import { Link } from 'react-router';
 import { useContext, useEffect, useState } from 'react';
 import SocketContext from '../context/SocketContext';
 import PostSkeletonLoader from '../components/loaders/PostSkeletonLoader';
 import PostCard from '../components/profile/PostCard';
+import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 
 const LikedPosts = () => {
   const { currentUser } = useSelector((state) => state.loggedInUser);

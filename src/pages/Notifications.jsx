@@ -8,13 +8,13 @@ import { MdDelete } from 'react-icons/md';
 import DefaultProfilePIcture from '../components/profile/DefaultProfilePIcture';
 import { formatDistanceToNow } from 'date-fns';
 import { FaCommentAlt, FaUserFriends } from 'react-icons/fa';
-import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 import NotificationsSkeletonLoader from '../components/loaders/NotificationsSkeletonLoader';
 import {
   useGetUserSpecificNotificationsQuery,
   useHandleDeleteMutation,
   useHandleMarkAsReadMutation,
 } from '../redux/api/notifications/notificationsApi';
+import { useFetchConnectionSuggestionsQuery } from '../redux/api/connections/connectionsApi';
 
 const Notifications = () => {
   //hooks
