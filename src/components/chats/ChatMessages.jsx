@@ -44,6 +44,9 @@ const ChatMessages = ({ message }) => {
     if (message?.sender?.uid !== currentUser) return;
 
     const trimmedEditedMessage = editedMessage.trim();
+
+    console.log(message, 'message from chatMessages');
+    console.log(trimmedEditedMessage, 'trimmedMessage from chat messages');
     if (trimmedEditedMessage === message?.text) {
       return setIsEditModalOpen(false);
     }

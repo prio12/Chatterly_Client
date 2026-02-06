@@ -1,9 +1,18 @@
+import {
+  Conversation,
+  CreateMessagePayload,
+  Message,
+  NewMessageServerResponse,
+} from '../../../types';
 import baseApi from '../baseApi';
 
 const messaging = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     //send message
-    sendMessage: builder.mutation({
+    sendMessage: builder.mutation<
+      { success: boolean; newMessage: NewMessageServerResponse },
+      CreateMessagePayload
+    >({
       query: (data) => {
         return {
           url: '/conversations',
@@ -14,7 +23,13 @@ const messaging = baseApi.injectEndpoints({
     }),
 
     //get user specific conversation
-    getUserConversation: builder.query({
+    getUserConversation: builder.query<
+      {
+        success: boolean;
+        conversations: Conversation[];
+      },
+      { id: string }
+    >({
       query: ({ id }) => {
         return {
           url: `/conversations/${id}`,
@@ -23,7 +38,10 @@ const messaging = baseApi.injectEndpoints({
     }),
 
     //get messages
-    getMessages: builder.query({
+    getMessages: builder.query<
+      { success: boolean; messages: Message[] },
+      { user1: string; user2: string }
+    >({
       query: ({ user1, user2 }) => {
         return {
           url: `/conversations/messages/between?user1=${user1}&user2=${user2}`,
@@ -32,7 +50,10 @@ const messaging = baseApi.injectEndpoints({
     }),
 
     //mark a conversation as read
-    markConversationAsRead: builder.mutation({
+    markConversationAsRead: builder.mutation<
+      { success: boolean; updatedConversation: Conversation },
+      { conversationId: string; userId: string }
+    >({
       query: ({ conversationId, userId }) => {
         return {
           url: `/conversations/${conversationId}/read`,
@@ -43,7 +64,10 @@ const messaging = baseApi.injectEndpoints({
     }),
 
     //edit a message
-    editMessage: builder.mutation({
+    editMessage: builder.mutation<
+      { success: boolean; response: Message },
+      { message: Message; editedMessage: string }
+    >({
       query: ({ message, editedMessage }) => {
         return {
           url: '/conversations/message/edit',
@@ -54,7 +78,10 @@ const messaging = baseApi.injectEndpoints({
     }),
 
     //delete single message
-    deleteSingleMessage: builder.mutation({
+    deleteSingleMessage: builder.mutation<
+      { success: boolean; updatedMessage: Message },
+      { messageId: string; userId: string; status: string }
+    >({
       query: ({ messageId, userId, status }) => {
         return {
           url: `/conversations/message/delete/${messageId}`,
@@ -65,7 +92,10 @@ const messaging = baseApi.injectEndpoints({
     }),
 
     //delete all messages
-    deleteAllMessages: builder.mutation({
+    deleteAllMessages: builder.mutation<
+      { success: boolean },
+      { conversationId: string; userId: string; uid: string }
+    >({
       query: ({ conversationId, userId, uid }) => {
         return {
           url: `/conversations/message/deleteAll/${conversationId}`,
